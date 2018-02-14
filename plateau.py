@@ -8,6 +8,36 @@ class plateau(dict): #le plateau est un dictionnaire
         self.perimetre = 8 #plateau carré de 8 par 8
 
 
+    def increment(direction, position):
+        # 7 0 1
+        # 6   2
+        # 5 4 3
+        if direction == 0: 
+            return (position[0]+1, position[1])
+        if direction == 1: 
+            return (position[0]+1, position[1]+1)
+        if direction == 2: 
+            return (position[0], position[1]+1)
+        if direction == 3: 
+            return (position[0]-1, position[1]+1)
+        if direction == 4: 
+            return (position[0]-1, position[1])
+        if direction == 5: 
+            return (position[0]-1, position[1]-1)
+        if direction == 6: 
+            return (position[0], position[1]-1)
+        if direction == 7: 
+            return (position[0]+1, position[1]-1)
+   
+            
+    def coupValide(self, case_depart, couleur_joueur): 
+        
+        pos = case_depart
+
+        for direct in range(8): #on cherche dans les 8 directions
+
+            pos = increment(direct, pos)
+
     def affichage(self):
         
         s = str() #la chaîne de caractères que l'on affichera
@@ -47,9 +77,10 @@ class pion(object):
 
 class joueur(object):
     
-    def __init__(self, clr):
+    def __init__(self, clr, plateau):
         self.couleur = clr
         self.score = 0
+        self.limite = plateau.perimetre
     
     @couleur.setter
     def couleur(self, nvlle_clr):
@@ -57,6 +88,10 @@ class joueur(object):
             self.__couleur = nvlle_clr
         else:
             raise ValueError('Un joueur doit être [N]oir ou [B]lanc')
+
+    @property
+    def couleur(self):
+        return self.__couleur
 
     @score.setter
     def score(self, nv_score):
@@ -68,3 +103,9 @@ class joueur(object):
     @property
     def score(self):
         return self.__score
+
+
+    def jouer(self, case):
+        plateau.coupValide(case, self.couleur)
+
+   
