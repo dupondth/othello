@@ -91,8 +91,10 @@ class joueur(object):
     def couleur(self, nvlle_clr):
         if nvlle_clr in ['N', 'B']:
             self.__couleur = nvlle_clr
-        else:
-            raise ValueError('Un joueur doit être [N]oir ou [B]lanc')
+        elif not isinstance(nvlle_clr, str) : #si la couleur n'est pas une str
+            raise TypeError("Un joueur doit être Noir : 'N' ou Blanc : 'B'")
+        else: #la couleur est une str mais n'est ni 'N' ni 'B'
+            raise ValueError("Un joueur doit être Noir : 'N' ou Blanc : 'B'")
 
     @property
     def score(self):

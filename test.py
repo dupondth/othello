@@ -78,7 +78,8 @@ class testFonctions(unittest.TestCase):
     def testIncrement(self):
         #position de départ choisie au hasard
         pos = (2,4)
-
+        
+        #test dans toutes les directions (8 directions)
         self.assertEqual(p.increment(0, pos), (1,4))
         self.assertEqual(p.increment(1, pos), (1,5))
         self.assertEqual(p.increment(2, pos), (2,5))
@@ -88,7 +89,38 @@ class testFonctions(unittest.TestCase):
         self.assertEqual(p.increment(6, pos), (2,3))
         self.assertEqual(p.increment(7, pos), (1,3))
             
+class testJoueur(unittest.TestCase):
+    def testInit(self):
+        plat = p.plateau()
+        jN = p.joueur('N', plat)
+        jB = p.joueur('B', plat)
 
+        #Vérification de l'initialisation de couleur
+        self.assertEqual(jN.couleur, 'N')
+        self.assertEqual(jB.couleur, 'B')
+        
+        jN.couleur = 'B'
+        self.assertEqual(jN.couleur, 'B')
+
+        with self.assertRaises(ValueError):
+            j1 = p.joueur('Q', plat)
+
+        with self.assertRaises(TypeError):
+            j2 = p.joueur(2, plat)
+
+        #Vérification des limites
+        self.assertEqual(jN.limite, plat.perimetre)
+        self.assertEqual(jB.limite, plat.perimetre)
+
+        #Vérification de l'initialisation du score
+        self.assertEqual(jN.score, 0)
+        self.assertEqual(jB.score, 0)
+
+        jN.score = 80
+        self.assertEqual(jN.score, 80)
+
+        with self.assertRaises(ValueError):
+            jB.score = -1
 
 
 if __name__ == '__main__' :
