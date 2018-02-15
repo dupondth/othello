@@ -1,35 +1,32 @@
 #!/usr/bin/python3
 #coding:utf8
 
+def increment(direction, position):
+    # 7 0 1
+    # 6   2
+    # 5 4 3
+    if direction == 0: 
+        return (position[0]-1, position[1])
+    if direction == 1: 
+        return (position[0]-1, position[1]+1)
+    if direction == 2: 
+        return (position[0], position[1]+1)
+    if direction == 3: 
+        return (position[0]+1, position[1]+1)
+    if direction == 4: 
+        return (position[0]+1, position[1])
+    if direction == 5: 
+        return (position[0]+1, position[1]-1)
+    if direction == 6: 
+        return (position[0], position[1]-1)
+    if direction == 7: 
+        return (position[0]-1, position[1]-1)
+   
 
 class plateau(dict): #le plateau est un dictionnaire
-    
     def __init__(self):
         self.perimetre = 8 #plateau carré de 8 par 8
-
-
-    def increment(direction, position):
-        # 7 0 1
-        # 6   2
-        # 5 4 3
-        if direction == 0: 
-            return (position[0]+1, position[1])
-        if direction == 1: 
-            return (position[0]+1, position[1]+1)
-        if direction == 2: 
-            return (position[0], position[1]+1)
-        if direction == 3: 
-            return (position[0]-1, position[1]+1)
-        if direction == 4: 
-            return (position[0]-1, position[1])
-        if direction == 5: 
-            return (position[0]-1, position[1]-1)
-        if direction == 6: 
-            return (position[0], position[1]-1)
-        if direction == 7: 
-            return (position[0]+1, position[1]-1)
    
-            
     def coupValide(self, case_depart, couleur_joueur): 
         
         pos = case_depart
@@ -38,7 +35,7 @@ class plateau(dict): #le plateau est un dictionnaire
 
             pos = increment(direct, pos)
 
-    def affichage(self):
+    def __str__(self):
         
         s = str() #la chaîne de caractères que l'on affichera
 
@@ -51,6 +48,7 @@ class plateau(dict): #le plateau est un dictionnaire
                     s += '.'
             s += '\n' #passage à la ligne suivante
 
+        return s
 
 class pion(object):
     
@@ -65,8 +63,11 @@ class pion(object):
     def couleur(self, nvlle_clr):
         if nvlle_clr in ['N', 'B']:
             self.__couleur = nvlle_clr
-        else :
-            raise ValueError('Un pion doit être [N]oir ou [B]lanc')
+        elif not isinstance(nvlle_clr, str) : #si la couleur n'est pas une str
+            raise TypeError("Un pion doit être Noir : 'N' ou Blanc : 'B'")
+        else: #la couleur est une str mais n'est ni 'N' ni 'B'
+            raise ValueError("Un pion doit être Noir : 'N' ou Blanc : 'B'")
+
 
     def tourner(self):
         if self.couleur == 'N':
