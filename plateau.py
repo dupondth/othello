@@ -57,16 +57,16 @@ class pion(object):
     def __init__(self, clr):
         self.couleur = clr
 
+    @property
+    def couleur(self):
+        return self.__couleur
+
     @couleur.setter
     def couleur(self, nvlle_clr):
         if nvlle_clr in ['N', 'B']:
             self.__couleur = nvlle_clr
         else :
             raise ValueError('Un pion doit être [N]oir ou [B]lanc')
-
-    @property
-    def couleur(self):
-        return self.__couleur
 
     def tourner(self):
         if self.couleur == 'N':
@@ -82,6 +82,10 @@ class joueur(object):
         self.score = 0
         self.limite = plateau.perimetre
     
+    @property
+    def couleur(self):
+        return self.__couleur
+
     @couleur.setter
     def couleur(self, nvlle_clr):
         if nvlle_clr in ['N', 'B']:
@@ -90,8 +94,8 @@ class joueur(object):
             raise ValueError('Un joueur doit être [N]oir ou [B]lanc')
 
     @property
-    def couleur(self):
-        return self.__couleur
+    def score(self):
+        return self.__score
 
     @score.setter
     def score(self, nv_score):
@@ -100,12 +104,5 @@ class joueur(object):
         else:
             raise ValueError('Le score doit être positif')
 
-    @property
-    def score(self):
-        return self.__score
-
-
     def jouer(self, case):
         plateau.coupValide(case, self.couleur)
-
-   
