@@ -49,7 +49,7 @@ class testPlateau(unittest.TestCase):
         self.assertEqual(plat.perimetre, 8)
 
     def testAffichage(self):
-        plat1 = p.plateau()
+        plat = p.plateau()
 
         #Choix de là où veux poser les pions et de leur couleur
         #Les positions en dehors du perimètre ie x ou y >= 7 ne s'affichent pas
@@ -58,7 +58,7 @@ class testPlateau(unittest.TestCase):
 
         #Pose des pions
         for k in range(len(positions)):
-            plat1[positions[k]] = p.pion(couleur_pos[k])
+            plat[positions[k]] = p.pion(couleur_pos[k])
 
         #On fait la représentation à la main
         representation = 'N.......\n' + \
@@ -71,8 +71,33 @@ class testPlateau(unittest.TestCase):
                          '........\n'
 
         #On regarde que les deux concordes
-        self.assertEqual(str(plat1), representation)
+        self.assertEqual(str(plat), representation)
 
+    def testCoupValide(self):
+        plat = p.plateau()
+
+        positions = [(0,0),(0,2),\
+                     (1,0),(1,2),(1,3),\
+                     (2,0),(2,1),(2,2),(2,3),\
+                     (3,0),(3,1),(3,2),(3,3),(3,4),(3,5),(3,6),\
+                     (4,0),(4,1),(4,2),(4,3),(4,4),(4,5),\
+                     (5,0),(5,1),(5,2),(5,3),(5,4),(5,5),\
+                     (6,0),(6,1),(6,2),\
+                     (7,0),(7,1)]
+
+        couleurs = ['N','B',\
+                    'N','B','B',\
+                    'N','B','B','B',\
+                    'N','B','B','B','B','B','B',\
+                    'N','B','B','N','N','B',\
+                    'N','N','B','B','B','B',\
+                    'N','N','N',\
+                    'N','N']
+        
+        for k in range(len(positions)):
+            plat[positions[k]]=p.pion(couleurs[k])
+
+        self.assertEqual((True, [(3,5)]), plat.coupValide((2,6),'N'))
 
 class testFonctions(unittest.TestCase):
     def testIncrement(self):

@@ -28,39 +28,46 @@ class plateau(dict): #le plateau est un dictionnaire
         self.perimetre = 8   #plateau carré de 8 par 8
    
     def coupValide(self, case_depart, couleur_joueur): 
-        pos = case_depart
-        atourner = []
+        atourner = list() #Liste des pions à retourner
+        valide = False #le coup n'est pas valide par défaut
         
         for direct in range(8): #on cherche dans les 8 directions
-            fini = False #on ne s'arrete pas de chercher tant que fini n'est pas vrai
+            fini = False
+            #on ne s'arrete pas de chercher tant que fini n'est pas vrai
             tour1 = True #pour savoir si on est au 1er tour ou pas
+            pos = case_depart
+
+            atourner_temp = list() #Sera ajoutée à atourner si la direction est
+                                   #validée
 
             while not fini:
                 pos = increment(direct, pos)
+                print(pos)
                 
                 if tour1:
-                    if pos in plateau and plateau[pos].couleur != couleur_joueur: 
-                    #on se sert de l'évaluation paresseuse pour ne pas avoir d'erreur
+                    if pos in self and self[pos].couleur != couleur_joueur: 
+                    #on se sert de l'évaluation paresseuse pour ne pas 
+                    #avoir d'erreur
                         tour1 = False 
-                        atourner.append(pos)
+                        atourner_temp.append(pos)
                         
                     else: #vide ou hors plateau ou case meme couleur
                         fini = True #coup non valide
-                        valide = False
                 
                 else: #on n'est plus au 1er tour
-                    if pos in plateau and plateau[pos].couleur != couleur_joueur:
-                        atourner.append(pos)
+                    if pos in self and self[pos].couleur != couleur_joueur:
+                        atourner_temp.append(pos)
                         
-                    elif pos in plateau and plateau[pos].couleur == couleur_joueur:
+                    elif pos in self and self[pos].couleur == couleur_joueur:
                         fini = True
                         valide = True
+                        for couple in atourner_temp: #on sauvegarde
+                            atourner.append(couple)
                     
                     else: #vide ou hors plateau
                         fini = True
-                        valide = False
                         
-        return valide, atourner
+        return (valide, atourner) #un couple
                 
             
 
