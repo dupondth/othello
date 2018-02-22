@@ -25,15 +25,44 @@ def increment(direction, position):
 
 class plateau(dict): #le plateau est un dictionnaire
     def __init__(self):
-        self.perimetre = 8 #plateau carré de 8 par 8
+        self.perimetre = 8   #plateau carré de 8 par 8
    
     def coupValide(self, case_depart, couleur_joueur): 
-        
         pos = case_depart
-
+        atourner = []
+        
         for direct in range(8): #on cherche dans les 8 directions
+            fini = False #on ne s'arrete pas de chercher tant que fini n'est pas vrai
+            tour1 = True #pour savoir si on est au 1er tour ou pas
 
-            pos = increment(direct, pos)
+            while not fini:
+                pos = increment(direct, pos)
+                
+                if tour1:
+                    if pos in plateau and plateau[pos].couleur != couleur_joueur: 
+                    #on se sert de l'évaluation paresseuse pour ne pas avoir d'erreur
+                        tour1 = False 
+                        atourner.append(pos)
+                        
+                    else: #vide ou hors plateau ou case meme couleur
+                        fini = True #coup non valide
+                        valide = False
+                
+                else: #on n'est plus au 1er tour
+                    if pos in plateau and plateau[pos].couleur != couleur_joueur:
+                        atourner.append(pos)
+                        
+                    elif pos in plateau and plateau[pos].couleur == couleur_joueur:
+                        fini = True
+                        valide = True
+                    
+                    else: #vide ou hors plateau
+                        fini = True
+                        valide = False
+                        
+        return valide, atourner
+                
+            
 
     def __str__(self):
         
