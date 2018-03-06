@@ -48,13 +48,23 @@ class testPlateau(unittest.TestCase):
         plat = p.plateau()
         self.assertEqual(plat.perimetre, 8)
 
+        positions = [(0,0), (9,2), (3,5), (6,8), (2,3)]
+        couleur_pos = ['N', 'B', 'N', 'N', 'B']
+
+        for k in range(len(positions)):
+            plat[positions[k]] = p.pion(couleur_pos[k])
+
+        self.assertEqual(plat[(0,0)].couleur, 'N')
+        self.assertEqual(plat[(2,3)].couleur, 'B')
+
+
     def testAffichage(self):
         plat = p.plateau()
 
         #Choix de là où veux poser les pions et de leur couleur
         #Les positions en dehors du perimètre ie x ou y >= 7 ne s'affichent pas
-        positions = [(0,0), (9,2), (3,5), (6,8), (2,3)]
-        couleur_pos = ['N', 'B', 'N', 'N', 'B']
+        positions = [(0,0), (9,2), (3,5), (6,8), (2,3), (2,4)]
+        couleur_pos = ['N', 'B', 'N', 'N', 'B', 'B']
 
         #Pose des pions
         for k in range(len(positions)):
@@ -63,15 +73,37 @@ class testPlateau(unittest.TestCase):
         #On fait la représentation à la main
         representation = 'N.......\n' + \
                          '........\n' + \
-                         '...B....\n' + \
+                         '...BB...\n' + \
                          '.....N..\n' + \
                          '........\n' + \
                          '........\n' + \
                          '........\n' + \
                          '........\n'
 
+        representationN = 'N.......\n' + \
+                          '...1....\n' + \
+                          '...BB...\n' + \
+                          '.....N..\n' + \
+                          '........\n' + \
+                          '........\n' + \
+                          '........\n' + \
+                          '........\n'
+
+        representationB = 'N.......\n' + \
+                          '........\n' + \
+                          '...BB...\n' + \
+                          '.....N..\n' + \
+                          '......1.\n' + \
+                          '........\n' + \
+                          '........\n' + \
+                          '........\n'
+
+
+
         #On regarde que les deux concordes
         self.assertEqual(str(plat), representation)
+        self.assertEqual(plat.affichage('N'), representationN)
+        self.assertEqual(plat.affichage('B'), representationB)
 
     def testCoupValide(self):
         plat = p.plateau()
@@ -98,6 +130,13 @@ class testPlateau(unittest.TestCase):
             plat[positions[k]]=p.pion(couleurs[k])
 
         self.assertEqual((True, [(3,5)]), plat.coupValide((2,6),'N'))
+        self.assertEqual((False, []), plat.coupValide((2,7),'N'))
+
+        resultat = plat.coupValide((2,4),'N')
+        self.assertEqual((True, {(2,1),(2,2),(2,3),(3,3),(4,2),(3,4)}), \
+                         (resultat[0], set(resultat[1])))
+                         #on utilise un set pour n'avoir cure de l'ordre
+        print(plat.affichage('N'))
 
 class testFonctions(unittest.TestCase):
     def testIncrement(self):

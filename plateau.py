@@ -42,7 +42,6 @@ class plateau(dict): #le plateau est un dictionnaire
 
             while not fini:
                 pos = increment(direct, pos)
-                print(pos)
                 
                 if tour1:
                     if pos in self and self[pos].couleur != couleur_joueur: 
@@ -70,7 +69,6 @@ class plateau(dict): #le plateau est un dictionnaire
         return (valide, atourner) #un couple
                 
             
-
     def __str__(self):
         
         s = str() #la chaîne de caractères que l'on affichera
@@ -85,6 +83,26 @@ class plateau(dict): #le plateau est un dictionnaire
             s += '\n' #passage à la ligne suivante
 
         return s
+
+    def affichage(self, couleur_joueur):
+        
+        s = str() #la chaîne de caractères que l'on affichera
+
+        for i in range(self.perimetre):
+            for j in range(self.perimetre):
+                
+                if (i,j) in self: #s'il y a un pion à cette position
+                    s += self[(i,j)].couleur #on récupère la couleur du pion
+
+                #on vérifie que le coup est valide pour savoir où jouer
+                elif self.coupValide((i,j), couleur_joueur)[0]:
+                    s += str(len(self.coupValide((i,j), couleur_joueur)[1])) 
+                else :
+                    s += '.'
+            s += '\n' #passage à la ligne suivante
+
+        return s
+
 
 class pion(object):
     
