@@ -26,8 +26,27 @@ def increment(direction, position):
 class plateau(dict): #le plateau est un dictionnaire
     def __init__(self):
         self.perimetre = 8   #plateau carré de 8 par 8
-   
+
+        self[(3,3)] = pion('B')
+        self[(4,4)] = pion('B')
+        
+        self[(3,4)] = pion('N')
+        self[(4,3)] = pion('N')
+
     def coupValide(self, case_depart, couleur_joueur): 
+        '''Fonction qui renvoie si une case est valide ou non
+
+        Entrees
+        -------
+        case à vérifier (couple)
+        couleur du joueur ('N' ou 'B')
+
+        Sortie
+        ------
+        couple fait d'un booléen True si le coup est valide et la liste des
+        pions à tourner si on joue sur cette case
+        '''
+
         atourner = list() #Liste des pions à retourner
         valide = False #le coup n'est pas valide par défaut
         
@@ -67,8 +86,23 @@ class plateau(dict): #le plateau est un dictionnaire
                         fini = True
                         
         return (valide, atourner) #un couple
+
                 
-            
+    def jouable(self, clr):
+        '''Fonction qui renvoie True si un joueur de couleur clr peut
+        jouer et False sinon.
+        
+        rq : Cette fonction est celle permettant de ne pas jouer en-dehors
+        de plateau
+        '''
+
+        for i in range(self.perimetre):
+            for j in range(self.perimetre):
+                if len(self.coupValide((i,j), clr)[1]) > 0:
+                    return True
+        return False
+
+                
     def __str__(self):
         
         s = str() #la chaîne de caractères que l'on affichera
@@ -96,7 +130,8 @@ class plateau(dict): #le plateau est un dictionnaire
 
                 #on vérifie que le coup est valide pour savoir où jouer
                 elif self.coupValide((i,j), couleur_joueur)[0]:
-                    s += str(len(self.coupValide((i,j), couleur_joueur)[1])) 
+                    s += '#'
+                    #s += str(len(self.coupValide((i,j), couleur_joueur)[1])) 
                 else :
                     s += '.'
             s += '\n' #passage à la ligne suivante
@@ -136,6 +171,7 @@ class joueur(object):
         self.couleur = clr
         self.score = 0
         self.limite = plateau.perimetre
+        self.table = plateau
     
     @property
     def couleur(self):
@@ -162,4 +198,13 @@ class joueur(object):
             raise ValueError('Le score doit être positif')
 
     def jouer(self, case):
-        plateau.coupValide(case, self.couleur)
+        '''Fonction qui permet à chaque joueur de choisir où jouer'''
+        validite, retournable = self.table.coupValide(case,self.couleur)
+
+        if validite:
+            self.table[case] = pion(self.couleur)
+
+            for couple in retournable:
+                self.table[couple].tourner() #retourner les pions
+        else :
+            raise ValueError("La case doit être jouable")
