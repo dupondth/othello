@@ -150,10 +150,11 @@ class plateau(dict): #le plateau est un dictionnaire
 
                 
     def __str__(self):
-        
-        s = str() #la chaîne de caractères que l'on affichera
+
+        s = ' ABCDEFGH\n' #première ligne de notre affichage
 
         for i in range(self.perimetre):
+            s += str(i+1)
             for j in range(self.perimetre):
                 
                 if (i,j) in self: #s'il y a un pion à cette position
