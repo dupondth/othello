@@ -186,6 +186,10 @@ class testFonctions(unittest.TestCase):
         self.assertEqual(p.increment(5, pos), (3,3))
         self.assertEqual(p.increment(6, pos), (2,3))
         self.assertEqual(p.increment(7, pos), (1,3))
+
+    def testInput(self):
+        self.assertEqual(inputtotuple('d2'),(1,3))
+        self.assertEqual(inputtotuple('a1'),(0,0))
             
 class testJoueur(unittest.TestCase):
     def testInit(self):

@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 #coding:utf8
 
+import sys
+from random import choice
+
 def increment(direction, position):
     # 7 0 1
     # 6   2
@@ -21,6 +24,24 @@ def increment(direction, position):
         return (position[0], position[1]-1)
     if direction == 7: 
         return (position[0]-1, position[1]-1)
+
+def inputtotuple(chaine):
+    '''Fonction qui renvoie un couple de position style matrice avec
+    comme entrée un chaine style plateau.
+    ex: d2 -> (1,3)
+        a1 -> (0,0)
+
+    Entrée
+    ------
+    chaine (str) 
+
+    Sortie
+    ------
+    couple (tuple) 
+    '''
+
+    liste = list(chaine)
+    return (int(liste[1])-1, ord(liste[0])-97)
    
 
 class plateau(dict): #le plateau est un dictionnaire
@@ -49,6 +70,9 @@ class plateau(dict): #le plateau est un dictionnaire
 
         atourner = list() #Liste des pions à retourner
         valide = False #le coup n'est pas valide par défaut
+
+        if case_depart in self: #Vérification que la position n'est pas déjà occupée
+            return (valide, atourner)
         
         for direct in range(8): #on cherche dans les 8 directions
             fini = False
@@ -98,9 +122,31 @@ class plateau(dict): #le plateau est un dictionnaire
 
         for i in range(self.perimetre):
             for j in range(self.perimetre):
-                if len(self.coupValide((i,j), clr)[1]) > 0:
+                if self.coupValide((i,j), clr)[0]:
                     return True
         return False
+
+    def listeValide(self, clr):
+        '''Fonction qui renvoie une liste des case jouables pour un joueur
+
+        Entrée
+        ------
+        clr (str) : couleur du joueur : 'N' ou 'B'
+
+        Sortie
+        ------
+        liste de couples qui correspondent au coordonnées jouables
+        '''
+
+        cases_jouables = list()
+
+        for i in range(self.perimetre):
+            for j in range(self.perimetre):
+                if self.coupValide((i,j), clr)[0]:
+                    cases_jouables.append((i,j))
+                    
+        return cases_jouables
+                
 
                 
     def __str__(self):
@@ -120,9 +166,13 @@ class plateau(dict): #le plateau est un dictionnaire
 
     def affichage(self, couleur_joueur):
         
-        s = str() #la chaîne de caractères que l'on affichera
-
+        couleurs = {'N':'Noir', 'B':'Blanc'}
+        s = '\nTour du joueur ' + couleurs[couleur_joueur] + '\n'
+        #\n au début pour avoir une ligne vide entre les tours des joueurs
+        s += ' ABCDEFGH\n' #première ligne de notre affichage
+        
         for i in range(self.perimetre):
+            s += str(i+1)
             for j in range(self.perimetre):
                 
                 if (i,j) in self: #s'il y a un pion à cette position
@@ -169,7 +219,6 @@ class joueur(object):
     
     def __init__(self, clr, plateau):
         self.couleur = clr
-        self.score = 0
         self.limite = plateau.perimetre
         self.table = plateau
     
@@ -186,19 +235,15 @@ class joueur(object):
         else: #la couleur est une str mais n'est ni 'N' ni 'B'
             raise ValueError("Un joueur doit être Noir : 'N' ou Blanc : 'B'")
 
-    @property
-    def score(self):
-        return self.__score
+    def retourner(self, case):
+        '''Fonction qui retourne les pions à retourner après avoir joué
+        dans une case.
 
-    @score.setter
-    def score(self, nv_score):
-        if nv_score >= 0:
-            self.__score = nv_score
-        else:
-            raise ValueError('Le score doit être positif')
+        Entrée
+        ------
+        case (couple)
+        '''
 
-    def jouer(self, case):
-        '''Fonction qui permet à chaque joueur de choisir où jouer'''
         validite, retournable = self.table.coupValide(case,self.couleur)
 
         if validite:
@@ -208,3 +253,30 @@ class joueur(object):
                 self.table[couple].tourner() #retourner les pions
         else :
             raise ValueError("La case doit être jouable")
+
+
+    
+
+class humain(joueur):
+    '''Joueur humain auquel on demande où il veut jouer'''
+
+    def jouer(self):
+        '''Fonction qui permet à chaque joueur de choisir où jouer'''
+
+        case = input("Case où jouer : ")
+        if case == 'q': #afin de pouvoir arrêter le script
+            sys.exit("Programme stoppé par l'utilisateur")
+        else:
+            case = inputtotuple(case)
+
+        self.retourner(case)
+   
+
+class IAalea(joueur):
+    '''IA qui joue au hasard parmi les cases jouables'''
+
+    def jouer(self):
+        coords = self.table.listeValide(self.couleur)
+        position = choice(coords)
+        
+        self.retourner(position)
