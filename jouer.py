@@ -10,24 +10,46 @@ def tour(num_tour, plateau, j1, j2):
 
     print(plateau.affichage(j1.couleur))
 
-    #Boucle while pour boucler tant que le coup n'est pas valide
-    flag1 = True
-    while flag1:
-        try:
-            j1.jouer()
-            flag1 = False
-        except ValueError:
-            print("Veuillez jouer dans une case valide")
+    jouable1, jouable2 = True, True
+
+    #Si le joueur peut jouer, il joue
+    if plateau.jouable(j1.couleur):
+        flag1 = True
+        #Boucle while pour boucler tant que le coup n'est pas valide
+        while flag1:
+            try:
+                j1.jouer()
+                flag1 = False
+            except ValueError:
+                print("Veuillez jouer dans une case valide")
+    else:
+        jouable1 = False
     
     print(plateau.affichage(j2.couleur))
+    
+    #Si le joueur peut jouer, il joue
+    if plateau.jouable(j2.couleur):
+        flag2 = True
+        while flag2:
+            try:
+                j2.jouer()
+                flag2 = False
+            except ValueError:
+                print("Veuillez jouer dans une case valide")
+    else:
+        jouable2 = False
 
-    flag2 = True
-    while flag2:
-        try:
-            j2.jouer()
-            flag2 = False
-        except ValueError:
-            print("Veuillez jouer dans une case valide")
+    if jouable1 == False and jouable2 == False:
+        print(plateau)
+        print("\n-- Partie terminée --")
+        scores = gagnant(plateau)
+        print('Score joueur blanc : ' + str(scores['B']))
+        print('Score joueur noir : ' + str(scores['N']))
+
+        return False
+    else :
+        return True
+    
     
 def gagnant(plateau):
     '''Fonction qui renvoie la couleur du gagnant et le score final
@@ -52,18 +74,10 @@ def gagnant(plateau):
 
 def jeu(plateau, joueur1, joueur2):
     no_tour = 0 #numéro du tour courant
-    tour(no_tour, plateau, joueur1, joueur2)
-
-    while plateau.jouable(joueur1.couleur) \
-        or plateau.jouable(joueur2.couleur):
+    flag = True
+    while flag:
         no_tour += 1
-        tour(no_tour, plateau, joueur1, joueur2)
-
-    print("\n-- Partie terminée --")
-    scores = gagnant(plateau)
-    print('Score joueur blanc : ' + str(scores['B']))
-    print('Score joueur noir : ' + str(scores['N']))
-    
+        flag = tour(no_tour, plateau, joueur1, joueur2)
 
 if __name__ == '__main__':
     plateau_jeu = p.plateau()
