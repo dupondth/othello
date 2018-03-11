@@ -57,7 +57,7 @@ class plateau(dict): #le plateau est un dictionnaire
     def coupValide(self, case_depart, couleur_joueur): 
         '''Fonction qui renvoie si une case est valide ou non
 
-        Entrees
+        Entrées
         -------
         case à vérifier (couple)
         couleur du joueur ('N' ou 'B')
@@ -71,13 +71,18 @@ class plateau(dict): #le plateau est un dictionnaire
         atourner = list() #Liste des pions à retourner
         valide = False #le coup n'est pas valide par défaut
 
-        if case_depart in self: #Vérification que la position n'est pas déjà occupée
+        if case_depart in self: 
+        #Vérification que la position n'est pas déjà occupée
             return (valide, atourner)
         
         for direct in range(8): #on cherche dans les 8 directions
             fini = False
             #on ne s'arrete pas de chercher tant que fini n'est pas vrai
-            tour1 = True #pour savoir si on est au 1er tour ou pas
+            verif1 = True
+            #verif1 pour savoir si c'est une case directement adjacente
+            #en effet si on rencontre un pion de la même couleur adjacent, le
+            #coup n'est pas valide mais s'il y a des pions différents puis un
+            #pions de même couleur alors le coup est valide.
             pos = case_depart
 
             atourner_temp = list() #Sera ajoutée à atourner si la direction est
@@ -86,11 +91,11 @@ class plateau(dict): #le plateau est un dictionnaire
             while not fini:
                 pos = increment(direct, pos)
                 
-                if tour1:
+                if verif1:
                     if pos in self and self[pos].couleur != couleur_joueur: 
                     #on se sert de l'évaluation paresseuse pour ne pas 
                     #avoir d'erreur
-                        tour1 = False 
+                        verif1 = False 
                         atourner_temp.append(pos)
                         
                     else: #vide ou hors plateau ou case meme couleur
@@ -281,3 +286,16 @@ class IAalea(joueur):
         position = choice(coords)
         
         self.retourner(position)
+
+class IAmax(joueur):
+    '''IA qui joue à chaque tour le coup qui va lui rapporter le plus à ce
+    tour-ci '''
+
+    def jouer(self):
+        coup_maxi = ((None, None), 0)
+        for i in range(self.table.perimetre):
+            for j in range(self.table.perimetre):
+                score = len(self.table.coupValide((i,j),self.couleur)[1])
+                if score > coup_maxi[1]:
+                    coup_maxi = ((i,j), score)
+        self.retourner(coup_maxi[0]) 
