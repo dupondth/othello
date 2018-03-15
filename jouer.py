@@ -104,7 +104,7 @@ def stats_jeux(num_jeux):
     '''Fonction qui joue N=num_jeux de jeux et qui renvoie le nombre de parties
     gagnées par chaque joueur'''
     
-    dict_scores = {'jB':0, 'jN':0}
+    dict_scores = {'joueurBlanc':0, 'joueurNoir':0, 'Egalite': 0}
 
     for _ in range(num_jeux):
 
@@ -115,24 +115,34 @@ def stats_jeux(num_jeux):
         scores = gagnant(plat)
 
         if scores['B'] > scores['N']:
-            dict_scores['jB'] += 1
+            dict_scores['joueurBlanc'] += 1
         elif scores['N'] > scores['B']:
-            dict_scores['jN'] += 1
+            dict_scores['joueurNoir'] += 1
+        else: dict_scores['Egalite'] += 1
 
     return dict_scores
 
 
 if __name__ == '__main__':
-    plateau_jeu = p.plateau()
-    joueurN = p.humain('N', plateau_jeu)
-    joueurB = p.IAmax('B', plateau_jeu)
+#################################################
+### Pour jouer humain contre IA               ###
+### décommenter les lignes 131 à 141 incluses ###
+#################################################
+    #plateau_jeu = p.plateau()
+    #joueurN = p.humain('N', plateau_jeu)
+    #joueurB = p.IAmax('B', plateau_jeu)
 
-    jeu(plateau_jeu, joueurB, joueurN)
-    
-    print(plateau_jeu)
-    print("\n-- Partie terminée --")
-    scores = gagnant(plateau_jeu)
-    print('Score joueur blanc : ' + str(scores['B']))
-    print('Score joueur noir : ' + str(scores['N']))
+    #jeu(plateau_jeu, joueurB, joueurN)
 
-    #print(stats_jeux(1))
+    #print(plateau_jeu)
+    #print("\n-- Partie terminée --")
+    #scores = gagnant(plateau_jeu)
+    #print('Score joueur blanc : ' + str(scores['B']))
+    #print('Score joueur noir : ' + str(scores['N']))
+
+################################################
+### Pour jouer N parties IAmax contre IAalea ###
+### Modifier N ci-dessous                    ###
+################################################
+    #N = 100
+    #print(stats_jeux(N))
