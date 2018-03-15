@@ -281,3 +281,17 @@ class IAalea(joueur):
         position = choice(coords)
         
         self.retourner(position)
+
+class IAmax(joueur):
+    '''IA qui joue le meilleur coup pour un tour'''
+
+    def jouer(self):
+        score = 0
+        position = (0,0)
+        for i in range(self.table.perimetre):
+            for j in range(self.table.perimetre):
+                valide, a_tourner = self.table.coupValide((i,j), self.couleur)
+                if valide and len(a_tourner) > score:
+                    score = len(a_tourner)
+                    position = (i,j)
+        self.retourner(position)

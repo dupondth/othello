@@ -79,9 +79,28 @@ def jeu(plateau, joueur1, joueur2):
         no_tour += 1
         flag = tour(no_tour, plateau, joueur1, joueur2)
 
-if __name__ == '__main__':
-    plateau_jeu = p.plateau()
-    joueurN = p.IAalea('N', plateau_jeu)
-    joueurB = p.IAalea('B', plateau_jeu)
+def stats(nombre_jeux):
+    '''Fonction qui joue n=nombre_jeux parties et renvoie les résultats finaux'''
+    score_total = {'B':0, 'N':0, 'E':0}
+    for _ in range(nombre_jeux):
+        plateau = p.plateau()
+        joueur1 = p.IAalea('N', plateau)
+        joueur2 = p.IAmax('B', plateau)
+        jeu(plateau, joueur1, joueur2)
+        dict_scores = gagnant(plateau)
+        if dict_scores['B'] > dict_scores['N']:
+            score_total['B'] += 1
+        elif dict_scores['N'] > dict_scores['B']:
+            score_total['N'] += 1
+        else:
+            score_total['E'] += 1 #nombre d'égalités
+    return score_total
 
-    jeu(plateau_jeu, joueurB, joueurN)
+
+if __name__ == '__main__':
+    #plateau_jeu = p.plateau()
+    #joueurN = p.IAalea('N', plateau_jeu)
+    #joueurB = p.IAmax('B', plateau_jeu)
+
+    #jeu(plateau_jeu, joueurB, joueurN)
+    print(stats(100))
