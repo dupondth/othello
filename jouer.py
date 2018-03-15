@@ -5,6 +5,22 @@ import plateau as p
 import time
 
 def tour(num_tour, plateau, j1, j2):
+    '''Fonction qui fait avancer le jeu d'un tour, affiche l'état actuel du
+    jeu dans le terminal et qui renvoie True s'il faut arrêter le jeu et False
+    sinon.
+
+    Entrées
+    -------
+    num_tour (int) : numéro du tour
+    plateau (objet plateau) : plateau sur lequel le jeu se déroule
+    j1 (objet joueur) : premier joueur
+    j2 (objet joueur) : second joueur 
+
+    Sortie
+    ------
+    booléen : True s'il faut continuer le jeu, False sinon
+    '''
+
     print("\n-- Tour " + str(num_tour) + " --")
     #\n au début pour avoir une ligne vide entre les tours
 
@@ -40,15 +56,9 @@ def tour(num_tour, plateau, j1, j2):
         jouable2 = False
 
     if jouable1 == False and jouable2 == False:
-        print(plateau)
-        print("\n-- Partie terminée --")
-        scores = gagnant(plateau)
-        print('Score joueur blanc : ' + str(scores['B']))
-        print('Score joueur noir : ' + str(scores['N']))
-
-        return False
+        return False #Arrêter le jeu
     else :
-        return True
+        return True #Continuer le jeu
     
     
 def gagnant(plateau):
@@ -73,34 +83,65 @@ def gagnant(plateau):
         
 
 def jeu(plateau, joueur1, joueur2):
+    '''Fonction qui exécute le jeu jusqu'à ce que les deux joueurs ne puissent
+    plus jouer.
+
+    Entrées
+    -------
+    plateau (objet plateau) : Plateau sur lequel se déroule le jeu
+    joueur1 (objet joueur) : Premier joueur 
+    joueur2 (objet joueur) : Second joueur 
+    '''
+    
     no_tour = 0 #numéro du tour courant
     flag = True
     while flag:
         no_tour += 1
         flag = tour(no_tour, plateau, joueur1, joueur2)
 
-def stats(nombre_jeux):
-    '''Fonction qui joue n=nombre_jeux parties et renvoie les résultats finaux'''
-    score_total = {'B':0, 'N':0, 'E':0}
-    for _ in range(nombre_jeux):
-        plateau = p.plateau()
-        joueur1 = p.IAalea('N', plateau)
-        joueur2 = p.IAmax('B', plateau)
-        jeu(plateau, joueur1, joueur2)
-        dict_scores = gagnant(plateau)
-        if dict_scores['B'] > dict_scores['N']:
-            score_total['B'] += 1
-        elif dict_scores['N'] > dict_scores['B']:
-            score_total['N'] += 1
-        else:
-            score_total['E'] += 1 #nombre d'égalités
-    return score_total
+def stats_jeux(num_jeux):
+    '''Fonction qui joue N=num_jeux de jeux et qui renvoie le nombre de parties
+    gagnées par chaque joueur'''
+    
+    dict_scores = {'joueurBlanc':0, 'joueurNoir':0, 'Egalite': 0}
+
+    for _ in range(num_jeux):
+
+        plat = p.plateau()
+        joueurN = p.IAalea('N', plat)
+        joueurB = p.IAmax('B', plat)
+        jeu(plat, joueurB, joueurN)
+        scores = gagnant(plat)
+
+        if scores['B'] > scores['N']:
+            dict_scores['joueurBlanc'] += 1
+        elif scores['N'] > scores['B']:
+            dict_scores['joueurNoir'] += 1
+        else: dict_scores['Egalite'] += 1
+
+    return dict_scores
 
 
 if __name__ == '__main__':
+#################################################
+### Pour jouer humain contre IA               ###
+### décommenter les lignes 131 à 141 incluses ###
+#################################################
     #plateau_jeu = p.plateau()
-    #joueurN = p.IAalea('N', plateau_jeu)
+    #joueurN = p.humain('N', plateau_jeu)
     #joueurB = p.IAmax('B', plateau_jeu)
 
     #jeu(plateau_jeu, joueurB, joueurN)
-    print(stats(100))
+
+    #print(plateau_jeu)
+    #print("\n-- Partie terminée --")
+    #scores = gagnant(plateau_jeu)
+    #print('Score joueur blanc : ' + str(scores['B']))
+    #print('Score joueur noir : ' + str(scores['N']))
+
+################################################
+### Pour jouer N parties IAmax contre IAalea ###
+### Modifier N ci-dessous                    ###
+################################################
+    #N = 100
+    #print(stats_jeux(N))
