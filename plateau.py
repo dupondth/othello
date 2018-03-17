@@ -3,6 +3,7 @@
 
 import sys
 from random import choice
+import copy
 
 def increment(direction, position):
     # 7 0 1
@@ -299,3 +300,98 @@ class IAmax(joueur):
                 if score > coup_maxi[1]:
                     coup_maxi = ((i,j), score)
         self.retourner(coup_maxi[0]) 
+
+class IAminmax(joueur):
+    '''IA qui compte les pions qu'elle peut gagner sur chaque case jouable et
+    qui, selon la case où elle joue, compte les pions que l'adversaire peut 
+    enuite gagner. Elle calcule la différence "pions gagnés par elle" - "pions
+    gagnés par l'adversaire" pour chaque possibilité, et choisit de jouer sur 
+    la case qui maximise le minimum de pions qu'elle peut gagner au total après
+    que l'adversaire ait joué.'''
+    
+    def couleur_adv(self):
+        if self.couleur == 'B':
+            return 'N'
+        else:
+            return 'B'
+    
+    def jouer(self):
+        liste_case = self.table.listeValide(self.couleur)
+        
+        #print('cases jouables IA : ', liste_case)
+        
+        coords_gains_IA =list()
+        #liste des listes [case jouable, gain pour la case] pour l'IA
+        for coup_jouable in self.table.listeValide(self.couleur):
+            coords_gains_IA.append([coup_jouable, len(self.table.coupValide(coup_jouable, self.couleur)[1])])
+            #à chaque case jouable on associe le nombre de pions gagnés
+            #par l'IA. De la forme [[(a,b),x],[(c,d),y],[(e,f),z]]
+        
+        #print('coords et gains associés IA : ', coords_gains_IA)
+            
+        gains_adv = list()
+        #liste de sous-listes. Chaque sous-liste correspond à une case jouée
+        #par l'IA et contient la liste des gains possibles de l'adversaire.
+       
+        for coup_jouable in self.table.listeValide(self.couleur):
+            table_copy = copy.deepcopy(self.table)
+             #on copie la table pour y simuler tous les coups possibles de l'IA.
+             #on utilise copy pour que les simulations ne se propagent pas
+            table_copy[coup_jouable] = pion(self.couleur)
+            retournable = table_copy.coupValide(coup_jouable,self.couleur)[1]
+            for pos in retournable:
+                table_copy[pos].tourner()
+            #on simule un coup de l'IA
+            
+            #print(table_copy.affichage(self.couleur_adv()))
+            
+            gains_possibles = list()
+            if table_copy.jouable(self.couleur_adv()):
+                for coup_jouable_adv in table_copy.listeValide(self.couleur_adv()): 
+                    gains_possibles.append(len(table_copy.coupValide(coup_jouable_adv, self.couleur_adv())[1])) 
+                    #sous-liste des gains possibles pour l'adversaire
+            else:
+                gains_possibles.append(0)
+                
+            #print('gains possibles adv pour le coup : ', gains_possibles)
+                
+            gains_adv.append(gains_possibles)
+            #de la forme [[a,b,c],[d,e],[i,j,k,l,m]]    
+       
+        #print('gains possibles adversaires : ', gains_adv) 
+            
+        poids = list()
+        for i in range(len(coords_gains_IA)):
+            poids_coup_i = list()
+            for j in range(len(gains_adv[i])):
+                poids_coup_i.append(coords_gains_IA[i][1] - gains_adv[i][j])
+                #de la forme [x-a,x-b,x-c]
+            poids.append(poids_coup_i)
+            #de la forme [[x-a,x-b,x-c],[y-d,y-e],[z-i,z-j,z-k,z-l,z-m]]
+            #avec x,y,z les gains possibles selon les coups de l'IA
+            
+        #print('poids : ', poids)
+            
+        poids_trie = list()
+        for i in range(len(poids)):
+            poids_trie.append(sorted(poids[i]))
+        #on trie les sous-listes : les gains minimals se retrouvent en 1ere
+        #position dans chaque sous-liste. Il faut identifier lequel est le
+        #plus grand, et remonter à la position correspondante.
+        
+        #print('poids triés : ', poids_trie)
+         
+        indice_pos_opt = 0
+        gain_min = poids_trie[0][0]
+        for i in range(len(poids_trie)):
+            if gain_min < poids_trie[i][0]:
+                gain_min = poids_trie[i][0]
+                indice_pos_opt = i
+        
+        #print('indice position optimisée : ', indice_pos_opt)
+        
+        pos_opt = liste_case[indice_pos_opt]
+        
+        #print('position optimisée : ', pos_opt)
+        
+        self.retourner(pos_opt)
