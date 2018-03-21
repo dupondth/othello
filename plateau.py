@@ -55,6 +55,30 @@ class plateau(dict): #le plateau est un dictionnaire
         self[(3,4)] = pion('N')
         self[(4,3)] = pion('N')
 
+    def evaluation(self, couleur_joueur):
+        '''Fonction d'évaluation du jeu pour une couleur de joueur.
+        Renvoie le nombre de pions du joueur couleur_joueur auquel on soustrait
+        nombre de pions de l'adversaire.
+
+        Entrées
+        -------
+        couleur ('N' ou 'B') : couleur du joueur
+
+        Sortie
+        ------
+        valeur (int)
+        '''
+        valeur = 0
+
+        for pion in self:
+            if pion.couleur == couleur_joueur:
+                valeur += 1
+            else :
+                valeur -= 1
+
+        return valeur
+                
+
     def coupValide(self, case_depart, couleur_joueur): 
         '''Fonction qui renvoie si une case est valide ou non
 
@@ -71,6 +95,11 @@ class plateau(dict): #le plateau est un dictionnaire
 
         atourner = list() #Liste des pions à retourner
         valide = False #le coup n'est pas valide par défaut
+
+        if not( 0 <= case_depart[0] < self.perimetre) or not( 0 <=
+        case_depart[1] < self.perimetre):
+        #Vérification que la position est bien dans le plateau
+            return(valide, atourner)
 
         if case_depart in self: 
         #Vérification que la position n'est pas déjà occupée
@@ -302,12 +331,9 @@ class IAmax(joueur):
         self.retourner(coup_maxi[0]) 
 
 class IAminmax(joueur):
-    '''IA qui compte les pions qu'elle peut gagner sur chaque case jouable et
-    qui, selon la case où elle joue, compte les pions que l'adversaire peut 
-    enuite gagner. Elle calcule la différence "pions gagnés par elle" - "pions
-    gagnés par l'adversaire" pour chaque possibilité, et choisit de jouer sur 
-    la case qui maximise le minimum de pions qu'elle peut gagner au total après
-    que l'adversaire ait joué.'''
+    '''IA qui applique l'algorithme minmax: elle choisit le gain maximum où
+    gain = (pions gagnés au tour 1) - (pions gagnés par l'adversaire au tour 2)
+    + (pions gagnés au tour 3)'''
     
     def couleur_adv(self):
         if self.couleur == 'B':
@@ -317,11 +343,15 @@ class IAminmax(joueur):
     
     def jouer(self):
         liste_case = self.table.listeValide(self.couleur)
+        ##à quoi sert cette liste ?
         
         #print('cases jouables IA : ', liste_case)
         
         coords_gains_IA =list()
         #liste des listes [case jouable, gain pour la case] pour l'IA
+        #gain = nombre de pions adverses retournés
+        ##À changer car listeValide parcours une fois la grille en entier et on
+        ##recommence avec ce for là donc pas opti
         for coup_jouable in self.table.listeValide(self.couleur):
             coords_gains_IA.append([coup_jouable, len(self.table.coupValide(coup_jouable, self.couleur)[1])])
             #à chaque case jouable on associe le nombre de pions gagnés
@@ -333,10 +363,12 @@ class IAminmax(joueur):
         #liste de sous-listes. Chaque sous-liste correspond à une case jouée
         #par l'IA et contient la liste des gains possibles de l'adversaire.
        
+        ##pourquoi ne pas utiliser liste_case ?
         for coup_jouable in self.table.listeValide(self.couleur):
             table_copy = copy.deepcopy(self.table)
-             #on copie la table pour y simuler tous les coups possibles de l'IA.
-             #on utilise copy pour que les simulations ne se propagent pas
+            #on copie la table pour y simuler tous les coups possibles de l'IA.
+            #on utilise copy pour que les simulations ne se propagent pas
+            ##^ ça ne veut rien dire
             table_copy[coup_jouable] = pion(self.couleur)
             retournable = table_copy.coupValide(coup_jouable,self.couleur)[1]
             for pos in retournable:
