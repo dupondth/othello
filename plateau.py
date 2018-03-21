@@ -271,7 +271,7 @@ class joueur(object):
         else: #la couleur est une str mais n'est ni 'N' ni 'B'
             raise ValueError("Un joueur doit être Noir : 'N' ou Blanc : 'B'")
 
-    def retourner(self, case):
+    def retourner(self, case, plateau):
         '''Fonction qui retourne les pions à retourner après avoir joué
         dans une case.
 
@@ -280,13 +280,13 @@ class joueur(object):
         case (couple)
         '''
 
-        validite, retournable = self.table.coupValide(case,self.couleur)
+        validite, retournable = self.plateau.coupValide(case,self.couleur)
 
         if validite:
-            self.table[case] = pion(self.couleur)
+            self.plateau[case] = pion(self.couleur)
 
             for couple in retournable:
-                self.table[couple].tourner() #retourner les pions
+                self.plateau[couple].tourner() #retourner les pions
         else :
             raise ValueError("La case doit être jouable")
 
@@ -305,7 +305,7 @@ class humain(joueur):
         else:
             case = inputtotuple(case)
 
-        self.retourner(case)
+        self.retourner(case, self.table)
    
 
 class IAalea(joueur):
@@ -315,7 +315,7 @@ class IAalea(joueur):
         coords = self.table.listeValide(self.couleur)
         position = choice(coords)
         
-        self.retourner(position)
+        self.retourner(position, self.table)
 
 class IAmax(joueur):
     '''IA qui joue à chaque tour le coup qui va lui rapporter le plus à ce
@@ -328,7 +328,7 @@ class IAmax(joueur):
                 score = len(self.table.coupValide((i,j),self.couleur)[1])
                 if score > coup_maxi[1]:
                     coup_maxi = ((i,j), score)
-        self.retourner(coup_maxi[0]) 
+        self.retourner(coup_maxi[0], self.table) 
 
 class IAminmax(joueur):
     '''IA qui applique l'algorithme minmax: elle choisit le gain maximum où
@@ -342,6 +342,48 @@ class IAminmax(joueur):
             return 'B'
     
     def jouer(self):
+        
+        coords_gains = dict()
+        
+        for i in range(self.limite):
+            for j in range(self.limite):
+                if self.table.coupValide((i,j),self.couleur)[0]:
+                #si la case est jouable
+                    table_copy = copy.copy(self.table)
+                    self.retourner((i,j), table_copy) #on joue sur (i,j)
+                        
+                poids = -float('Inf')
+                
+                for i in range(self.limite):
+                    for j in range(self.limite):
+                        if self.table_copy.coupValide((i,j),self.couleur_adv())[0]:
+                            self.retourner((i,j), table_copy) #on joue sur (i,j)
+                        
+                        score = float('Inf')
+                        
+                        for i in range(self.limite):
+                            for j in range(self.limite):
+                                if self.table_copy.coupValide((i,j),self.couleur)[0]:
+                                    self.retourner((i,j), table_copy) #on joue sur (i,j)
+                                
+                                evaluation = table_copy.evaluation()
+                                
+                                if evaluation < score:
+                                    score = evaluation
+                                    
+                        if score > poids:
+                            poids = score
+                            
+        coords_gains[(i,j)] = poids
+        
+        self.retourner(max(d.key = d.get), self.table)
+                        
+                                    
+                        
+   """                     
+                
+    
+    def jouer2(self):
         liste_case = self.table.listeValide(self.couleur)
         ##à quoi sert cette liste ?
         
