@@ -280,13 +280,13 @@ class joueur(object):
         case (couple)
         '''
 
-        validite, retournable = self.plateau.coupValide(case,self.couleur)
+        validite, retournable = plateau.coupValide(case,self.couleur)
 
         if validite:
-            self.plateau[case] = pion(self.couleur)
+            plateau[case] = pion(self.couleur)
 
             for couple in retournable:
-                self.plateau[couple].tourner() #retourner les pions
+                plateau[couple].tourner() #retourner les pions
         else :
             raise ValueError("La case doit être jouable")
 
@@ -351,39 +351,54 @@ class IAminmax(joueur):
                 #si la case est jouable
                     table_copy = copy.copy(self.table)
                     self.retourner((i,j), table_copy) #on joue sur (i,j)
-                        
-                poids = -float('Inf')
+                    print('case jouable : ', (i,j))
+                    print('table copiée : \n', table_copy)
+                    print('vraie table : \n', self.table)
+                    poids = -float('Inf') #poids de notre coup en (i,j)
                 
-                for i in range(self.limite):
-                    for j in range(self.limite):
-                        if self.table_copy.coupValide((i,j),self.couleur_adv())[0]:
-                            self.retourner((i,j), table_copy) #on joue sur (i,j)
+                    for k in range(self.limite):
+                        for l in range(self.limite):
+                            if table_copy.coupValide((k,l),self.couleur_adv())[0]:
+                                table_copy2 = copy.copy(table_copy)
+                                self.retourner((k,l), table_copy2) #l'adversaire joue sur (k,l)
                         
-                        score = float('Inf')
+                                score = float('Inf') #poids d'un coup de l'adversaire en (k,l)
                         
-                        for i in range(self.limite):
-                            for j in range(self.limite):
-                                if self.table_copy.coupValide((i,j),self.couleur)[0]:
-                                    self.retourner((i,j), table_copy) #on joue sur (i,j)
+                                for m in range(self.limite):
+                                    for n in range(self.limite):
+                                        if table_copy2.coupValide((m,n),self.couleur)[0]:
+                                            table_copy3 = copy.copy(table_copy2)
+                                            self.retourner((m,n), table_copy3) #on joue sur (m,n)
                                 
-                                evaluation = table_copy.evaluation()
+                                            evaluation = table_copy3.evaluation()
                                 
-                                if evaluation < score:
-                                    score = evaluation
+                                            if evaluation < score:
+                                                score = evaluation
+                                                #on garde l'évaluation la plus défavorable
+                                                #parmi toutes les évaluations possibles.
+                                                
+                                            #si aucun coup du joueur n'est simulable, 
+                                            #score reste à +inf.
                                     
-                        if score > poids:
-                            poids = score
+                                if score > poids:
+                                    poids = score
+                                    
+                                #si aucun coup de l'adversaire n'est simulable, 
+                                #poids reste à -inf.
                             
-        coords_gains[(i,j)] = poids
-        
-        self.retourner(max(d.key = d.get), self.table)
-                        
-                                    
-                        
-   """                     
+                    coords_gains[(i,j)] = poids 
+                    #on donne un poids à chacun de nos coup.
                 
-    
-    def jouer2(self):
+                    #si aucun coup du joueur n'est valide, le dictionnaire reste vide.
+                
+        print(coords_gains)
+        print(sorted(coords_gains.items(), key=lambda t:t[1], reverse=True))
+        print(sorted(coords_gains.items(), key=lambda t:t[1], reverse=True)[0][0])
+        print(self.table)
+        self.retourner(sorted(coords_gains.items(), key=lambda t:t[1], reverse=True)[0][0], self.table)
+        #la commande sorted(...) rend [((case1),poids1),((case2),poids2)] triée selon le poids par ordre décroissant.
+                                                      
+    """def jouer2(self):
         liste_case = self.table.listeValide(self.couleur)
         ##à quoi sert cette liste ?
         
@@ -468,4 +483,4 @@ class IAminmax(joueur):
         
         #print('position optimisée : ', pos_opt)
         
-        self.retourner(pos_opt)
+        self.retourner(pos_opt)"""

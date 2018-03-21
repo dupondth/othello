@@ -24,7 +24,7 @@ def tour(num_tour, plateau, j1, j2):
     print("\n-- Tour " + str(num_tour) + " --")
     #\n au début pour avoir une ligne vide entre les tours
 
-    #print(plateau.affichage(j1.couleur))
+    print(plateau.affichage(j1.couleur))
 
     jouable1, jouable2 = True, True
 
@@ -41,7 +41,7 @@ def tour(num_tour, plateau, j1, j2):
     else:
         jouable1 = False
     
-    #print(plateau.affichage(j2.couleur))
+    print(plateau.affichage(j2.couleur))
     
     #Si le joueur peut jouer, il joue
     if plateau.jouable(j2.couleur):
@@ -103,7 +103,7 @@ def jeu(plateau, joueur1, joueur2):
 def stats_jeux(num_jeux):
     '''Fonction qui joue N=num_jeux de jeux et qui renvoie le nombre de parties
     gagnées par chaque joueur'''
-    
+    """
     dict_scores = {'joueurBlanc':0, 'joueurNoir':0, 'Egalite': 0}
 
     for _ in range(num_jeux):
@@ -120,7 +120,7 @@ def stats_jeux(num_jeux):
             dict_scores['joueurNoir'] += 1
         else: dict_scores['Egalite'] += 1
 
-    return dict_scores
+    return dict_scores"""
 
 
 if __name__ == '__main__':
@@ -128,7 +128,7 @@ if __name__ == '__main__':
 ### Pour jouer humain contre IA               ###
 ### décommenter les lignes 131 à 141 incluses ###
 #################################################
-    '''plateau_jeu = p.plateau()
+    plateau_jeu = p.plateau()
     joueurN = p.humain('N', plateau_jeu)
     joueurB = p.IAminmax('B', plateau_jeu)
 
@@ -138,7 +138,7 @@ if __name__ == '__main__':
     print("\n-- Partie terminée --")
     scores = gagnant(plateau_jeu)
     print('Score joueur blanc : ' + str(scores['B']))
-    print('Score joueur noir : ' + str(scores['N']))'''
+    print('Score joueur noir : ' + str(scores['N']))
 
 ################################################
 ### Pour jouer N parties IAmax contre IAalea ###
