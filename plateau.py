@@ -70,7 +70,7 @@ class plateau(dict): #le plateau est un dictionnaire
         '''
         valeur = 0
 
-        for pion in self:
+        for pion in self.values():
             if pion.couleur == couleur_joueur:
                 valeur += 1
             else :
@@ -271,7 +271,7 @@ class joueur(object):
         else: #la couleur est une str mais n'est ni 'N' ni 'B'
             raise ValueError("Un joueur doit être Noir : 'N' ou Blanc : 'B'")
 
-    def retourner(self, case, plateau):
+    def retourner(self, case, plateau, couleur):
         '''Fonction qui retourne les pions à retourner après avoir joué
         dans une case.
 
@@ -280,17 +280,28 @@ class joueur(object):
         case (couple)
         '''
 
-        validite, retournable = self.plateau.coupValide(case,self.couleur)
+        validite, retournable = plateau.coupValide(case,couleur)
 
         if validite:
-            self.plateau[case] = pion(self.couleur)
+            plateau[case] = pion(couleur)
 
             for couple in retournable:
-                self.plateau[couple].tourner() #retourner les pions
+                plateau[couple].tourner() #retourner les pions
         else :
             raise ValueError("La case doit être jouable")
+    
+    def simuler(self, coords, plateau, couleur):
+        '''Fonction qui simule un coup coords=(i,j) et qui renvoie la table
+        après simulation sur cette position.
+        '''
 
-
+        if plateau.coupValide(coords, couleur)[0]:
+            #si la case est jouable
+            table_copy = copy.deepcopy(plateau)
+            self.retourner(coords, table_copy, couleur) #on joue sur (i,j)
+            return table_copy
+        else:
+            return None
     
 
 class humain(joueur):
@@ -315,7 +326,7 @@ class IAalea(joueur):
         coords = self.table.listeValide(self.couleur)
         position = choice(coords)
         
-        self.retourner(position, self.table)
+        self.retourner(position, self.table, self.couleur)
 
 class IAmax(joueur):
     '''IA qui joue à chaque tour le coup qui va lui rapporter le plus à ce
@@ -340,132 +351,49 @@ class IAminmax(joueur):
             return 'N'
         else:
             return 'B'
-    
+
     def jouer(self):
         
         coords_gains = dict()
         
+        #Simulation tour1, tour propre
         for i in range(self.limite):
             for j in range(self.limite):
-                if self.table.coupValide((i,j),self.couleur)[0]:
-                #si la case est jouable
-                    table_copy = copy.copy(self.table)
-                    self.retourner((i,j), table_copy) #on joue sur (i,j)
+                table_copy = self.simuler((i,j), self.table, self.couleur)
                         
                 poids = -float('Inf')
                 
-                for i in range(self.limite):
-                    for j in range(self.limite):
-                        if self.table_copy.coupValide((i,j),self.couleur_adv())[0]:
-                            self.retourner((i,j), table_copy) #on joue sur (i,j)
+                if table_copy is not None:
+                #si la fonction simuler a renvoyé un type différent de None cela
+                #veut dire que le coup était jouable.
+                #si table_copy est de type None, cela veut dire que l'on ne peut
+                #pas jouer en (i,j).
+
+                    #Simulation tour1, tour de l'adversaire
+                    for k in range(self.limite):
+                        for l in range(self.limite):
+                            table_copy2 = self.simuler((k,l), table_copy, \
+                            self.couleur_adv())
                         
-                        score = float('Inf')
-                        
-                        for i in range(self.limite):
-                            for j in range(self.limite):
-                                if self.table_copy.coupValide((i,j),self.couleur)[0]:
-                                    self.retourner((i,j), table_copy) #on joue sur (i,j)
-                                
-                                evaluation = table_copy.evaluation()
-                                
-                                if evaluation < score:
-                                    score = evaluation
-                                    
-                        if score > poids:
-                            poids = score
+                            score = float('Inf')
                             
-        coords_gains[(i,j)] = poids
-        
-        self.retourner(max(d.key = d.get), self.table)
-                        
+                            if table_copy2 is not None:
+
+                                #Simulation tour2, tour propre 
+                                for m in range(self.limite):
+                                    for n in range(self.limite):
+                                        table_copy3 = self.simuler((m,n), \
+                                        table_copy2, self.couleur)
                                     
-                        
-   """                     
-                
-    
-    def jouer2(self):
-        liste_case = self.table.listeValide(self.couleur)
-        ##à quoi sert cette liste ?
-        
-        #print('cases jouables IA : ', liste_case)
-        
-        coords_gains_IA =list()
-        #liste des listes [case jouable, gain pour la case] pour l'IA
-        #gain = nombre de pions adverses retournés
-        ##À changer car listeValide parcours une fois la grille en entier et on
-        ##recommence avec ce for là donc pas opti
-        for coup_jouable in self.table.listeValide(self.couleur):
-            coords_gains_IA.append([coup_jouable, len(self.table.coupValide(coup_jouable, self.couleur)[1])])
-            #à chaque case jouable on associe le nombre de pions gagnés
-            #par l'IA. De la forme [[(a,b),x],[(c,d),y],[(e,f),z]]
-        
-        #print('coords et gains associés IA : ', coords_gains_IA)
-            
-        gains_adv = list()
-        #liste de sous-listes. Chaque sous-liste correspond à une case jouée
-        #par l'IA et contient la liste des gains possibles de l'adversaire.
-       
-        ##pourquoi ne pas utiliser liste_case ?
-        for coup_jouable in self.table.listeValide(self.couleur):
-            table_copy = copy.deepcopy(self.table)
-            #on copie la table pour y simuler tous les coups possibles de l'IA.
-            #on utilise copy pour que les simulations ne se propagent pas
-            ##^ ça ne veut rien dire
-            table_copy[coup_jouable] = pion(self.couleur)
-            retournable = table_copy.coupValide(coup_jouable,self.couleur)[1]
-            for pos in retournable:
-                table_copy[pos].tourner()
-            #on simule un coup de l'IA
-            
-            #print(table_copy.affichage(self.couleur_adv()))
-            
-            gains_possibles = list()
-            if table_copy.jouable(self.couleur_adv()):
-                for coup_jouable_adv in table_copy.listeValide(self.couleur_adv()): 
-                    gains_possibles.append(len(table_copy.coupValide(coup_jouable_adv, self.couleur_adv())[1])) 
-                    #sous-liste des gains possibles pour l'adversaire
-            else:
-                gains_possibles.append(0)
-                
-            #print('gains possibles adv pour le coup : ', gains_possibles)
-                
-            gains_adv.append(gains_possibles)
-            #de la forme [[a,b,c],[d,e],[i,j,k,l,m]]    
-       
-        #print('gains possibles adversaires : ', gains_adv) 
-            
-        poids = list()
-        for i in range(len(coords_gains_IA)):
-            poids_coup_i = list()
-            for j in range(len(gains_adv[i])):
-                poids_coup_i.append(coords_gains_IA[i][1] - gains_adv[i][j])
-                #de la forme [x-a,x-b,x-c]
-            poids.append(poids_coup_i)
-            #de la forme [[x-a,x-b,x-c],[y-d,y-e],[z-i,z-j,z-k,z-l,z-m]]
-            #avec x,y,z les gains possibles selon les coups de l'IA
-            
-        #print('poids : ', poids)
-            
-        poids_trie = list()
-        for i in range(len(poids)):
-            poids_trie.append(sorted(poids[i]))
-        #on trie les sous-listes : les gains minimals se retrouvent en 1ere
-        #position dans chaque sous-liste. Il faut identifier lequel est le
-        #plus grand, et remonter à la position correspondante.
-        
-        #print('poids triés : ', poids_trie)
-         
-        indice_pos_opt = 0
-        gain_min = poids_trie[0][0]
-        for i in range(len(poids_trie)):
-            if gain_min < poids_trie[i][0]:
-                gain_min = poids_trie[i][0]
-                indice_pos_opt = i
-        
-        #print('indice position optimisée : ', indice_pos_opt)
-        
-        pos_opt = liste_case[indice_pos_opt]
-        
-        #print('position optimisée : ', pos_opt)
-        
-        self.retourner(pos_opt)
+                                        if table_copy3 is not None:
+                                            evaluation = table_copy3.evaluation(self.couleur)
+                                
+                                            if evaluation < score:
+                                                score = evaluation
+                                    
+                            if score > poids:
+                                poids = score
+                            
+                coords_gains[(i,j)] = poids
+
+        self.retourner(max(coords_gains, key = coords_gains.get), self.table, self.couleur)

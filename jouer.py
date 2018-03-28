@@ -24,7 +24,7 @@ def tour(num_tour, plateau, j1, j2):
     print("\n-- Tour " + str(num_tour) + " --")
     #\n au début pour avoir une ligne vide entre les tours
 
-    #print(plateau.affichage(j1.couleur))
+    print(plateau.affichage(j1.couleur)) #affichage du plateau
 
     jouable1, jouable2 = True, True
 
@@ -41,7 +41,7 @@ def tour(num_tour, plateau, j1, j2):
     else:
         jouable1 = False
     
-    #print(plateau.affichage(j2.couleur))
+    print(plateau.affichage(j2.couleur))
     
     #Si le joueur peut jouer, il joue
     if plateau.jouable(j2.couleur):
@@ -109,8 +109,8 @@ def stats_jeux(num_jeux):
     for _ in range(num_jeux):
 
         plat = p.plateau()
-        joueurN = p.IAmax('N', plat)
-        joueurB = p.IAminmax('B', plat)
+        joueurN = p.IAminmax('N', plat)
+        joueurB = p.IAalea('B', plat)
         jeu(plat, joueurB, joueurN)
         scores = gagnant(plat)
 
@@ -128,17 +128,17 @@ if __name__ == '__main__':
 ### Pour jouer humain contre IA               ###
 ### décommenter les lignes 131 à 141 incluses ###
 #################################################
-    '''plateau_jeu = p.plateau()
-    joueurN = p.humain('N', plateau_jeu)
-    joueurB = p.IAminmax('B', plateau_jeu)
+    #plateau_jeu = p.plateau()
+    #joueurN = p.IAalea('N', plateau_jeu)
+    #joueurB = p.IAminmax('B', plateau_jeu)
 
-    jeu(plateau_jeu, joueurN, joueurB)
+    #jeu(plateau_jeu, joueurN, joueurB)
 
-    print(plateau_jeu)
-    print("\n-- Partie terminée --")
-    scores = gagnant(plateau_jeu)
-    print('Score joueur blanc : ' + str(scores['B']))
-    print('Score joueur noir : ' + str(scores['N']))'''
+    #print(plateau_jeu)
+    #print("\n-- Partie terminée --")
+    #scores = gagnant(plateau_jeu)
+    #print('Score joueur blanc : ' + str(scores['B']))
+    #print('Score joueur noir : ' + str(scores['N']))
 
 ################################################
 ### Pour jouer N parties IAmax contre IAalea ###
