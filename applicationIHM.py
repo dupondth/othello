@@ -9,7 +9,7 @@ Created on Sun Apr  2 20:38:26 2018
 import sys
 from PyQt5 import QtGui, QtCore, QtWidgets
 from interface import Ui_principale_ihm
-import jouer as j
+import jouer
 import plateau as p
 import time
 
@@ -66,17 +66,60 @@ class MonAppli(QtWidgets.QMainWindow):
                 qp.setBrush(QtCore.Qt.white)
                 qp.drawEllipse(position[1]*50+5, position[0]*50+4, 40, 40)
         self.painter.end()
-
-    def un_tour(self):
-                
+        
+    def tour_graphique(self, num_tour, plateau, j1, j2):
+        '''Fonction tour() qui prend en charge la mise à jour de l'affichage
+        graphique après chaque coup joué par un joueur.'''
+    
+        print("\n-- Tour " + str(num_tour) + " --")
+        print(plateau.affichage(j1.couleur))
+        jouable1, jouable2 = True, True
+    
+        #Si le joueur peut jouer, il joue
+        if plateau.jouable(j1.couleur):
+            flag1 = True
+            while flag1:
+                try:
+                    j1.jouer()
+                    flag1 = False
+                except ValueError:
+                    print("Veuillez jouer dans une case valide")
+        else:
+            jouable1 = False
+            
+        self.ui.conteneur.repaint()
+        print(plateau.affichage(j2.couleur))
+        time.sleep(1)
+        
+        #Si le joueur peut jouer, il joue
+        if plateau.jouable(j2.couleur):
+            flag2 = True
+            while flag2:
+                try:
+                    j2.jouer()
+                    flag2 = False
+                except ValueError:
+                    print("Veuillez jouer dans une case valide")
+        else:
+            jouable2 = False
+            
+        self.ui.conteneur.repaint()
+        print(plateau.affichage(j2.couleur))
+        time.sleep(1)
+        
+        if jouable1 == False and jouable2 == False:
+            return False #Arrêter le jeu
+        else :
+            return True #Continuer le jeu
+                    
     def jeu_graphique(self):
         no_tour = 0
         flag = True
         while flag:
             no_tour += 1
-            flag = jouer.tour(no_tour, self.plateau_jeu, self.joueurN, self.joueurB)
-            self.ui.conteneur.repaint()
-            
+            flag = self.tour_graphique(no_tour, self.plateau_jeu, self.joueurN, self.joueurB)
+        
+        
         
         
 if __name__ == "__main__":
