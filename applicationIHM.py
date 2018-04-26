@@ -49,9 +49,9 @@ class MonAppli(QtWidgets.QMainWindow):
     def drawPlateau(self, qpainter):
 
         for couple in self.plateau_jeu:
-            if couple[1].couleur == 'N':
-                qpainter.setPen(QtCore.Qt.black)
-                qpainter.drawEllipse(
+            #if couple[1].couleur == 'N':
+            qpainter.setPen(QtCore.Qt.black)
+            qpainter.drawEllipse(5,5,5,5)
                 
     def jeu_graphique(self, j):
         pass        

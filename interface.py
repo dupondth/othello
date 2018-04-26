@@ -1,4 +1,3 @@
-#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file './interface.ui'
@@ -12,29 +11,32 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_principale_ihm(object):
     def setupUi(self, principale_ihm):
         principale_ihm.setObjectName("principale_ihm")
-        principale_ihm.resize(900, 900)
+        principale_ihm.resize(519, 489)
         self.centralwidget = QtWidgets.QWidget(principale_ihm)
         self.centralwidget.setObjectName("centralwidget")
         self.conteneur = QtWidgets.QWidget(self.centralwidget)
-        self.conteneur.setGeometry(QtCore.QRect(10, 30, 800, 800))
+        self.conteneur.setGeometry(QtCore.QRect(10, 30, 400, 400))
         self.conteneur.setObjectName("conteneur")
-        self.widget = QtWidgets.QWidget(self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(820, 30, 77, 120))
-        self.widget.setObjectName("widget")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.widget)
+        self.layoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.layoutWidget.setGeometry(QtCore.QRect(426, 29, 81, 101))
+        self.layoutWidget.setObjectName("layoutWidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.bouton_dep = QtWidgets.QPushButton(self.widget)
+        self.bouton_dep = QtWidgets.QPushButton(self.layoutWidget)
         self.bouton_dep.setObjectName("bouton_dep")
         self.verticalLayout.addWidget(self.bouton_dep)
         spacerItem = QtWidgets.QSpacerItem(68, 58, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
-        self.bouton_quit = QtWidgets.QPushButton(self.widget)
+        self.bouton_quit = QtWidgets.QPushButton(self.layoutWidget)
         self.bouton_quit.setObjectName("bouton_quit")
         self.verticalLayout.addWidget(self.bouton_quit)
+        self.conteneur.raise_()
+        self.layoutWidget.raise_()
+        self.bouton_dep.raise_()
         principale_ihm.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(principale_ihm)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 900, 19))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 519, 19))
         self.menubar.setObjectName("menubar")
         self.menuFIchiers = QtWidgets.QMenu(self.menubar)
         self.menuFIchiers.setObjectName("menuFIchiers")
@@ -60,4 +62,14 @@ class Ui_principale_ihm(object):
         self.menuFIchiers.setTitle(_translate("principale_ihm", "Fichiers"))
         self.actionQuitter.setText(_translate("principale_ihm", "Quitter"))
         self.actionQuitter.setShortcut(_translate("principale_ihm", "Ctrl+Q"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    principale_ihm = QtWidgets.QMainWindow()
+    ui = Ui_principale_ihm()
+    ui.setupUi(principale_ihm)
+    principale_ihm.show()
+    sys.exit(app.exec_())
 

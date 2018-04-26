@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>900</height>
+    <width>519</width>
+    <height>489</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,18 +19,18 @@
      <rect>
       <x>10</x>
       <y>30</y>
-      <width>800</width>
-      <height>800</height>
+      <width>400</width>
+      <height>400</height>
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>820</x>
-      <y>30</y>
-      <width>77</width>
-      <height>120</height>
+      <x>426</x>
+      <y>29</y>
+      <width>81</width>
+      <height>101</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -63,13 +63,16 @@
      </item>
     </layout>
    </widget>
+   <zorder>conteneur</zorder>
+   <zorder>layoutWidget</zorder>
+   <zorder>bouton_dep</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>900</width>
+     <width>519</width>
      <height>19</height>
     </rect>
    </property>
