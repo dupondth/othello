@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>519</width>
+    <width>524</width>
     <height>489</height>
    </rect>
   </property>
@@ -27,17 +27,24 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>426</x>
-      <y>29</y>
-      <width>81</width>
-      <height>101</height>
+      <x>420</x>
+      <y>30</y>
+      <width>101</width>
+      <height>201</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPushButton" name="bouton_dep">
+      <widget class="QPushButton" name="bouton_depart">
        <property name="text">
         <string>Départ</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="bouton_reset">
+       <property name="text">
+        <string>Recommencer</string>
        </property>
       </widget>
      </item>
@@ -65,14 +72,14 @@
    </widget>
    <zorder>conteneur</zorder>
    <zorder>layoutWidget</zorder>
-   <zorder>bouton_dep</zorder>
+   <zorder>bouton_depart</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>519</width>
+     <width>524</width>
      <height>19</height>
     </rect>
    </property>

@@ -28,6 +28,7 @@ def tour(num_tour, plateau, j1, j2):
 
     jouable1, jouable2 = True, True
 
+
     #Si le joueur peut jouer, il joue
     if plateau.jouable(j1.couleur):
         flag1 = True
