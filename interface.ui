@@ -70,9 +70,6 @@
      </item>
     </layout>
    </widget>
-   <zorder>conteneur</zorder>
-   <zorder>layoutWidget</zorder>
-   <zorder>bouton_depart</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

@@ -317,7 +317,9 @@ class humain(joueur):
             case = inputtotuple(case)
 
         self.retourner(case, self.table)
-   
+
+class humain_graphique(joueur):
+    pass
 
 class IAalea(joueur):
     '''IA qui joue au hasard parmi les cases jouables'''

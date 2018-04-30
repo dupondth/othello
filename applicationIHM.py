@@ -26,8 +26,9 @@ class MonAppli(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
 
         # Liens entre boutons et fonctions
-        self.ui.bouton_depart.clicked.connect(self.jeu_graphique)
+        self.ui.bouton_depart.clicked.connect(self.partie)
         self.ui.bouton_reset.clicked.connect(self.generer)
+        self.ui.conteneur.mousePressEvent = self.clic
         
         # Image de fond dans le widget principal
         palette = QtGui.QPalette()
@@ -52,6 +53,9 @@ class MonAppli(QtWidgets.QMainWindow):
         self.joueurB = p.IAalea('B', self.plateau_jeu)
         self.ui.centralwidget.repaint()
 
+    def clic(self, event):
+        print(event.pos().y() // 50, event.pos().x() // 50)
+
     def drawPlateau(self, qpainter):
         # pour tracer dans le widget
         self.painter.begin(self.ui.conteneur)
@@ -67,7 +71,7 @@ class MonAppli(QtWidgets.QMainWindow):
                 qp.drawEllipse(position[1]*50+5, position[0]*50+4, 40, 40)
         self.painter.end()
         
-    def tour_graphique(self, num_tour, plateau, j1, j2):
+    def tour(self, num_tour, plateau, j1, j2):
         '''Fonction tour() qui prend en charge la mise à jour de l'affichage
         graphique après chaque coup joué par un joueur.'''
     
@@ -112,14 +116,13 @@ class MonAppli(QtWidgets.QMainWindow):
         else :
             return True #Continuer le jeu
                     
-    def jeu_graphique(self):
+
+    def partie(self):
         no_tour = 0
         flag = True
         while flag:
             no_tour += 1
-            flag = self.tour_graphique(no_tour, self.plateau_jeu, self.joueurN, self.joueurB)
-        
-        
+            flag = self.tour(no_tour, self.plateau_jeu, self.joueurN, self.joueurB)
         
         
 if __name__ == "__main__":
