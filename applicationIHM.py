@@ -9,7 +9,6 @@ Created on Sun Apr  2 20:38:26 2018
 import sys
 from PyQt5 import QtGui, QtCore, QtWidgets
 from interface import Ui_principale_ihm
-import jouer
 import plateau as p
 import time
 import ipdb
@@ -27,8 +26,13 @@ class MonAppli(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
 
         # Liens entre boutons et fonctions
+        self.ui.bouton_stats.clicked.connect(self.generer('statistiques')) 
+          #CREER UN BOUTON STATTISTIQUES
+        
+        self.ui.bouton_simple.clicked.connect(self.generer('partie simple')) 
+          #CREER UN BOUTON PARTIE SIMPLE
         self.ui.bouton_depart.clicked.connect(self.partie)
-        self.ui.bouton_reset.clicked.connect(self.generer)
+        self.ui.bouton_reset.clicked.connect(self.generer('partie simple'))
         self.ui.conteneur.mousePressEvent = self.clic
         
         # Image de fond dans le widget principal
@@ -46,8 +50,39 @@ class MonAppli(QtWidgets.QMainWindow):
         # Mise à jour du widget principal
         self.ui.conteneur.paintEvent = self.drawPlateau
         
-        self.generer()
+        self.generer()  
+          #A EFFACER UNE FOIS LES BOUTONS STATTISTIQUES ET PARTIE SIMPLE PLACES
 
+
+    def generer(self, mode):
+        if mode == 'partie simple':
+        #option pour jouer une partie simple
+            self.plateau_jeu = p.plateau()
+            self.joueurN = p.humain('N', self.plateau_jeu)
+            self.joueurB = p.IAalea('B', self.plateau_jeu)
+            self.ui.centralwidget.repaint()
+        else :
+        #option pour jouer en mode statistiques
+            dict_scores = {'joueurBlanc':0, 'joueurNoir':0, 'Egalite': 0}
+            
+            num_jeux = 10 #DOIT POUVOIR ETRE CHOISI PAR L'UTILISATEUR
+            for _ in range(num_jeux):
+        
+                plat = self.plateau_jeu()
+                self.joueurN = p.IAmax('N', plat)
+                self.joueurB = p.IAalea('B', plat)
+                self.partie()
+                scores = self.gagnant()
+        
+                if scores['B'] > scores['N']:
+                    dict_scores['joueurBlanc'] += 1
+                elif scores['N'] > scores['B']:
+                    dict_scores['joueurNoir'] += 1
+                else: dict_scores['Egalite'] += 1
+        
+            return dict_scores
+
+<<<<<<< HEAD
     def generer(self):
         self.plateau_jeu = p.plateau()
         self.joueurN = p.IAalea('N', self.plateau_jeu)
@@ -55,6 +90,12 @@ class MonAppli(QtWidgets.QMainWindow):
 
         CLR_JOUEUR = 'N' # Les noirs commencent
         self.ui.conteneur.repaint()
+=======
+
+    def clic(self, event):
+        return (event.pos().y() // 50, event.pos().x() // 50)
+
+>>>>>>> 5930024698e5953b9e043c19aaf0ae6ee1628a34
 
     def drawPlateau(self, qpainter):
         # pour tracer dans le widget
@@ -85,9 +126,23 @@ class MonAppli(QtWidgets.QMainWindow):
         pos = (event.pos().y() // 50, event.pos().x() // 50)
         #faire jouer le tour ICI
         
+        
     def tour(self, num_tour, plateau, j1, j2):
-        '''Fonction tour() qui prend en charge la mise à jour de l'affichage
-        graphique après chaque coup joué par un joueur.'''
+        '''Fonction qui fait avancer le jeu d'un tour, affiche l'état actuel du
+    jeu dans le terminal et qui renvoie True s'il faut arrêter le jeu et False
+    sinon.
+
+    Entrées
+    -------
+    num_tour (int) : numéro du tour
+    plateau (objet plateau) : plateau sur lequel le jeu se déroule
+    j1 (objet joueur) : premier joueur
+    j2 (objet joueur) : second joueur 
+
+    Sortie
+    ------
+    booléen : True s'il faut continuer le jeu, False sinon
+    '''
     
         global CLR_JOUEUR
 
@@ -141,6 +196,18 @@ class MonAppli(QtWidgets.QMainWindow):
         while flag:
             no_tour += 1
             flag = self.tour(no_tour, self.plateau_jeu, self.joueurN, self.joueurB)
+            
+            
+    def gagnant(self):
+        score_b = 0
+        score_n = 0
+        for pion in list(self.plateau_jeu.values()):
+            if p.pion.couleur == 'B':
+                score_b += 1
+            else :
+                score_n += 1
+        return {'B':score_b, 'N':score_n}
+
         
         
 if __name__ == "__main__":
