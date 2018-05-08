@@ -1,21 +1,14 @@
 #! /usr/bin/python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Apr  2 20:38:26 2018
-
-@author: toumiab
-"""
+#coding:utf8
 
 import sys
 from PyQt5 import QtGui, QtCore, QtWidgets
 from interface import Ui_principale_ihm
 import plateau as p
 import time
-import ipdb
 
 #les noirs commencent
 CLR_JOUEUR = 'N'
-POS = (None, None) #position choisie par le joueur
 
 class MonAppli(QtWidgets.QMainWindow):
     
@@ -26,15 +19,11 @@ class MonAppli(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
 
         # Liens entre boutons et fonctions
-        self.ui.bouton_stats.clicked.connect(self.generer('statistiques')) 
-          #CREER UN BOUTON STATTISTIQUES
+        self.ui.bouton_depart.clicked.connect(self.partie) 
+        self.ui.bouton_reset.clicked.connect(self.generer) 
         
-        self.ui.bouton_simple.clicked.connect(self.generer('partie simple')) 
-          #CREER UN BOUTON PARTIE SIMPLE
-        self.ui.bouton_depart.clicked.connect(self.partie)
-        self.ui.bouton_reset.clicked.connect(self.generer('partie simple'))
         self.ui.conteneur.mousePressEvent = self.clic
-        
+
         # Image de fond dans le widget principal
         palette = QtGui.QPalette()
         pixmap = QtGui.QPixmap("plateau.png")
@@ -51,38 +40,34 @@ class MonAppli(QtWidgets.QMainWindow):
         self.ui.conteneur.paintEvent = self.drawPlateau
         
         self.generer()  
-          #A EFFACER UNE FOIS LES BOUTONS STATTISTIQUES ET PARTIE SIMPLE PLACES
 
+#    def generer(self, mode):
+#        if mode == 'partie simple':
+#        #option pour jouer une partie simple
+#            self.plateau_jeu = p.plateau()
+#            self.joueurN = p.humain('N', self.plateau_jeu)
+#            self.joueurB = p.IAalea('B', self.plateau_jeu)
+#            self.ui.centralwidget.repaint()
+#        else :
+#        #option pour jouer en mode statistiques
+#            dict_scores = {'joueurBlanc':0, 'joueurNoir':0, 'Egalite': 0}
+#            
+#            num_jeux = 10 #doit pouvoir etre choisi par l'utilisateur
+#            for _ in range(num_jeux):
+#        
+#                self.joueurN = p.IAmax('N', self.plateau_jeu)
+#                self.joueurB = p.IAalea('B', self.plateau_jeu)
+#                self.partie()
+#                scores = self.gagnant()
+#        
+#                if scores['B'] > scores['N']:
+#                    dict_scores['joueurBlanc'] += 1
+#                elif scores['N'] > scores['B']:
+#                    dict_scores['joueurNoir'] += 1
+#                else: dict_scores['Egalite'] += 1
+#        
+#            return dict_scores
 
-    def generer(self, mode):
-        if mode == 'partie simple':
-        #option pour jouer une partie simple
-            self.plateau_jeu = p.plateau()
-            self.joueurN = p.humain('N', self.plateau_jeu)
-            self.joueurB = p.IAalea('B', self.plateau_jeu)
-            self.ui.centralwidget.repaint()
-        else :
-        #option pour jouer en mode statistiques
-            dict_scores = {'joueurBlanc':0, 'joueurNoir':0, 'Egalite': 0}
-            
-            num_jeux = 10 #DOIT POUVOIR ETRE CHOISI PAR L'UTILISATEUR
-            for _ in range(num_jeux):
-        
-                plat = self.plateau_jeu()
-                self.joueurN = p.IAmax('N', plat)
-                self.joueurB = p.IAalea('B', plat)
-                self.partie()
-                scores = self.gagnant()
-        
-                if scores['B'] > scores['N']:
-                    dict_scores['joueurBlanc'] += 1
-                elif scores['N'] > scores['B']:
-                    dict_scores['joueurNoir'] += 1
-                else: dict_scores['Egalite'] += 1
-        
-            return dict_scores
-
-<<<<<<< HEAD
     def generer(self):
         self.plateau_jeu = p.plateau()
         self.joueurN = p.IAalea('N', self.plateau_jeu)
@@ -90,12 +75,6 @@ class MonAppli(QtWidgets.QMainWindow):
 
         CLR_JOUEUR = 'N' # Les noirs commencent
         self.ui.conteneur.repaint()
-=======
-
-    def clic(self, event):
-        return (event.pos().y() // 50, event.pos().x() // 50)
-
->>>>>>> 5930024698e5953b9e043c19aaf0ae6ee1628a34
 
     def drawPlateau(self, qpainter):
         # pour tracer dans le widget
@@ -128,21 +107,21 @@ class MonAppli(QtWidgets.QMainWindow):
         
         
     def tour(self, num_tour, plateau, j1, j2):
+
         '''Fonction qui fait avancer le jeu d'un tour, affiche l'état actuel du
-    jeu dans le terminal et qui renvoie True s'il faut arrêter le jeu et False
-    sinon.
+        jeu dans le terminal et qui renvoie True s'il faut arrêter le jeu et False
+        sinon.
 
-    Entrées
-    -------
-    num_tour (int) : numéro du tour
-    plateau (objet plateau) : plateau sur lequel le jeu se déroule
-    j1 (objet joueur) : premier joueur
-    j2 (objet joueur) : second joueur 
+        Entrées
+        -------
+        num_tour (int) : numéro du tour
+        plateau (objet plateau) : plateau sur lequel le jeu se déroule
+        j1 (objet joueur) : premier joueur
+        j2 (objet joueur) : second joueur 
 
-    Sortie
-    ------
-    booléen : True s'il faut continuer le jeu, False sinon
-    '''
+        Sortie
+        ------
+        booléen : True s'il faut continuer le jeu, False sinon'''
     
         global CLR_JOUEUR
 
