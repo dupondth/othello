@@ -3,6 +3,11 @@
 
 import sys
 from random import choice
+import copy
+import time
+
+#pour récupérer POS
+import applicationIHM as app
 
 def increment(direction, position):
     # 7 0 1
@@ -54,6 +59,30 @@ class plateau(dict): #le plateau est un dictionnaire
         self[(3,4)] = pion('N')
         self[(4,3)] = pion('N')
 
+    def evaluation(self, couleur_joueur):
+        '''Fonction d'évaluation du jeu pour une couleur de joueur.
+        Renvoie le nombre de pions du joueur couleur_joueur auquel on soustrait
+        nombre de pions de l'adversaire.
+
+        Entrées
+        -------
+        couleur ('N' ou 'B') : couleur du joueur
+
+        Sortie
+        ------
+        valeur (int)
+        '''
+        valeur = 0
+
+        for pion in self.values():
+            if pion.couleur == couleur_joueur:
+                valeur += 1
+            else :
+                valeur -= 1
+
+        return valeur
+                
+
     def coupValide(self, case_depart, couleur_joueur): 
         '''Fonction qui renvoie si une case est valide ou non
 
@@ -70,6 +99,11 @@ class plateau(dict): #le plateau est un dictionnaire
 
         atourner = list() #Liste des pions à retourner
         valide = False #le coup n'est pas valide par défaut
+
+        if not( 0 <= case_depart[0] < self.perimetre) or not( 0 <=
+        case_depart[1] < self.perimetre):
+        #Vérification que la position est bien dans le plateau
+            return(valide, atourner)
 
         if case_depart in self: 
         #Vérification que la position n'est pas déjà occupée
@@ -241,7 +275,7 @@ class joueur(object):
         else: #la couleur est une str mais n'est ni 'N' ni 'B'
             raise ValueError("Un joueur doit être Noir : 'N' ou Blanc : 'B'")
 
-    def retourner(self, case):
+    def retourner(self, case, plateau, couleur):
         '''Fonction qui retourne les pions à retourner après avoir joué
         dans une case.
 
@@ -250,17 +284,28 @@ class joueur(object):
         case (couple)
         '''
 
-        validite, retournable = self.table.coupValide(case,self.couleur)
+        validite, retournable = plateau.coupValide(case,couleur)
 
         if validite:
-            self.table[case] = pion(self.couleur)
+            plateau[case] = pion(couleur)
 
             for couple in retournable:
-                self.table[couple].tourner() #retourner les pions
+                plateau[couple].tourner() #retourner les pions
         else :
             raise ValueError("La case doit être jouable")
+    
+    def simuler(self, coords, plateau, couleur):
+        '''Fonction qui simule un coup coords=(i,j) et qui renvoie la table
+        après simulation sur cette position.
+        '''
 
-
+        if plateau.coupValide(coords, couleur)[0]:
+            #si la case est jouable
+            table_copy = copy.deepcopy(plateau)
+            self.retourner(coords, table_copy, couleur) #on joue sur (i,j)
+            return table_copy
+        else:
+            return None
     
 
 class humain(joueur):
@@ -275,8 +320,16 @@ class humain(joueur):
         else:
             case = inputtotuple(case)
 
-        self.retourner(case)
-   
+        self.retourner(case, self.table, self.couleur)
+
+class humain_graphique(joueur):
+
+    def jouer(self):
+        while app.POS == (None, None):
+            time.sleep(1)
+        self.retourner(app.POS, self.table, self.couleur)
+        app.POS = (None, None)
+    
 
 class IAalea(joueur):
     '''IA qui joue au hasard parmi les cases jouables'''
@@ -285,7 +338,7 @@ class IAalea(joueur):
         coords = self.table.listeValide(self.couleur)
         position = choice(coords)
         
-        self.retourner(position)
+        self.retourner(position, self.table, self.couleur)
 
 class IAmax(joueur):
     '''IA qui joue le meilleur coup pour un tour'''
@@ -300,3 +353,60 @@ class IAmax(joueur):
                     score = len(a_tourner)
                     position = (i,j)
         self.retourner(position)
+
+class IAminmax(joueur):
+    '''IA qui applique l'algorithme minmax: elle choisit le gain maximum où
+    gain = (pions gagnés au tour 1) - (pions gagnés par l'adversaire au tour 2)
+    + (pions gagnés au tour 3)'''
+    
+    def couleur_adv(self):
+        if self.couleur == 'B':
+            return 'N'
+        else:
+            return 'B'
+
+    def jouer(self):
+        
+        coords_gains = dict()
+        
+        #Simulation tour1, tour propre
+        for i in range(self.limite):
+            for j in range(self.limite):
+                table_copy = self.simuler((i,j), self.table, self.couleur)
+                        
+                poids = -float('Inf')
+                
+                if table_copy is not None:
+                #si la fonction simuler a renvoyé un type différent de None cela
+                #veut dire que le coup était jouable.
+                #si table_copy est de type None, cela veut dire que l'on ne peut
+                #pas jouer en (i,j).
+
+                    #Simulation tour1, tour de l'adversaire
+                    for k in range(self.limite):
+                        for l in range(self.limite):
+                            table_copy2 = self.simuler((k,l), table_copy, \
+                            self.couleur_adv())
+                        
+                            score = float('Inf')
+                            
+                            if table_copy2 is not None:
+
+                                #Simulation tour2, tour propre 
+                                for m in range(self.limite):
+                                    for n in range(self.limite):
+                                        table_copy3 = self.simuler((m,n), \
+                                        table_copy2, self.couleur)
+                                    
+                                        if table_copy3 is not None:
+                                            evaluation = table_copy3.evaluation(self.couleur)
+                                
+                                            if evaluation < score:
+                                                score = evaluation
+                                    
+                            if score > poids:
+                                poids = score
+                            
+                coords_gains[(i,j)] = poids
+
+        self.retourner(max(coords_gains, key = coords_gains.get), self.table, self.couleur)
