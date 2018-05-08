@@ -12,10 +12,11 @@ from interface import Ui_principale_ihm
 import jouer
 import plateau as p
 import time
+import ipdb
 
-# l'approche par héritage simple de la classe QMainWindow (même type de notre
-# fenêtre créée avec QT Designer. Nous configurons après l'interface
-# utilisateur dans le constructeur (la méthode init()) de notre classe
+#les noirs commencent
+CLR_JOUEUR = 'N'
+POS = (None, None) #position choisie par le joueur
 
 class MonAppli(QtWidgets.QMainWindow):
     
@@ -51,35 +52,55 @@ class MonAppli(QtWidgets.QMainWindow):
         self.plateau_jeu = p.plateau()
         self.joueurN = p.IAalea('N', self.plateau_jeu)
         self.joueurB = p.IAalea('B', self.plateau_jeu)
-        self.ui.centralwidget.repaint()
 
-    def clic(self, event):
-        print(event.pos().y() // 50, event.pos().x() // 50)
+        CLR_JOUEUR = 'N' # Les noirs commencent
+        self.ui.conteneur.repaint()
 
     def drawPlateau(self, qpainter):
         # pour tracer dans le widget
         self.painter.begin(self.ui.conteneur)
         qp = self.painter
 
+        print(CLR_JOUEUR)
+
         for position in self.plateau_jeu:
             if self.plateau_jeu[position].couleur == 'N':
                 # setBrush pour des disques et non des cercles
+                qp.setPen(QtCore.Qt.black)
                 qp.setBrush(QtCore.Qt.black)
                 qp.drawEllipse(position[1]*50+5, position[0]*50+4, 40, 40)
             else:
+                qp.setPen(QtCore.Qt.white)
                 qp.setBrush(QtCore.Qt.white)
                 qp.drawEllipse(position[1]*50+5, position[0]*50+4, 40, 40)
+
+        for position in self.plateau_jeu.listeValide(CLR_JOUEUR):
+            qp.setPen(QtCore.Qt.green)
+            qp.setBrush(QtCore.Qt.green)
+            qp.drawEllipse(position[1]*50+20, position[0]*50+19, 10, 10)
+
         self.painter.end()
+
+    def clic(self, event):
+        pos = (event.pos().y() // 50, event.pos().x() // 50)
+        #faire jouer le tour ICI
         
     def tour(self, num_tour, plateau, j1, j2):
         '''Fonction tour() qui prend en charge la mise à jour de l'affichage
         graphique après chaque coup joué par un joueur.'''
     
+        global CLR_JOUEUR
+
         print("\n-- Tour " + str(num_tour) + " --")
+        CLR_JOUEUR = j1.couleur
+        self.ui.conteneur.repaint()
         print(plateau.affichage(j1.couleur))
+        time.sleep(0.5)
+
         jouable1, jouable2 = True, True
     
         #Si le joueur peut jouer, il joue
+
         if plateau.jouable(j1.couleur):
             flag1 = True
             while flag1:
@@ -91,11 +112,13 @@ class MonAppli(QtWidgets.QMainWindow):
         else:
             jouable1 = False
             
+        CLR_JOUEUR = j2.couleur
         self.ui.conteneur.repaint()
         print(plateau.affichage(j2.couleur))
-        time.sleep(1)
+        time.sleep(0.5)
         
         #Si le joueur peut jouer, il joue
+        
         if plateau.jouable(j2.couleur):
             flag2 = True
             while flag2:
@@ -107,14 +130,9 @@ class MonAppli(QtWidgets.QMainWindow):
         else:
             jouable2 = False
             
-        self.ui.conteneur.repaint()
-        print(plateau.affichage(j2.couleur))
-        time.sleep(1)
-        
         if jouable1 == False and jouable2 == False:
             return False #Arrêter le jeu
-        else :
-            return True #Continuer le jeu
+        else : return True #Continuer le jeu
                     
 
     def partie(self):

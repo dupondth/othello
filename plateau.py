@@ -4,6 +4,10 @@
 import sys
 from random import choice
 import copy
+import time
+
+#pour récupérer POS
+import applicationIHM as app
 
 def increment(direction, position):
     # 7 0 1
@@ -316,10 +320,16 @@ class humain(joueur):
         else:
             case = inputtotuple(case)
 
-        self.retourner(case, self.table)
+        self.retourner(case, self.table, self.couleur)
 
 class humain_graphique(joueur):
-    pass
+
+    def jouer(self):
+        while app.POS == (None, None):
+            time.sleep(1)
+        self.retourner(app.POS, self.table, self.couleur)
+        app.POS = (None, None)
+    
 
 class IAalea(joueur):
     '''IA qui joue au hasard parmi les cases jouables'''
