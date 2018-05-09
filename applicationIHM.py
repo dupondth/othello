@@ -26,7 +26,7 @@ class MonAppli(QtWidgets.QMainWindow):
 
         # Image de fond dans le widget principal
         palette = QtGui.QPalette()
-        pixmap = QtGui.QPixmap("plateau.png")
+        pixmap = QtGui.QPixmap("fond.png")
         palette.setBrush(QtGui.QPalette.Background,QtGui.QBrush(pixmap))
         self.ui.conteneur.lower()
         self.ui.conteneur.stackUnder(self)
@@ -70,7 +70,7 @@ class MonAppli(QtWidgets.QMainWindow):
 
     def generer(self):
         self.plateau_jeu = p.plateau()
-        self.joueurN = p.IAalea('N', self.plateau_jeu)
+        self.joueurN = p.humain_graphique('N', self.plateau_jeu)
         self.joueurB = p.IAalea('B', self.plateau_jeu)
 
         CLR_JOUEUR = 'N' # Les noirs commencent
@@ -83,17 +83,22 @@ class MonAppli(QtWidgets.QMainWindow):
 
         print(CLR_JOUEUR)
 
+        # Tracage des pions noirs
         for position in self.plateau_jeu:
             if self.plateau_jeu[position].couleur == 'N':
-                # setBrush pour des disques et non des cercles
+                # Pen dessine les contours
+                # Brush remplit l'intérieur
                 qp.setPen(QtCore.Qt.black)
                 qp.setBrush(QtCore.Qt.black)
                 qp.drawEllipse(position[1]*50+5, position[0]*50+4, 40, 40)
+
+        # Tracage des pions blancs
             else:
                 qp.setPen(QtCore.Qt.white)
                 qp.setBrush(QtCore.Qt.white)
                 qp.drawEllipse(position[1]*50+5, position[0]*50+4, 40, 40)
 
+        # Tracage des positions où on peut placer un pion
         for position in self.plateau_jeu.listeValide(CLR_JOUEUR):
             qp.setPen(QtCore.Qt.green)
             qp.setBrush(QtCore.Qt.green)
@@ -104,9 +109,9 @@ class MonAppli(QtWidgets.QMainWindow):
     def clic(self, event):
         pos = (event.pos().y() // 50, event.pos().x() // 50)
         #faire jouer le tour ICI
+        self.tour(0, self.plateau_jeu, self.joueurN, self.joueurB, pos)
         
-        
-    def tour(self, num_tour, plateau, j1, j2):
+    def tour(self, num_tour, plateau, j1, j2, pos_humain):
 
         '''Fonction qui fait avancer le jeu d'un tour, affiche l'état actuel du
         jeu dans le terminal et qui renvoie True s'il faut arrêter le jeu et False
@@ -126,8 +131,6 @@ class MonAppli(QtWidgets.QMainWindow):
         global CLR_JOUEUR
 
         print("\n-- Tour " + str(num_tour) + " --")
-        CLR_JOUEUR = j1.couleur
-        self.ui.conteneur.repaint()
         print(plateau.affichage(j1.couleur))
         time.sleep(0.5)
 
@@ -139,7 +142,7 @@ class MonAppli(QtWidgets.QMainWindow):
             flag1 = True
             while flag1:
                 try:
-                    j1.jouer()
+                    j1.jouer(pos_humain)
                     flag1 = False
                 except ValueError:
                     print("Veuillez jouer dans une case valide")
@@ -161,12 +164,17 @@ class MonAppli(QtWidgets.QMainWindow):
                     flag2 = False
                 except ValueError:
                     print("Veuillez jouer dans une case valide")
+
         else:
             jouable2 = False
+
+        CLR_JOUEUR = j1.couleur
+        self.ui.conteneur.repaint()
             
         if jouable1 == False and jouable2 == False:
             return False #Arrêter le jeu
-        else : return True #Continuer le jeu
+        else : 
+            return True #Continuer le jeu
                     
 
     def partie(self):

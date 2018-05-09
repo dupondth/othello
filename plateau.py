@@ -324,11 +324,8 @@ class humain(joueur):
 
 class humain_graphique(joueur):
 
-    def jouer(self):
-        while app.POS == (None, None):
-            time.sleep(1)
-        self.retourner(app.POS, self.table, self.couleur)
-        app.POS = (None, None)
+    def jouer(self, pos):
+        self.retourner(pos, self.table, self.couleur)
     
 
 class IAalea(joueur):
