@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>524</width>
+    <width>557</width>
     <height>489</height>
    </rect>
   </property>
@@ -29,11 +29,30 @@
      <rect>
       <x>420</x>
       <y>30</y>
-      <width>101</width>
+      <width>131</width>
       <height>201</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QComboBox" name="mode_jeu">
+       <item>
+        <property name="text">
+         <string>IA vs IA</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Joueur vs IA</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Joueur vs Joueur</string>
+        </property>
+       </item>
+      </widget>
+     </item>
      <item>
       <widget class="QPushButton" name="bouton_depart">
        <property name="text">
@@ -76,7 +95,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>524</width>
+     <width>557</width>
      <height>19</height>
     </rect>
    </property>

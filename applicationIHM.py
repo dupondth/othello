@@ -7,13 +7,13 @@ from interface import Ui_principale_ihm
 import plateau as p
 import time
 
-#les noirs commencent
-CLR_JOUEUR = 'N'
-
 class MonAppli(QtWidgets.QMainWindow):
     
     def __init__(self):
         super().__init__()
+
+        #les noirs commencent
+        self.CLR_JOUEUR = 'N'
         # Configuration de l'interface utilisateur.
         self.ui = Ui_principale_ihm()
         self.ui.setupUi(self)
@@ -21,9 +21,8 @@ class MonAppli(QtWidgets.QMainWindow):
         # Liens entre boutons et fonctions
         self.ui.bouton_depart.clicked.connect(self.partie) 
         self.ui.bouton_reset.clicked.connect(self.generer) 
+        self.ui.mode_jeu.currentIndexChanged.connect(self.change_mode)
         
-        self.ui.conteneur.mousePressEvent = self.clic
-
         # Image de fond dans le widget principal
         palette = QtGui.QPalette()
         pixmap = QtGui.QPixmap("fond.png")
@@ -69,19 +68,51 @@ class MonAppli(QtWidgets.QMainWindow):
 #            return dict_scores
 
     def generer(self):
-        self.plateau_jeu = p.plateau()
-        self.joueurN = p.humain_graphique('N', self.plateau_jeu)
-        self.joueurB = p.IAalea('B', self.plateau_jeu)
+        '''Génère le plateau et les joueurs selon le choix du mode de jeu.
 
-        CLR_JOUEUR = 'N' # Les noirs commencent
+        Entrées
+        -------
+        mode (int) : 0 -> IA vs IA
+                     1 -> Joueur vs IA
+                     2 -> Joueur vs Joueur
+        '''
+
+        # On remet à zéro le fond car il est changé
+        # quand on change le mode de jeu
+        self.ui.bouton_reset.setStyleSheet("background-color: None")
+        self.plateau_jeu = p.plateau()
+        mode = self.ui.mode_jeu.currentIndex()
+        
+        if mode == 0:
+            self.ui.conteneur.mousePressEvent = lambda x : None
+            self.joueurN = p.IAalea('N', self.plateau_jeu)
+            self.joueurB = p.IAalea('B', self.plateau_jeu)
+        elif mode == 1:
+            self.ui.conteneur.mousePressEvent = self.clic
+            self.joueurN = p.humain_graphique('N', self.plateau_jeu)
+            self.joueurB = p.IAalea('B', self.plateau_jeu)
+        else:
+            self.ui.conteneur.mousePressEvent = lambda x : None
+            self.joueurN = p.humain_graphique('N', self.plateau_jeu)
+            self.joueurB = p.humain_graphique('B', self.plateau_jeu)
+
+        self.CLR_JOUEUR = 'N' # Les noirs commencent
         self.ui.conteneur.repaint()
+
+    def change_mode(self):
+        
+        # Pour indiquer qu'il faut appuyer sur le bouton
+        # après avoir changé le mode de jeu
+        self.ui.bouton_reset.setStyleSheet("background-color : green")
+        if self.ui.mode_jeu.currentIndex() != 0:
+            self.ui.bouton_depart.setEnabled(False)
+        else:
+            self.ui.bouton_depart.setEnabled(True)
 
     def drawPlateau(self, qpainter):
         # pour tracer dans le widget
         self.painter.begin(self.ui.conteneur)
         qp = self.painter
-
-        print(CLR_JOUEUR)
 
         # Tracage des pions noirs
         for position in self.plateau_jeu:
@@ -99,7 +130,7 @@ class MonAppli(QtWidgets.QMainWindow):
                 qp.drawEllipse(position[1]*50+5, position[0]*50+4, 40, 40)
 
         # Tracage des positions où on peut placer un pion
-        for position in self.plateau_jeu.listeValide(CLR_JOUEUR):
+        for position in self.plateau_jeu.listeValide(self.CLR_JOUEUR):
             qp.setPen(QtCore.Qt.green)
             qp.setBrush(QtCore.Qt.green)
             qp.drawEllipse(position[1]*50+20, position[0]*50+19, 10, 10)
@@ -108,10 +139,12 @@ class MonAppli(QtWidgets.QMainWindow):
 
     def clic(self, event):
         pos = (event.pos().y() // 50, event.pos().x() // 50)
-        #faire jouer le tour ICI
-        self.tour(0, self.plateau_jeu, self.joueurN, self.joueurB, pos)
-        
-    def tour(self, num_tour, plateau, j1, j2, pos_humain):
+
+        # Si le coup est valide, on accepte le clic
+        if self.plateau_jeu.coupValide(pos, self.joueurN.couleur)[0]:
+            self.tour_humainVSia(self.plateau_jeu, self.joueurN, self.joueurB, pos)
+
+    def tour_iaVSia(self, plateau, j1, j2):
 
         '''Fonction qui fait avancer le jeu d'un tour, affiche l'état actuel du
         jeu dans le terminal et qui renvoie True s'il faut arrêter le jeu et False
@@ -119,7 +152,6 @@ class MonAppli(QtWidgets.QMainWindow):
 
         Entrées
         -------
-        num_tour (int) : numéro du tour
         plateau (objet plateau) : plateau sur lequel le jeu se déroule
         j1 (objet joueur) : premier joueur
         j2 (objet joueur) : second joueur 
@@ -128,34 +160,24 @@ class MonAppli(QtWidgets.QMainWindow):
         ------
         booléen : True s'il faut continuer le jeu, False sinon'''
     
-        global CLR_JOUEUR
-
-        print("\n-- Tour " + str(num_tour) + " --")
-        print(plateau.affichage(j1.couleur))
-        time.sleep(0.5)
-
         jouable1, jouable2 = True, True
     
         #Si le joueur peut jouer, il joue
-
         if plateau.jouable(j1.couleur):
             flag1 = True
             while flag1:
                 try:
-                    j1.jouer(pos_humain)
+                    j1.jouer()
                     flag1 = False
                 except ValueError:
                     print("Veuillez jouer dans une case valide")
         else:
             jouable1 = False
             
-        CLR_JOUEUR = j2.couleur
+        self.CLR_JOUEUR = j2.couleur
         self.ui.conteneur.repaint()
-        print(plateau.affichage(j2.couleur))
-        time.sleep(0.5)
         
         #Si le joueur peut jouer, il joue
-        
         if plateau.jouable(j2.couleur):
             flag2 = True
             while flag2:
@@ -168,7 +190,62 @@ class MonAppli(QtWidgets.QMainWindow):
         else:
             jouable2 = False
 
-        CLR_JOUEUR = j1.couleur
+        self.CLR_JOUEUR = j1.couleur
+        self.ui.conteneur.repaint()
+            
+        if jouable1 == False and jouable2 == False:
+            return False #Arrêter le jeu
+        else : 
+            return True #Continuer le jeu
+        
+    def tour_humainVSia(self, plateau, j1, j2, pos_humain):
+
+        '''Fonction qui fait avancer le jeu d'un tour, affiche l'état actuel du
+        jeu dans le terminal et qui renvoie True s'il faut arrêter le jeu et False
+        sinon.
+
+        Entrées
+        -------
+        plateau (objet plateau) : plateau sur lequel le jeu se déroule
+        j1 (objet joueur) : premier joueur
+        j2 (objet joueur) : second joueur 
+
+        Sortie
+        ------
+        booléen : True s'il faut continuer le jeu, False sinon'''
+    
+        jouable1, jouable2 = True, True
+    
+        #Si le joueur peut jouer, il joue
+        if plateau.jouable(j1.couleur):
+            flag1 = True
+            while flag1:
+                try:
+                    j1.jouer(pos_humain)
+                    flag1 = False
+                except ValueError:
+                    print("Veuillez jouer dans une case valide")
+        else:
+            jouable1 = False
+            
+        self.CLR_JOUEUR = j2.couleur
+        self.ui.conteneur.repaint()
+        time.sleep(0.5)
+        
+        #Si le joueur peut jouer, il joue
+        if plateau.jouable(j2.couleur):
+            flag2 = True
+            while flag2:
+                try:
+                    j2.jouer()
+                    flag2 = False
+                except ValueError:
+                    print("Veuillez jouer dans une case valide")
+
+        else:
+            jouable2 = False
+
+        self.CLR_JOUEUR = j1.couleur
         self.ui.conteneur.repaint()
             
         if jouable1 == False and jouable2 == False:
@@ -178,11 +255,9 @@ class MonAppli(QtWidgets.QMainWindow):
                     
 
     def partie(self):
-        no_tour = 0
         flag = True
         while flag:
-            no_tour += 1
-            flag = self.tour(no_tour, self.plateau_jeu, self.joueurN, self.joueurB)
+            flag = self.tour_iaVSia(self.plateau_jeu, self.joueurN, self.joueurB)
             
             
     def gagnant(self):

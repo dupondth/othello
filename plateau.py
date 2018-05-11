@@ -119,8 +119,8 @@ class plateau(dict): #le plateau est un dictionnaire
             #pions de même couleur alors le coup est valide.
             pos = case_depart
 
-            atourner_temp = list() #Sera ajoutée à atourner si la direction est
-                                   #validée
+            atourner_temp = list() #Sera ajoutée à atourner si la direction 
+                                   #est validée
 
             while not fini:
                 pos = increment(direct, pos)
@@ -284,7 +284,7 @@ class joueur(object):
         case (couple)
         '''
 
-        validite, retournable = plateau.coupValide(case,couleur)
+        validite, retournable = plateau.coupValide(case, couleur)
 
         if validite:
             plateau[case] = pion(couleur)
