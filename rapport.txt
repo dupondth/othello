@@ -1,6 +1,6 @@
 INTRODUCTION
 
-Othello, aussi connu sous le nom de Réversi, est un jeu de stratégie à deux joueurs. Il se joue sur un plateau de 64 cases appelé othellier. Le jeu disposent de 64 pions bicolores, noirs d'un côté et blancs de l'autre. Un pion est dit noir (respectivement blanc) si sa face visible est celle de couleur noire (respectivement blanc).
+Othello, aussi connu sous le nom de Réversi, est un jeu de stratégie à deux joueurs. Il se joue sur un plateau de 64 cases appelé othellier. Les joueurs disposent de 64 pions bicolores, noirs d'un côté et blancs de l'autre. Un pion est dit noir (respectivement blanc) si sa face visible est celle de couleur noire (respectivement blanc).
 Le but du jeu est d'avoir plus de pions que son adversaire à la fin de la partie. Celle-ci se termine lorsque le plateau est rempli ou qu'aucun des deux joueurs ne peut plus jouer de coup qui soit légal.
 
 Les règles retenues pour notre projet sont les règles classiques, aucune hypothèse simplificatrice ne sera faite. Ces règles sont donc les suivantes:
@@ -16,11 +16,11 @@ SCHEMA D'UN COUP
 
 Validité du coup:
 	Un joueur ne peut jouer un pion que s'il existe une case jouable sur le plateau. Pour s'assurer qu'une case est jouable, nous disposons d'un système de vérification dans l'écosystème (le fichier plateau.py) constitué tout d'abord d'une fonction coupValide. Cette fonction retourne un couple composé d'un booléen et d'une liste de positions. Si la case étudiée est valide, elle renvoie True et la liste des positions des pions adverses à retourner. Sinon, elle renvoie False et une liste vide.
-	Dans un premier temps, coupValide va vérifier que la case de départ se situe bien dans les limites du plateau. Si c'est le cas, la fonction va ensuite sélectionner chacune des huit directions à explorer, afin de savoir si des pions adverses peuvent être retournés. Les huit directions possibles ont été définies au préalables dans la fonction increment.
+	Dans un premier temps, coupValide va vérifier que la case de départ se situe bien dans les limites du plateau. Si c'est le cas, la fonction va ensuite sélectionner chacune des huit directions à explorer, afin de savoir si des pions adverses peuvent être retournés. Les huit directions possibles ont été définies au préalable dans la fonction increment.
 	Une fois toutes les directions  explorées et si des pions adverses peuvent effectivement être gagnés par le joueur, la fonction coupValide rend un couple (True,[liste des pions adverses à retourner]). 
 
 Réalisation du coup:
-	C'est ensuite le fonction retourner qui intervient. Placé dans la classe joueur, son rôle est de poser le pion que le joueur veut jouer et de retourner les pions adverses qu'il a gagnés. Pour cela, elle utilise les informations données par coupValide : elle s'assure que la validité du coup vaut True, puis elle parcourt la liste des pions adverses à retourner et les retourne un par un. Dans tous les cas où la case n'est pas jouable (coupValide rend False), la fonction retourner lève une exception ValueError, ce qui permettra à la fonction responsable du bon déroulement de la partie de demander au joueur de joueur sur une case valide.
+	C'est ensuite la fonction retourner qui intervient. Placé dans la classe joueur, son rôle est de poser le pion que le joueur veut jouer et de retourner les pions adverses qu'il a gagnés. Pour cela, elle utilise les informations données par coupValide : elle s'assure que la validité du coup vaut True, puis elle parcourt la liste des pions adverses à retourner et les retourne un par un. Dans tous les cas où la case n'est pas jouable (coupValide rend False), la fonction retourner lève une exception ValueError, ce qui permettra à la fonction responsable du bon déroulement de la partie de demander au joueur de joueur sur une case valide.
 
 
 
@@ -29,24 +29,26 @@ SCHEMA D'UNE PARTIE
 	Les parties sont gérées dans le fichier applicationIHM.py qui utilise en plus des fonctions et objets définis dans l'écosystème.
 
 Initialisation du plateau de jeu:
-	Pour commencer une partie d'Othello, il faut d'abord créer un plateau de jeu. Nous utilisons pour cela une fonction generer. Cette fonction crée un objet de type plateau dont les caractéristiques sont décrites dans la classe plateau de l'écosystème. Le plateau est représentée par un dictionnaire. Les clés de ce dictionnaire sont les coordonnées des positions occupées par des pions, les valeurs sont des chaines de caractères 'B' ou 'N'. Les objets pion ainsi créés sont caractérisés par leur position et leur couleur. [[Le choix d'un dictionnaire se justifie par...]]. Le plateau qui est crée contient dans un premier temps quatre pions (deux blancs et deux noirs) disposés selon les règles du jeu. 
+	Pour commencer une partie d'Othello, il faut d'abord créer un plateau de jeu. Nous utilisons pour cela une fonction generer. Cette fonction crée un objet de type plateau dont les caractéristiques sont décrites dans la classe plateau de l'écosystème. Le plateau est représenté par un dictionnaire. Les clés de ce dictionnaire sont les coordonnées des positions occupées par des pions, les valeurs sont des chaines de caractères 'B' ou 'N'. Les objets pion ainsi créés sont caractérisés par leur position et leur couleur. [[Le choix d'un dictionnaire se justifie par...]]. Le plateau qui est créé contient dans un premier temps quatre pions (deux blancs et deux noirs) disposés selon les règles du jeu. Cette disposition d'origine est automatiquement crée lorsque que le fichier applicationIHM.py est exécuté.
 
 Initialisation des joueurs:
-	La fonction generer nous permet également d'initialiser les joueurs. Elle crée deux objets de type joueur, un joueur blanc et un joueur noir, en les sélectionnant parmi les sous-classes de la classe joueur de l'écosystème. Ces sous-classes définissent chacune un type de joueur (humain ou intelligence artificielle). Les joueurs sont sémectionnés selon les options cochés par l'utilisateur dans l'interface homme-machine (IHM).
+	La fonction generer nous permet également d'initialiser les joueurs. Elle crée deux objets de type joueur, un joueur blanc et un joueur noir, en les sélectionnant parmi les sous-classes de la classe joueur de l'écosystème. Ces sous-classes définissent chacune un type de joueur (humain ou intelligence artificielle). Les joueurs sont sélectionnés selon l'option choisie par l'utilisateur dans l'interface homme-machine (Humain vs Humain, Humain vs IA, IA vs IA).
 
 Exécution du jeu et réalisation d'un tour:
 	La gestion d'une partie entière se fait au travers de deux tâches : la gestion d'un tour et la gestion de la succession des tours jusqu'à ce que les joueurs ne puissent plus jouer.
-	Commençons par la gestion d'un tour, qui se définit comme la succession d'un coup du joueur noir suivi d'un coup du joueur blanc. Nous disposons pour cela d'une fonction tour. Cette fonction fait jouer les deux joueurs l'un après l'autre, en vérifiant à chaque fois que le joueur dispose de cases sur lesquelles il peut jouer. Si tel est le cas, le joueur joue sur la case qu'il a choisie et le plateau est mis à jour et affiché. Si toutefois son coup n'est pas valide, une exception de type ValueError se déclenche, ce qui empêche le plateau d'être modifié et génère un message d'erreur pour que le joueur joue de nouveau. Si un joueur ne dispose pas de case jouable, il passe son tour. 
-	La succession des tours est gérée par la fonction partie. En plus d'excuter la fonction tour et de compter les tours, cette fonction permet également d'arrêter le jeu. En effet, la fonction tour renvoie un booléen False si les deux joueurs ne peuvent successivement plus jouer, ce qui correspond à la fin de la partie (situation de blocage ou plateau rempli). A chaque tour, la fonction partie teste ce booléen pour savoir si elle doit continuer ou non la partie.
+	Commençons par la gestion d'un tour, qui se définit comme la succession d'un coup du joueur noir suivi d'un coup du joueur blanc. Nous disposons pour cela de plusieurs fonctions tour qui se déclinent selon le mode de jeu choisi. Cette fonction fait jouer les deux joueurs l'un après l'autre, en vérifiant à chaque fois que le joueur dispose de cases sur lesquelles il peut jouer. Si tel est le cas, le joueur joue sur la case qu'il a choisie et le plateau est mis à jour et affiché. Si toutefois son coup n'est pas valide, une exception de type ValueError se déclenche, ce qui empêche le plateau d'être modifié et génère un message d'erreur pour que le joueur joue de nouveau. Si un joueur ne dispose pas de case jouable, il passe son tour. 
+	La succession des tours est gérée par la fonction partie. En plus d'exécuter la fonction tour et de compter les tours, cette fonction permet également d'arrêter le jeu. En effet, la fonction tour renvoie un booléen False si les deux joueurs ne peuvent successivement plus jouer, ce qui correspond à la fin de la partie (situation de blocage ou plateau rempli). A chaque tour, la fonction partie teste ce booléen pour savoir si elle doit continuer ou non la partie.
 
 
 TYPES DE JOUEURS
 
-	Notre implémentation du jeu Othello permet de faire s'affronter plusieurs types de joueurs : humain contre humain, humain contre IA ou IA contre IA. Nous avons donc créé une classe joueur et des sous-classes représentant chacune un type de joueur qui héritent des propriétés communes des joueurs.
+	Notre implémentation du jeu Othello permet de faire s'affronter plusieurs types de joueurs : humain contre humain, humain contre IA ou IA contre IA. Nous avons donc créé une classe joueur et des sous-classes représentant chacune un type de joueur qui héritent des propriétés communes des joueurs. Ainsi, tous les joueurs ont une couleur, jouent sur un plateau et doivent respecter un périmètre de jeu. La variable couleur est encapsulée afin de ne pas être modifiée par inadvertance. Tous les joueurs utilisent par ailleurs la méthode retourner (décrite précédemment).
 
 Joueur humain:
+	Deux versions de joueurs humains ont été créées. La première version permet à l'utilisateur d'intérargir avec l'affichage graphique dans la console python : elle demande au joueur d'entrer les coordonnées de la case sur laquelle il veut jouer et elle lui permet de quitter la partie en entrant la commande "q". Le deuxième version du joueur humain, nommée humain_graphique, ne nécessite plus de demander une case ou de permettre au joueur de quitter étant donné que l'IHM gère tout cela elle-même.
 
 IAalea et IAmax (premières IA):
+	Avant d'implémenter des IA complexes, nous avons choisi de créer deux IA simples qui nous permettraient de tester facilement le reste de notre programme. La première IA joue aléatoirement et la seconde maximise le nombre de pions adverses gagnés sans anticiper le jeu de l'adversaire. Nous pouvons ainsi vérifier que notre gestion des tours est correcte en observant le déroulement d'une partie opposant une IA à un humain, à une autre IA ou à elle-même. Ces deux IA nous permettront aussi d'évaluer l'intelligence des IA qui seront programmées par la suite. 
 
 IA Min-Max:
 
@@ -59,12 +61,12 @@ IA Alpha-Bêta:
 INTERACTION AVEC L'UTILISATEUR:
 
 Affichage graphique:
--Interface console IPython
--Interface QtDesigner
+	Nous avons dans un premier temps créé une IHM dans la console IPython. Bien que très simple, elle permet à un joueur humain de jouer et nous permet d'observer facilement le déroulement d'une partie. Les colonnes sont nommées de A à H, les lignes sont numérotées de 1 à 8, les pions noirs et blancs sont respectivement représentés par 'N' et 'B' et les cases jouables sont signalés par '#'. Cette interface est gérée par la fonction affichage de la classe plateau.
+	Dans un second temps, nous avons créé une IHM à partir de QtDesigner et de PyQt. Celle-ci possède son propre fichier Python nommé applicationIHM.py. Ce fichier comprend les fonctions qui gèrent le déroulement des parties auquel nous ajoutons la gestion de l'affichage. Cette version bien plus complète doit répondre à deux critères principaux:  l'affichage dynamique et "réaliste" du plateau de jeu et l'intégration de toutes les options de jeu. Pour cela, la fenêtre de notre application est constituée d'un grand conteneur pour héberger le plateau et de boutons pour commander toutes les options. Le conteneur se compose d'un arrière-plan représentant le quadrillage (créé sur Paint) et de disques noirs ou blancs qui apparaissent au cours de la partie pour représenter les pions. Par ailleurs, des disques verts plus petits s'affichent dans les cases jouables pour guider le joueur humain. Le dessin des différentes formes est géré par la fonction drawPlateau qui utilise le module QPainter de PyQt. Les boutons nous permettent quant à eux de choisir le mode de jeu à travers un menu déroulant (humain contre humain, humain contre IA, IA contre IA), de commencer la partie, de la recommencer ou encore de quitter l'application.
 
 De l'utilisateur vers la machine:
--ordre de départ, de recommencer, d'arrêt
--choix des options de jeu
+	Comme abordé précédemment, l'utilisateur peut choisir son mode de jeu. Il dispose pour cela d'un menu déroulant dans lequel il peut sélectionner le mode qui lui convient. Chaque mode possède un indice d'indexation que Python sait reconnaître: il faut pour cela lier l'action "currentIndexChanged" au menu déroulant lors de sa connexion. Lorsque l'utilisateur clique sur un des modes, un entier parmi 0, 1 et 2 est renvoyé, ce qui nous permet ensuite de diriger l'application vers un des trois modes de jeu que nous avons définis.
+	L'utilisateur a également accès à des fonctions simples à travers trois boutons. Il s'agit de simples boutons auxquels nous avons lié l'action clicked lors de leur connexion; il suffit ainsi de cliquer dessus pour déclencher les fonctions auxquelles ils sont connectés. Tout d'abord, en mode IA contre IA, l'utilisateur peut ordonner le départ de la partie lorsqu'il le souhaite. Lorsque l'utilisateur est aussi joueur, la partie début immédiatement (le bouton départ est réglé à True puisqu'inutile, l'utilisateur est en effet maître du temps lorsqu'il joue). Pour recommencer une partie, il existe un bouton recommencer qui efface la partie en cours et réinitialise le plateau (avec les quatre pions au centre). Nous pouvons à partir de là choisir un nouveau mode de jeu et commencer une nouvelle partie. Enfin, notre fenêtre dispose d'un bouton quitter qui permet de fermer l'application. Ce bouton n'est connecté à aucune fonction du fichier applicationIHM.py mais il est directement relié à une fonction close dans QtDesigner.
 
 De la machine vers l'utilisateur:
 -score, statistiques
@@ -76,6 +78,12 @@ DESCRIPTION APPROFONDIE DU PROGRAMME (optionnel):
 Classes:
 
 Méthodes:
+
+
+
+
+
+
 
 
 
