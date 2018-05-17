@@ -70,17 +70,17 @@ def gagnant(plateau):
     
     Sortie
     ------
-    dictionnaire de la forme {'B':score, 'N':score}
+    dictionnaire de la forme {'N':score, 'B':score}
     '''
 
-    score_b = 0
     score_n = 0
+    score_b = 0
     for pion in list(plateau.values()):
-        if pion.couleur == 'B':
-            score_b += 1
-        else :
+        if pion.couleur == 'N':
             score_n += 1
-    return {'B':score_b, 'N':score_n}
+        else :
+            score_b += 1
+    return {'N':score_n, 'B':score_b}
         
 
 def jeu(plateau, joueur1, joueur2):
@@ -104,20 +104,20 @@ def stats_jeux(num_jeux):
     '''Fonction qui joue N=num_jeux de jeux et qui renvoie le nombre de parties
     gagnées par chaque joueur'''
     
-    dict_scores = {'joueurBlanc':0, 'joueurNoir':0, 'Egalite': 0}
+    dict_scores = {'joueurNoir':0, 'joueurBlanc':0, 'Egalite': 0}
 
     for _ in range(num_jeux):
 
         plat = p.plateau()
         joueurN = p.IAminmax2('N', plat)
-        joueurB = p.IAminmax('B', plat)
-        jeu(plat, joueurB, joueurN)
+        joueurB = p.IAalea('B', plat)
+        jeu(plat, joueurN, joueurB)
         scores = gagnant(plat)
 
-        if scores['B'] > scores['N']:
-            dict_scores['joueurBlanc'] += 1
-        elif scores['N'] > scores['B']:
+        if scores['N'] > scores['B']:
             dict_scores['joueurNoir'] += 1
+        elif scores['B'] > scores['N']:
+            dict_scores['joueurBlanc'] += 1
         else: dict_scores['Egalite'] += 1
 
     return dict_scores
@@ -128,21 +128,21 @@ if __name__ == '__main__':
 ### Pour jouer humain contre IA               ###
 ### décommenter les lignes 131 à 141 incluses ###
 #################################################
-    #plateau_jeu = p.plateau()
-    #joueurN = p.IAminmax2('N', plateau_jeu)
-    #joueurB = p.IAminmax('B', plateau_jeu)
+    plateau_jeu = p.plateau()
+    joueurN = p.IAminmax2('N', plateau_jeu)
+    joueurB = p.IAalea('B', plateau_jeu)
 
-    #jeu(plateau_jeu, joueurN, joueurB)
+    jeu(plateau_jeu, joueurN, joueurB)
 
-    #print(plateau_jeu)
-    #print("\n-- Partie terminée --")
-    #scores = gagnant(plateau_jeu)
-    #print('Score joueur noir : ' + str(scores['N']))
-    #print('Score joueur blanc : ' + str(scores['B']))
+    print(plateau_jeu)
+    print("\n-- Partie terminée --")
+    scores = gagnant(plateau_jeu)
+    print('Score joueur noir : ' + str(scores['N']))
+    print('Score joueur blanc : ' + str(scores['B']))
 
 ################################################
 ### Pour jouer N parties IAmax contre IAalea ###
 ### Modifier N ci-dessous                    ###
 ################################################
-    N = 10
-    print(stats_jeux(N))
+    #N = 10
+    #print(stats_jeux(N))
