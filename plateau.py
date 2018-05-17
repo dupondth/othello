@@ -355,9 +355,9 @@ class IAmax(joueur):
         self.retourner(position, self.table, self.couleur)
 
 class IAminmax(joueur):
-    '''IA qui applique l'algorithme minmax: elle choisit le gain maximum où
-    gain = (pions gagnés au tour 1) - (pions gagnés par l'adversaire au tour 2)
-    + (pions gagnés au tour 3)'''
+    '''IA qui applique l'algorithme minmax: elle choisit le coup à jouer tel 
+    qu'il minimise la perte maximum (ou maximise le gain minimum) en simulant 
+    un tour complet (1 coup du joueur et 1 coup de l'adversaire)'''
     
     def couleur_adv(self):
         if self.couleur == 'B':
@@ -369,7 +369,7 @@ class IAminmax(joueur):
         
         coords_gains = dict()
         
-        #Simulation tour1, tour propre
+        #Simulation tour1, tour du joueur
         for i in range(self.limite):
             for j in range(self.limite):
                 table_copy1 = self.simuler((i,j), self.table, self.couleur)      
@@ -391,20 +391,66 @@ class IAminmax(joueur):
                                 poids_feuille = table_copy2.evaluation(self.couleur)
                                 if poids_feuille < poids_noeud:
                                     poids_noeud = poids_feuille
-                            """
-                            if table_copy2 is not None:
-                                #Simulation tour2, tour propre 
-                                for m in range(self.limite):
-                                    for n in range(self.limite):
-                                        table_copy3 = self.simuler((m,n), \
-                                        table_copy2, self.couleur)
-                                    
-                                        if table_copy3 is not None:
-                                            evaluation = table_copy3.evaluation(self.couleur)
-                                
-                                            if evaluation < score:
-                                                score = evaluation
-                            """        
                             
                     coords_gains[(i,j)] = poids_noeud   
+        self.retourner(max(coords_gains, key = coords_gains.get), self.table, self.couleur)
+        
+class IAminmax2(joueur):
+    '''IA qui applique l'algorithme minmax sur deux tours de profondeur: elle 
+    choisit le coup à jouer tel qu'il minimise la perte maximum (ou maximise le
+    gain minimum) en simulant deux tours complets (1 coup du joueur, 1 de 
+    l'adversaire, 1 du joueur puis 1 de l'adversaire)'''
+    
+    
+    def couleur_adv(self):
+        if self.couleur == 'B':
+            return 'N'
+        else:
+            return 'B'
+
+    def jouer(self):
+        
+        coords_gains = dict()
+        
+        #Simulation tour1, tour du joueur
+        for i in range(self.limite):
+            for j in range(self.limite):
+                table_copy1 = self.simuler((i,j), self.table, self.couleur)      
+                
+                if table_copy1 is not None:
+                    poids_noeud1 = float('inf')
+                    
+                    #Simulation tour1, tour de l'adversaire
+                    for k in range(self.limite):
+                        for l in range(self.limite):
+                            table_copy2 = self.simuler((k,l), table_copy1, self.couleur_adv())
+                            
+                            if table_copy2 is not None:
+                                poids_noeud2 = -float('inf')
+                                
+                                #Simulation tour2, tour du joueur
+                                for m in range(self.limite):
+                                    for n in range(self.limite):
+                                        table_copy3 = self.simuler((m,n), table_copy2, self.couleur)
+                                        
+                                        if table_copy3 is not None:
+                                            poids_noeud3 = float('inf')
+                                            
+                                            #Simulation tour2, tour de l'adversaire
+                                            for o in range(self.limite):
+                                                for p in range(self.limite):
+                                                    table_copy4 = self.simuler((o,p), table_copy3, self.couleur_adv())
+                                                    
+                                                    if table_copy4 is not None:
+                                                        poids_feuille = table_copy4.evaluation(self.couleur)
+                                                        if poids_feuille < poids_noeud3:
+                                                            poids_noeud3 = poids_feuille
+                                                            
+                                            if poids_noeud3 > poids_noeud2:
+                                                poids_noeud2 = poids_noeud3
+                                                            
+                                if poids_noeud2 < poids_noeud1:
+                                    poids_noeud1 = poids_noeud2     
+                            
+                    coords_gains[(i,j)] = poids_noeud1   
         self.retourner(max(coords_gains, key = coords_gains.get), self.table, self.couleur)

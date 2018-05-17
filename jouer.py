@@ -109,8 +109,8 @@ def stats_jeux(num_jeux):
     for _ in range(num_jeux):
 
         plat = p.plateau()
-        joueurN = p.IAminmax('N', plat)
-        joueurB = p.IAmax('B', plat)
+        joueurN = p.IAminmax2('N', plat)
+        joueurB = p.IAminmax('B', plat)
         jeu(plat, joueurB, joueurN)
         scores = gagnant(plat)
 
@@ -129,7 +129,7 @@ if __name__ == '__main__':
 ### décommenter les lignes 131 à 141 incluses ###
 #################################################
     #plateau_jeu = p.plateau()
-    #joueurN = p.IAmax('N', plateau_jeu)
+    #joueurN = p.IAminmax2('N', plateau_jeu)
     #joueurB = p.IAminmax('B', plateau_jeu)
 
     #jeu(plateau_jeu, joueurN, joueurB)
@@ -137,8 +137,8 @@ if __name__ == '__main__':
     #print(plateau_jeu)
     #print("\n-- Partie terminée --")
     #scores = gagnant(plateau_jeu)
-    #print('Score joueur blanc : ' + str(scores['B']))
     #print('Score joueur noir : ' + str(scores['N']))
+    #print('Score joueur blanc : ' + str(scores['B']))
 
 ################################################
 ### Pour jouer N parties IAmax contre IAalea ###
