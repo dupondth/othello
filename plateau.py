@@ -379,7 +379,7 @@ class IAminmax(joueur):
                 #veut dire que le coup était jouable.
                 #si table_copy est de type None, cela veut dire que l'on ne peut
                 #pas jouer en (i,j).
-                    pts_joueur = table_copy1.evaluation(self.couleur)
+                    poids_noeud = float('inf')
                     
                     #Simulation tour1, tour de l'adversaire
                     for k in range(self.limite):
@@ -388,9 +388,9 @@ class IAminmax(joueur):
                             self.couleur_adv())
                             
                             if table_copy2 is not None:
-                                nouv_pts_joueur = table_copy2.evaluation(self.couleur)
-                                if nouv_pts_joueur < pts_joueur:
-                                    pts_joueur = nouv_pts_joueur
+                                poids_feuille = table_copy2.evaluation(self.couleur)
+                                if poids_feuille < poids_noeud:
+                                    poids_noeud = poids_feuille
                             """
                             if table_copy2 is not None:
                                 #Simulation tour2, tour propre 
@@ -406,5 +406,5 @@ class IAminmax(joueur):
                                                 score = evaluation
                             """        
                             
-                    coords_gains[(i,j)] = pts_joueur   
+                    coords_gains[(i,j)] = poids_noeud   
         self.retourner(max(coords_gains, key = coords_gains.get), self.table, self.couleur)
