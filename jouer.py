@@ -24,7 +24,7 @@ def tour(num_tour, plateau, j1, j2):
     print("\n-- Tour " + str(num_tour) + " --")
     #\n au début pour avoir une ligne vide entre les tours
 
-    print(plateau.affichage(j1.couleur)) #affichage du plateau
+    #print(plateau.affichage(j1.couleur)) #affichage du plateau
 
     jouable1, jouable2 = True, True
 
@@ -42,7 +42,7 @@ def tour(num_tour, plateau, j1, j2):
     else:
         jouable1 = False
     
-    print(plateau.affichage(j2.couleur))
+    #print(plateau.affichage(j2.couleur))
     
     #Si le joueur peut jouer, il joue
     if plateau.jouable(j2.couleur):
@@ -110,7 +110,7 @@ def stats_jeux(num_jeux):
 
         plat = p.plateau()
         joueurN = p.IAminmax('N', plat)
-        joueurB = p.IAalea('B', plat)
+        joueurB = p.IAmax('B', plat)
         jeu(plat, joueurB, joueurN)
         scores = gagnant(plat)
 
@@ -129,7 +129,7 @@ if __name__ == '__main__':
 ### décommenter les lignes 131 à 141 incluses ###
 #################################################
     #plateau_jeu = p.plateau()
-    #joueurN = p.IAalea('N', plateau_jeu)
+    #joueurN = p.IAmax('N', plateau_jeu)
     #joueurB = p.IAminmax('B', plateau_jeu)
 
     #jeu(plateau_jeu, joueurN, joueurB)

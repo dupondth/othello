@@ -352,7 +352,7 @@ class IAmax(joueur):
                 if valide and len(a_tourner) > score:
                     score = len(a_tourner)
                     position = (i,j)
-        self.retourner(position)
+        self.retourner(position, self.table, self.couleur)
 
 class IAminmax(joueur):
     '''IA qui applique l'algorithme minmax: elle choisit le gain maximum où
@@ -372,26 +372,27 @@ class IAminmax(joueur):
         #Simulation tour1, tour propre
         for i in range(self.limite):
             for j in range(self.limite):
-                table_copy = self.simuler((i,j), self.table, self.couleur)
-                        
-                poids = -float('Inf')
+                table_copy1 = self.simuler((i,j), self.table, self.couleur)      
                 
-                if table_copy is not None:
+                if table_copy1 is not None:
                 #si la fonction simuler a renvoyé un type différent de None cela
                 #veut dire que le coup était jouable.
                 #si table_copy est de type None, cela veut dire que l'on ne peut
                 #pas jouer en (i,j).
-
+                    pts_joueur = table_copy1.evaluation(self.couleur)
+                    
                     #Simulation tour1, tour de l'adversaire
                     for k in range(self.limite):
                         for l in range(self.limite):
-                            table_copy2 = self.simuler((k,l), table_copy, \
+                            table_copy2 = self.simuler((k,l), table_copy1, \
                             self.couleur_adv())
-                        
-                            score = float('Inf')
                             
                             if table_copy2 is not None:
-
+                                nouv_pts_joueur = table_copy2.evaluation(self.couleur)
+                                if nouv_pts_joueur < pts_joueur:
+                                    pts_joueur = nouv_pts_joueur
+                            """
+                            if table_copy2 is not None:
                                 #Simulation tour2, tour propre 
                                 for m in range(self.limite):
                                     for n in range(self.limite):
@@ -403,10 +404,7 @@ class IAminmax(joueur):
                                 
                                             if evaluation < score:
                                                 score = evaluation
-                                    
-                            if score > poids:
-                                poids = score
+                            """        
                             
-                coords_gains[(i,j)] = poids
-
+                    coords_gains[(i,j)] = pts_joueur   
         self.retourner(max(coords_gains, key = coords_gains.get), self.table, self.couleur)
