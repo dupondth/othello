@@ -110,7 +110,7 @@ def stats_jeux(num_jeux):
 
         plat = p.plateau()
         joueurN = p.IAminmax2('N', plat)
-        joueurB = p.IAalea('B', plat)
+        joueurB = p.IAminmax('B', plat)
         jeu(plat, joueurN, joueurB)
         scores = gagnant(plat)
 
@@ -128,9 +128,9 @@ if __name__ == '__main__':
 ### Pour jouer humain contre IA               ###
 ### décommenter les lignes 131 à 141 incluses ###
 #################################################
-    plateau_jeu = p.plateau()
+    """plateau_jeu = p.plateau()
     joueurN = p.IAminmax2('N', plateau_jeu)
-    joueurB = p.IAalea('B', plateau_jeu)
+    joueurB = p.IAminmax2('B', plateau_jeu)
 
     jeu(plateau_jeu, joueurN, joueurB)
 
@@ -138,11 +138,11 @@ if __name__ == '__main__':
     print("\n-- Partie terminée --")
     scores = gagnant(plateau_jeu)
     print('Score joueur noir : ' + str(scores['N']))
-    print('Score joueur blanc : ' + str(scores['B']))
+    print('Score joueur blanc : ' + str(scores['B']))"""
 
 ################################################
 ### Pour jouer N parties IAmax contre IAalea ###
 ### Modifier N ci-dessous                    ###
 ################################################
-    #N = 10
-    #print(stats_jeux(N))
+    N = 5
+    print(stats_jeux(N))
