@@ -1,16 +1,16 @@
-INTRODUCTION
+**INTRODUCTION**
 
 Othello, aussi connu sous le nom de Réversi, est un jeu de stratégie à deux joueurs. Il se joue sur un plateau de 64 cases appelé othellier. Les joueurs disposent de 64 pions bicolores, noirs d'un côté et blancs de l'autre. Un pion est dit noir (respectivement blanc) si sa face visible est celle de couleur noire (respectivement blanc).
 Le but du jeu est d'avoir plus de pions que son adversaire à la fin de la partie. Celle-ci se termine lorsque le plateau est rempli ou qu'aucun des deux joueurs ne peut plus jouer de coup qui soit légal.
 
 Les règles retenues pour notre projet sont les règles classiques, aucune hypothèse simplificatrice ne sera faite. Ces règles sont donc les suivantes:
-- au début de la partie, deux pions noirs sont placés en e4 et d5 et deux pions blancs sont placés en d4 et e5 (Figure 1).
+- au début de la partie, deux pions noirs sont placés en e4 et d5 et deux pions blancs sont placés en d4 et e5 [plateau_initial.png].
 - le joueur ayant les pions Noir commence toujours et les deux adversaires jouent ensuite à tour de rôle.
 - le jeu se joue tour par tour.
 - le joueur pose un pion de sa couleur sur une case vide de l'othellier, adjacente à un pion adverse. Il doit également, en posant son pion, encadrer un ou plusieurs pions adverses entre le pion qu'il pose et un pion à sa couleur, déjà placé sur l'othellier (Figure 2).
 - s'il ne peut pas réaliser un coup légal, le joueur passe son tour.
 
-
+**SCHEMA DE JEU**
 
 SCHEMA D'UN COUP
 
@@ -52,7 +52,7 @@ IAalea et IAmax (premières IA):
 	Avant d'implémenter des IA complexes, nous avons choisi de créer deux IA simples qui nous permettraient de tester facilement le reste de notre programme. La première IA joue aléatoirement et la seconde maximise le nombre de pions adverses gagnés sans anticiper le jeu de l'adversaire. Nous pouvons ainsi vérifier que notre gestion des tours est correcte en observant le déroulement d'une partie opposant une IA à un humain, à une autre IA ou à elle-même. Ces deux IA nous permettront aussi d'évaluer l'intelligence des IA qui seront programmées par la suite. Par ailleurs, l'implémentation de ces deux IA est pertinente puisque leur comportement reflète le comportement souvent adopté par des joueurs humains novices. Elles pourraint faire ainsi office d'adversaires de niveau intermédiaire. Dans ce même esprit de niveaux de jeu, nous aurions également pu créer une IAmin qui miniserait le gain de chacun de ses coups pour en faire un niveau de jeu facile.
 
 IA Min-Max:
-	L'algorithme minmax est un algorithme de jeu particulièrement bien adapté aux jeux à deux joueurs et à somme nulle (ce qui est le cas d'Othello). Le principe de minmax est de maximiser le gain minimal du joueur (ou minimiser ses pertes maximales). Pour cela, il part de l'état actuel du jeu et va étudier tous les scénarios possibles jusqu'à une certaine "profondeur", suite à quoi il attribue une valeur à chaque coup jouable. Cette valeur, aussi appelée poids d'un coup, s'obtient en simulant un ou plusieurs tours : c'est la profondeur de l'algorithme minmax, qui correspond au nombre de tour que l'on simule. L'image ci-contre [image1] montre un exemple de simulation sur un tour: à l'état initial le joueur a trois coups possibles puis l'adversaire a lui-même un certain nombre de coups possibles. Les valeurs affichées à l'état n+2 correspondent aux variations des points du joueur. Dans un premier temps, l'algorithme cherche le gain minimal (ou le perte maximale) pour chacun des coups possibles du joueur puis il attribue cette valeur au coup. L'algorithme cherche ensuite le maximum de ces valeurs parmi tous les coups possibles, puis il sélectionne la position associée à ce maximum, et joue enfin sur cette position. On suppose donc que l'adversaire joue à chaque fois de sorte à maximiser son gain. 
+	L'algorithme minmax est un algorithme de jeu particulièrement bien adapté aux jeux à deux joueurs et à somme nulle (ce qui est le cas d'Othello). Le principe de minmax est de maximiser le gain minimal du joueur (ou minimiser ses pertes maximales). Pour cela, il part de l'état actuel du jeu et va étudier tous les scénarios possibles jusqu'à une certaine "profondeur", suite à quoi il attribue une valeur à chaque coup jouable. Cette valeur, aussi appelée poids d'un coup, s'obtient en simulant un ou plusieurs tours : c'est la profondeur de l'algorithme minmax, qui correspond au nombre de tour que l'on simule. L'image ci-contre [schema_minmax.png] montre un exemple de simulation sur un tour: à l'état initial le joueur a trois coups possibles puis l'adversaire a lui-même un certain nombre de coups possibles. Les valeurs affichées à l'état n+2 correspondent aux variations des points du joueur. Dans un premier temps, l'algorithme cherche le gain minimal (ou le perte maximale) pour chacun des coups possibles du joueur puis il attribue cette valeur au coup. L'algorithme cherche ensuite le maximum de ces valeurs parmi tous les coups possibles, puis il sélectionne la position associée à ce maximum, et joue enfin sur cette position. On suppose donc que l'adversaire joue à chaque fois de sorte à maximiser son gain. 
 	Dans la pratique, on ne se base pas sur les variations des points du joueur mais sur son score, ce qui est plus simple à implémenter et strictement identique en terme de résultat. Nous utilisons pour cela une fonction d'évaluation qui peut nous rendre à tout moment le score du joueur ou de l'adversaire. 
 
 IA Néga-Max:
@@ -76,7 +76,7 @@ De la machine vers l'utilisateur:
 
 
 
-DESCRIPTION APPROFONDIE DU PROGRAMME (optionnel):
+**ARCHITECTURE DU PROGRAMME**
 
 Classes:
 
