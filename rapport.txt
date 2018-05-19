@@ -14,7 +14,7 @@ Les objectifs principaux de ce projet sont...
 
 
 
-**ANALYSE DES PROBLEMATIQUES DE JEU**
+**ANALYSE DES PROBLEMATIQUES DU JEU**
 
 
 SCHEMA D'UN COUP
@@ -30,13 +30,13 @@ Réalisation du coup:
 
 SCHEMA D'UNE PARTIE
 
-	Les parties sont gérées dans le fichier applicationIHM.py qui utilise en plus des fonctions et objets définis dans l'écosystème.
+	Les parties sont gérées dans le fichier applicationIHM.py qui utilise en plus des fonctions et objets définis dans le fichier plateau.py.
 
 Initialisation du plateau de jeu:
-	Pour commencer une partie d'Othello, il faut d'abord créer un plateau de jeu. Nous utilisons pour cela une fonction generer. Cette fonction crée un objet de type plateau dont les caractéristiques sont décrites dans la classe plateau de l'écosystème. Le plateau est représenté par un dictionnaire. Les clés de ce dictionnaire sont les coordonnées des positions occupées par des pions, les valeurs sont des chaines de caractères 'B' ou 'N'. Les objets pion ainsi créés sont caractérisés par leur position et leur couleur. [[Le choix d'un dictionnaire se justifie par...]]. Le plateau qui est créé contient dans un premier temps quatre pions (deux blancs et deux noirs) disposés selon les règles du jeu. Cette disposition d'origine est automatiquement crée lorsque que le fichier applicationIHM.py est exécuté.
+	Pour commencer une partie d'Othello, il faut d'abord créer un plateau de jeu. Nous utilisons pour cela une fonction generer. Cette fonction crée un objet de type plateau dont les caractéristiques sont décrites dans la classe plateau de l'écosystème. Le plateau est représenté par un dictionnaire. Les clés de ce dictionnaire sont les coordonnées des positions occupées par des pions, les valeurs sont objets pion noirs ou blancs. Les objets pion ainsi créés sont caractérisés par leur position et leur couleur. [[Le choix d'un dictionnaire se justifie par...]]. Le plateau qui est créé contient dans un premier temps quatre pions (deux blancs et deux noirs) disposés selon les règles du jeu. Cette disposition d'origine est automatiquement crée lorsque que le fichier applicationIHM.py est exécuté.
 
 Initialisation des joueurs:
-	La fonction generer nous permet également d'initialiser les joueurs. Elle crée deux objets de type joueur, un joueur blanc et un joueur noir, en les sélectionnant parmi les sous-classes de la classe joueur de l'écosystème. Ces sous-classes définissent chacune un type de joueur (humain ou intelligence artificielle). Les joueurs sont sélectionnés selon l'option choisie par l'utilisateur dans l'interface homme-machine (Humain vs Humain, Humain vs IA, IA vs IA).
+	La fonction generer nous permet également d'initialiser les joueurs. Elle crée deux objets de type joueur, un joueur blanc et un joueur noir, en les sélectionnant parmi les classes filles de la classe joueur. Ces sous-classes définissent chacune un type de joueur (humain ou intelligence artificielle). Les joueurs sont sélectionnés selon l'option choisie par l'utilisateur dans l'interface homme-machine (Humain vs Humain, Humain vs IA, IA vs IA).
 
 Exécution du jeu et réalisation d'un tour:
 	La gestion d'une partie entière se fait au travers de deux tâches : la gestion d'un tour et la gestion de la succession des tours jusqu'à ce que les joueurs ne puissent plus jouer.
@@ -57,6 +57,8 @@ IAalea et IAmax (premières IA):
 IA Min-Max:
 	L'algorithme minmax est un algorithme de jeu particulièrement bien adapté aux jeux à deux joueurs et à somme nulle (ce qui est le cas d'Othello). Le principe de minmax est de maximiser le gain minimal du joueur (ou minimiser ses pertes maximales). Pour cela, il part de l'état actuel du jeu et va étudier tous les scénarios possibles jusqu'à une certaine "profondeur", suite à quoi il attribue une valeur à chaque coup jouable. Cette valeur, aussi appelée poids d'un coup, s'obtient en simulant un ou plusieurs tours : c'est la profondeur de l'algorithme minmax, qui correspond au nombre de tour que l'on simule. L'image ci-contre [schema_minmax.png] montre un exemple de simulation sur un tour: à l'état initial le joueur a trois coups possibles puis l'adversaire a lui-même un certain nombre de coups possibles. Les valeurs affichées à l'état n+2 correspondent aux variations des points du joueur. Dans un premier temps, l'algorithme cherche le gain minimal (ou le perte maximale) pour chacun des coups possibles du joueur puis il attribue cette valeur au coup. L'algorithme cherche ensuite le maximum de ces valeurs parmi tous les coups possibles, puis il sélectionne la position associée à ce maximum, et joue enfin sur cette position. On suppose donc que l'adversaire joue à chaque fois de sorte à maximiser son gain. 
 	Dans la pratique, on ne se base pas sur les variations des points du joueur mais sur son score, ce qui est plus simple à implémenter et strictement identique en terme de résultat. Nous utilisons pour cela une fonction d'évaluation qui peut nous rendre à tout moment le score du joueur ou de l'adversaire. 
+	Une deuxième version de minmax, nommée minmax2, a été programmée et reprend le principe de minmax mais avec un degré de profondeur supplémentaire. Elle simule en effet deux tours, ce qui améliore son niveau de jeu mais la rend du même coup plus lente.
+	
 
 IA Néga-Max:
 
@@ -84,12 +86,14 @@ Classes:
 
 Méthodes:
 
-Test:
-
+Tests:
+	Toutes les méthodes présentes dans le diagramme de la [diagramme_plateau.png] ont été testées progressivement au cours de l'écriture du code, ce qui a permis de résoudre de nombreux problèmes dans les implémentations des règles du jeu et dans les méthodes de la classe joueur. [diagramme_test.png]
 
 
 **CONCLUSION**
 
+	Grâce à l'implémentation des fonctions et objets précédemment cités, des parties d'othello peuvent être jouées en humain contre humain, humain contre IA et IA contre IA, et ce avec plusieurs IA de différents niveaux. De plus grâce à la fonction stats_jeux du fichier jouer.py, nous pouvons classer les IA selon leur "intelligence" en simulant un grand nombre de parties. Ce classement dans l'ordre croissant d'intelligence donne donc IAalea; IAmax; IAminmax. Notons que les variantes de l'algorithme min-max, à savoir néga-max et alpha-bêta, ne sont pas plus intelligentes puisque'elle reprennent le principe de min-max. Elles sont néanmoins plus rapides, ce est très utile dans des jeux nécessitant plus de puissance de calcul qu'Othello. Ici, les temps de calcul de l'algorithme min-max restent acceptables.
+	L'interface homme-machine permet quant à elle à l'utilisateur d'avoir une parfaite maîtrise
 
 
 **BIBLIOGRAPHIE**
