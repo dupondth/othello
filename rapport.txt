@@ -7,10 +7,15 @@ Les règles retenues pour notre projet sont les règles classiques, aucune hypothè
 - au début de la partie, deux pions noirs sont placés en e4 et d5 et deux pions blancs sont placés en d4 et e5 [plateau_initial.png].
 - le joueur ayant les pions Noir commence toujours et les deux adversaires jouent ensuite à tour de rôle.
 - le jeu se joue tour par tour.
-- le joueur pose un pion de sa couleur sur une case vide de l'othellier, adjacente à un pion adverse. Il doit également, en posant son pion, encadrer un ou plusieurs pions adverses entre le pion qu'il pose et un pion à sa couleur, déjà placé sur l'othellier (Figure 2).
+- le joueur pose un pion de sa couleur sur une case vide de l'othellier, adjacente à un pion adverse. Il doit également, en posant son pion, encadrer un ou plusieurs pions adverses entre le pion qu'il pose et un pion à sa couleur, déjà placé sur l'othellier (schema_jeu.png).
 - s'il ne peut pas réaliser un coup légal, le joueur passe son tour.
 
-**SCHEMA DE JEU**
+Les objectifs principaux de ce projet sont...
+
+
+
+**ANALYSE DES PROBLEMATIQUES DE JEU**
+
 
 SCHEMA D'UN COUP
 
@@ -21,7 +26,6 @@ Validité du coup:
 
 Réalisation du coup:
 	C'est ensuite la fonction retourner qui intervient. Placé dans la classe joueur, son rôle est de poser le pion que le joueur veut jouer et de retourner les pions adverses qu'il a gagnés. Pour cela, elle utilise les informations données par coupValide : elle s'assure que la validité du coup vaut True, puis elle parcourt la liste des pions adverses à retourner et les retourne un par un. Dans tous les cas où la case n'est pas jouable (coupValide rend False), la fonction retourner lève une exception ValueError, ce qui permettra à la fonction responsable du bon déroulement de la partie de demander au joueur de joueur sur une case valide.
-
 
 
 SCHEMA D'UNE PARTIE
@@ -38,7 +42,6 @@ Exécution du jeu et réalisation d'un tour:
 	La gestion d'une partie entière se fait au travers de deux tâches : la gestion d'un tour et la gestion de la succession des tours jusqu'à ce que les joueurs ne puissent plus jouer.
 	Commençons par la gestion d'un tour, qui se définit comme la succession d'un coup du joueur noir suivi d'un coup du joueur blanc. Nous disposons pour cela de plusieurs fonctions tour qui se déclinent selon le mode de jeu choisi. Cette fonction fait jouer les deux joueurs l'un après l'autre, en vérifiant à chaque fois que le joueur dispose de cases sur lesquelles il peut jouer. Si tel est le cas, le joueur joue sur la case qu'il a choisie et le plateau est mis à jour et affiché. Si toutefois son coup n'est pas valide, une exception de type ValueError se déclenche, ce qui empêche le plateau d'être modifié et génère un message d'erreur pour que le joueur joue de nouveau. Si un joueur ne dispose pas de case jouable, il passe son tour. 
 	La succession des tours est gérée par la fonction partie. En plus d'exécuter la fonction tour et de compter les tours, cette fonction permet également d'arrêter le jeu. En effet, la fonction tour renvoie un booléen False si les deux joueurs ne peuvent successivement plus jouer, ce qui correspond à la fin de la partie (situation de blocage ou plateau rempli). A chaque tour, la fonction partie teste ce booléen pour savoir si elle doit continuer ou non la partie.
-
 
 
 TYPES DE JOUEURS
@@ -58,7 +61,6 @@ IA Min-Max:
 IA Néga-Max:
 
 IA Alpha-Bêta:
-
 
 
 INTERACTION AVEC L'UTILISATEUR:
@@ -82,8 +84,15 @@ Classes:
 
 Méthodes:
 
+Test:
 
 
+
+**CONCLUSION**
+
+
+
+**BIBLIOGRAPHIE**
 
 
 
