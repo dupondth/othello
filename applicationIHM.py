@@ -253,7 +253,61 @@ class MonAppli(QtWidgets.QMainWindow):
         else : 
             return True #Continuer le jeu
                     
+    def tour_humainVShumain(self, plateau, j1, j2, pos_humain):
 
+        '''Fonction qui fait avancer le jeu d'un tour, affiche l'état actuel du
+        jeu dans le terminal et qui renvoie True s'il faut arrêter le jeu et False
+        sinon.
+
+        Entrées
+        -------
+        plateau (objet plateau) : plateau sur lequel le jeu se déroule
+        j1 (objet joueur) : premier joueur
+        j2 (objet joueur) : second joueur 
+
+        Sortie
+        ------
+        booléen : True s'il faut continuer le jeu, False sinon'''
+    
+        jouable1, jouable2 = True, True
+    
+        #Si le joueur peut jouer, il joue
+        if plateau.jouable(j1.couleur):
+            flag1 = True
+            while flag1:
+                try:
+                    j1.jouer(pos_humain)
+                    flag1 = False
+                except ValueError:
+                    print("Veuillez jouer dans une case valide")
+        else:
+            jouable1 = False
+            
+        self.CLR_JOUEUR = j2.couleur
+        self.ui.conteneur.repaint()
+        time.sleep(0.5)
+        
+        #Si le joueur peut jouer, il joue
+        if plateau.jouable(j2.couleur):
+            flag2 = True
+            while flag2:
+                try:
+                    j2.jouer()
+                    flag2 = False
+                except ValueError:
+                    print("Veuillez jouer dans une case valide")
+
+        else:
+            jouable2 = False
+
+        self.CLR_JOUEUR = j1.couleur
+        self.ui.conteneur.repaint()
+            
+        if jouable1 == False and jouable2 == False:
+            return False #Arrêter le jeu
+        else : 
+            return True #Continuer le jeu
+ 
     def partie(self):
         flag = True
         while flag:
