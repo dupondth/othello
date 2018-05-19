@@ -1,16 +1,16 @@
 **INTRODUCTION**
 
-Othello, aussi connu sous le nom de Réversi, est un jeu de stratégie à deux joueurs. Il se joue sur un plateau de 64 cases appelé othellier. Les joueurs disposent de 64 pions bicolores, noirs d'un côté et blancs de l'autre. Un pion est dit noir (respectivement blanc) si sa face visible est celle de couleur noire (respectivement blanc).
+	Othello, aussi connu sous le nom de Réversi, est un jeu de stratégie à deux joueurs. Il se joue sur un plateau de 64 cases appelé othellier. Les joueurs disposent de 64 pions bicolores, noirs d'un côté et blancs de l'autre. Un pion est dit noir (respectivement blanc) si sa face visible est celle de couleur noire (respectivement blanc).
 Le but du jeu est d'avoir plus de pions que son adversaire à la fin de la partie. Celle-ci se termine lorsque le plateau est rempli ou qu'aucun des deux joueurs ne peut plus jouer de coup qui soit légal.
 
-Les règles retenues pour notre projet sont les règles classiques, aucune hypothèse simplificatrice ne sera faite. Ces règles sont donc les suivantes:
+	Les règles retenues pour notre projet sont les règles classiques, aucune hypothèse simplificatrice ne sera faite. Ces règles sont donc les suivantes:
 - au début de la partie, deux pions noirs sont placés en e4 et d5 et deux pions blancs sont placés en d4 et e5 [plateau_initial.png].
 - le joueur ayant les pions Noir commence toujours et les deux adversaires jouent ensuite à tour de rôle.
 - le jeu se joue tour par tour.
 - le joueur pose un pion de sa couleur sur une case vide de l'othellier, adjacente à un pion adverse. Il doit également, en posant son pion, encadrer un ou plusieurs pions adverses entre le pion qu'il pose et un pion à sa couleur, déjà placé sur l'othellier (schema_jeu.png).
 - s'il ne peut pas réaliser un coup légal, le joueur passe son tour.
 
-Les objectifs principaux de ce projet sont...
+	Les objectifs de ce projet sont multiples. Tout d'abord, nous devons implémenter les règles d'Othello dans un écosystème qui rassemble tous les éléments de l'environnement du jeu. Il nous faudra aussi mettre en place d'un banc de test en parallèle de la programmation du jeu afin de détecter les erreurs et éviter leur accumulation. Nous devons également développer des intelligences artificielles afin de les faire jouer contre des humains. Finalement nous devons mettre en place une interface homme-machine permettant à un humain de jouer facilement et de profiter de toutes les fonctionnalités de notre programme. Ce projet s'articulera autour de la programmation orientée objet et de divers modules et techniques présentés en cours : Unittest, PyQt et ses modules, QtDesigner, PyNSource, les techniques d'encapsulation, la génération de documentation python etc.
 
 
 
@@ -55,14 +55,12 @@ IAalea et IAmax (premières IA):
 	Avant d'implémenter des IA complexes, nous avons choisi de créer deux IA simples qui nous permettraient de tester facilement le reste de notre programme. La première IA joue aléatoirement et la seconde maximise le nombre de pions adverses gagnés sans anticiper le jeu de l'adversaire. Nous pouvons ainsi vérifier que notre gestion des tours est correcte en observant le déroulement d'une partie opposant une IA à un humain, à une autre IA ou à elle-même. Ces deux IA nous permettront aussi d'évaluer l'intelligence des IA qui seront programmées par la suite. Par ailleurs, l'implémentation de ces deux IA est pertinente puisque leur comportement reflète le comportement souvent adopté par des joueurs humains novices. Elles pourraint faire ainsi office d'adversaires de niveau intermédiaire. Dans ce même esprit de niveaux de jeu, nous aurions également pu créer une IAmin qui miniserait le gain de chacun de ses coups pour en faire un niveau de jeu facile.
 
 IA Min-Max:
-	L'algorithme minmax est un algorithme de jeu particulièrement bien adapté aux jeux à deux joueurs et à somme nulle (ce qui est le cas d'Othello). Le principe de minmax est de maximiser le gain minimal du joueur (ou minimiser ses pertes maximales). Pour cela, il part de l'état actuel du jeu et va étudier tous les scénarios possibles jusqu'à une certaine "profondeur", suite à quoi il attribue une valeur à chaque coup jouable. Cette valeur, aussi appelée poids d'un coup, s'obtient en simulant un ou plusieurs tours : c'est la profondeur de l'algorithme minmax, qui correspond au nombre de tour que l'on simule. L'image ci-contre [schema_minmax.png] montre un exemple de simulation sur un tour: à l'état initial le joueur a trois coups possibles puis l'adversaire a lui-même un certain nombre de coups possibles. Les valeurs affichées à l'état n+2 correspondent aux variations des points du joueur. Dans un premier temps, l'algorithme cherche le gain minimal (ou le perte maximale) pour chacun des coups possibles du joueur puis il attribue cette valeur au coup. L'algorithme cherche ensuite le maximum de ces valeurs parmi tous les coups possibles, puis il sélectionne la position associée à ce maximum, et joue enfin sur cette position. On suppose donc que l'adversaire joue à chaque fois de sorte à maximiser son gain. 
-	Dans la pratique, on ne se base pas sur les variations des points du joueur mais sur son score, ce qui est plus simple à implémenter et strictement identique en terme de résultat. Nous utilisons pour cela une fonction d'évaluation qui peut nous rendre à tout moment le score du joueur ou de l'adversaire. 
+	L'algorithme minmax est un algorithme de jeu particulièrement bien adapté aux jeux à deux joueurs et à somme nulle (ce qui est le cas d'Othello). Le principe de minmax est de maximiser le gain minimal du joueur (ou minimiser ses pertes maximales). Pour cela, il part de l'état actuel du jeu et va étudier tous les scénarios possibles jusqu'à une certaine "profondeur", suite à quoi il attribue une valeur à chaque coup jouable. Cette valeur, aussi appelée poids d'un coup, s'obtient en simulant un ou plusieurs tours : c'est la profondeur de l'algorithme minmax, qui correspond au nombre de tour que l'on simule [1]. L'image ci-contre [schema_minmax.png] montre un exemple de simulation sur un tour: à l'état initial le joueur a trois coups possibles puis l'adversaire a lui-même un certain nombre de coups possibles. Les valeurs affichées à l'état n+2 correspondent aux variations des points du joueur. Dans un premier temps, l'algorithme cherche le gain minimal (ou le perte maximale) pour chacun des coups possibles du joueur puis il attribue cette valeur au coup. L'algorithme cherche ensuite le maximum de ces valeurs parmi tous les coups possibles, puis il sélectionne la position associée à ce maximum, et joue enfin sur cette position. On suppose donc que l'adversaire joue à chaque fois de sorte à maximiser son gain. 
+	Dans la pratique, nous ne nous basons pas sur les variations des points du joueur mais sur son score, ce qui est plus simple à implémenter et strictement identique en terme de résultat. Nous utilisons pour cela une fonction d'évaluation qui peut nous rendre à tout moment le score du joueur ou de l'adversaire. 
 	Une deuxième version de minmax, nommée minmax2, a été programmée et reprend le principe de minmax mais avec un degré de profondeur supplémentaire. Elle simule en effet deux tours, ce qui améliore son niveau de jeu mais la rend du même coup plus lente.
 	
-
-IA Néga-Max:
-
-IA Alpha-Bêta:
+Variantes de Min-Max:
+	Il existe des simplifications de min-max lorsque celui-ci est codé de manière récursive (ce qui n'est pas notre cas). En effet, un algorithme min-max récursif doit faire une distinction entre les noeuds joueur et les noeuds adversaire. Parmi ces simplifications, nega-max est une version qui permet de ne plus faire la distinction entre ces deux types de noeuds et qui "repose sur le constat que minimiser une valeur revient à maximiser l’opposé de cette valeur" [2]. Une autre version simplificatrice fréquemment utilisée est la méthode alpha-bêta, aussi appelée élagage alpha-bêta. Elle permet de sélectionner uniquement les sous-arbres qu'il est nécessaire d'explorer via la méthode min-max et d'éliminer tous les autres. On évite ainsi de faire une exploration complète jusqu'à une profondeur donnée contrairement à ce que fait l'algorithme min-max basique [3].
 
 
 INTERACTION AVEC L'UTILISATEUR:
@@ -87,19 +85,28 @@ Classes:
 Méthodes:
 
 Tests:
-	Toutes les méthodes présentes dans le diagramme de la [diagramme_plateau.png] ont été testées progressivement au cours de l'écriture du code, ce qui a permis de résoudre de nombreux problèmes dans les implémentations des règles du jeu et dans les méthodes de la classe joueur. [diagramme_test.png]
+	Toutes les méthodes présentes dans le diagramme de la classe plateau ont été testées progressivement au cours de l'écriture du code, ce qui a permis de résoudre de nombreux problèmes dans les implémentations des règles du jeu et dans les méthodes de la classe joueur. [diagramme_test.png]
 
 
 **CONCLUSION**
 
-	Grâce à l'implémentation des fonctions et objets précédemment cités, des parties d'othello peuvent être jouées en humain contre humain, humain contre IA et IA contre IA, et ce avec plusieurs IA de différents niveaux. De plus grâce à la fonction stats_jeux du fichier jouer.py, nous pouvons classer les IA selon leur "intelligence" en simulant un grand nombre de parties. Ce classement dans l'ordre croissant d'intelligence donne donc IAalea; IAmax; IAminmax. Notons que les variantes de l'algorithme min-max, à savoir néga-max et alpha-bêta, ne sont pas plus intelligentes puisque'elle reprennent le principe de min-max. Elles sont néanmoins plus rapides, ce est très utile dans des jeux nécessitant plus de puissance de calcul qu'Othello. Ici, les temps de calcul de l'algorithme min-max restent acceptables.
-	L'interface homme-machine permet quant à elle de visualiser le déroulement d'une partie et de jouer facilement en cliquant simplement sur les cases du plateau. Elle permet également d'étudier le comportement de toutes les intelligences artificielles grâce au mode simulation. Enfin, des paramètres d'ergonomie ont été intégrés tels que la possibilité de quitter, de recommencer une partie sans avoir à relancer le programme ou de lancer la simulation lorsqu'on le souhaite avec le bouton depart.
-
-
-**BIBLIOGRAPHIE**
+	Grâce à l'implémentation des fonctions et objets précédemment cités, des parties d'othello peuvent être jouées en humain contre humain, humain contre IA et IA contre IA, et ce avec plusieurs IA de différents niveaux. De plus grâce à la fonction stats_jeux du fichier jouer.py, nous pouvons classer les IA selon leur "intelligence" en simulant un grand nombre de parties, ce qui donne par ordre croissant d'intelligence IAalea; IAmax; IAminmax; IAminmax2. Notons que les variantes de l'algorithme min-max, à savoir néga-max et alpha-bêta, ne sont pas plus intelligentes puisque'elle reprennent le principe de min-max. Néanmoins, elle simplifient l'implémentation de l'algorithme min-max, ce qui est utile dans des jeux nécessitant plus de puissance de calcul. Ici, les temps de calcul de l'algorithme min-max restent acceptables. Enfin, une piste d'amélioration serait la création d'une version récursive de min-max, ce qui nous permettrait de donner un paramètre "profondeur" à l'IA et ainsi ne pas avoir à programmer des IA distinctes pour chaque profondeur. Par ailleurs, une implémentation récursive de min-max serait plus rapide, notamment pour des profondeurs de simulation importantes.
+	L'interface homme-machine permet quant à elle de visualiser le déroulement d'une partie et de jouer facilement en cliquant simplement sur les cases du plateau. Elle permet également d'étudier le comportement de toutes les intelligences artificielles grâce au mode simulation. Enfin, des paramètres d'ergonomie ont été intégrés tels que la possibilité de quitter, de recommencer une partie sans avoir à relancer le programme ou de lancer une simulation lorsqu'on le souhaite avec le bouton depart. La forme finale de l'iHM correspond bien à la forme souhaitée initialement et permet d'exploiter tout le potentiel de notre jeu, bien que des améliorations graphiques ou des options supplémentaires puissent être apportées.
 
 
 
+**RESSOURCES**
+[1] https://openclassrooms.com/courses/l-algorithme-min-max
+[2] http://pageperso.lif.univ-mrs.fr/~liva.ralaivola/teachings20062005/reversi/MinMaxL2.pdf
+[3] https://fr.wikipedia.org/wiki/%C3%89lagage_alpha-b%C3%AAta
+Cours d'informatique
+Moodle
+
+
+
+**ANNEXE**
+
+~mettre la doc python~
 
 
 

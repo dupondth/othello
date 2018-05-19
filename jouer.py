@@ -100,17 +100,18 @@ def jeu(plateau, joueur1, joueur2):
         no_tour += 1
         flag = tour(no_tour, plateau, joueur1, joueur2)
 
-def stats_jeux(num_jeux):
+def stats_jeux(num_jeux, J1, J2):
     '''Fonction qui joue N=num_jeux de jeux et qui renvoie le nombre de parties
     gagnées par chaque joueur'''
     
     dict_scores = {'joueurNoir':0, 'joueurBlanc':0, 'Egalite': 0}
-
+    
     for _ in range(num_jeux):
 
         plat = p.plateau()
-        joueurN = p.IAminmax2('N', plat)
-        joueurB = p.IAminmax('B', plat)
+        types_joueurs = {'0':p.humain, '1':p.IAalea, '2':p.IAminmax, '3':p.IAminmax2}
+        joueurN = types_joueurs[J1]('N', plat)
+        joueurB = types_joueurs[J2]('B', plat)
         jeu(plat, joueurN, joueurB)
         scores = gagnant(plat)
 
@@ -124,25 +125,29 @@ def stats_jeux(num_jeux):
 
 
 if __name__ == '__main__':
-#################################################
-### Pour jouer humain contre IA               ###
-### décommenter les lignes 131 à 141 incluses ###
-#################################################
-    """plateau_jeu = p.plateau()
-    joueurN = p.IAminmax2('N', plateau_jeu)
-    joueurB = p.IAminmax2('B', plateau_jeu)
-
-    jeu(plateau_jeu, joueurN, joueurB)
-
-    print(plateau_jeu)
-    print("\n-- Partie terminée --")
-    scores = gagnant(plateau_jeu)
-    print('Score joueur noir : ' + str(scores['N']))
-    print('Score joueur blanc : ' + str(scores['B']))"""
-
-################################################
-### Pour jouer N parties IAmax contre IAalea ###
-### Modifier N ci-dessous                    ###
-################################################
-    N = 5
-    print(stats_jeux(N))
+    
+    mode = input("Choisissez un mode de jeu (0:partie simple, 1:simuler)  : ")
+    
+    #mode partie simple
+    if mode == '0':
+        types_joueurs = {'0':p.humain, '1':p.IAalea, '2':p.IAminmax, '3':p.IAminmax2}
+        JN = input("Choisissez le joueur noir (0:humain, 1:IAalea, 2:IAmax, 3:IAminmax; 4:IAminmax2)  : ")
+        JB = input("Choisissez le joueur blanc (0:humain, 1:IAalea, 2:IAmax, 3:IAminmax; 4:IAminmax2)  : ")
+        plateau_jeu = p.plateau()
+        joueurN = types_joueurs[JN]('N', plateau_jeu)
+        joueurB = types_joueurs[JB]('B', plateau_jeu)
+    
+        jeu(plateau_jeu, joueurN, joueurB)
+    
+        print(plateau_jeu)
+        print("\n-- Partie terminée --")
+        scores = gagnant(plateau_jeu)
+        print('Score joueur noir : ' + str(scores['N']))
+        print('Score joueur blanc : ' + str(scores['B']))
+    
+    #mode simulation
+    else:
+        N = int(input("Nombre de parties à simuler  : "))
+        JN = input("Choisissez le joueur noir (0:humain, 1:IAalea, 2:IAmax, 3:IAminmax; 4:IAminmax2)  : ")
+        JB = input("Choisissez le joueur blanc (0:humain, 1:IAalea, 2:IAmax, 3:IAminmax; 4:IAminmax2)  : ")
+        print(stats_jeux(N, JN, JB))
