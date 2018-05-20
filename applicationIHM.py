@@ -13,7 +13,7 @@ class MonAppli(QtWidgets.QMainWindow):
         super().__init__()
 
         #les noirs commencent
-        self.CLR_JOUEUR = 'N'
+        self.couleur_active = 'N'
         # Configuration de l'interface utilisateur.
         self.ui = Ui_principale_ihm()
         self.ui.setupUi(self)
@@ -92,11 +92,11 @@ class MonAppli(QtWidgets.QMainWindow):
             self.joueurN = p.humain_graphique('N', self.plateau_jeu)
             self.joueurB = p.IAalea('B', self.plateau_jeu)
         else:
-            self.ui.conteneur.mousePressEvent = lambda x : None
+            self.ui.conteneur.mousePressEvent = self.clic_switch
             self.joueurN = p.humain_graphique('N', self.plateau_jeu)
             self.joueurB = p.humain_graphique('B', self.plateau_jeu)
 
-        self.CLR_JOUEUR = 'N' # Les noirs commencent
+        self.couleur_active = 'N' # Les noirs commencent
         self.ui.conteneur.repaint()
 
     def change_mode(self):
@@ -130,7 +130,7 @@ class MonAppli(QtWidgets.QMainWindow):
                 qp.drawEllipse(position[1]*50+5, position[0]*50+4, 40, 40)
 
         # Tracage des positions où on peut placer un pion
-        for position in self.plateau_jeu.listeValide(self.CLR_JOUEUR):
+        for position in self.plateau_jeu.listeValide(self.couleur_active):
             qp.setPen(QtCore.Qt.green)
             qp.setBrush(QtCore.Qt.green)
             qp.drawEllipse(position[1]*50+20, position[0]*50+19, 10, 10)
@@ -143,6 +143,14 @@ class MonAppli(QtWidgets.QMainWindow):
         # Si le coup est valide, on accepte le clic
         if self.plateau_jeu.coupValide(pos, self.joueurN.couleur)[0]:
             self.tour_humainVSia(self.plateau_jeu, self.joueurN, self.joueurB, pos)
+
+    def clic_switch(self, event):
+        pos = (event.pos().y() // 50, event.pos().x() // 50)
+
+        # Si le coup est valide, on accepte le clic
+        if self.plateau_jeu.coupValide(pos, self.couleur_active)[0]:
+            self.tour_humainVShumain(self.plateau_jeu, self.joueurN, self.joueurB, pos)
+
 
     def tour_iaVSia(self, plateau, j1, j2):
 
@@ -174,7 +182,7 @@ class MonAppli(QtWidgets.QMainWindow):
         else:
             jouable1 = False
             
-        self.CLR_JOUEUR = j2.couleur
+        self.couleur_active = j2.couleur
         self.ui.conteneur.repaint()
         
         #Si le joueur peut jouer, il joue
@@ -190,7 +198,7 @@ class MonAppli(QtWidgets.QMainWindow):
         else:
             jouable2 = False
 
-        self.CLR_JOUEUR = j1.couleur
+        self.couleur_active = j1.couleur
         self.ui.conteneur.repaint()
             
         if jouable1 == False and jouable2 == False:
@@ -228,7 +236,7 @@ class MonAppli(QtWidgets.QMainWindow):
         else:
             jouable1 = False
             
-        self.CLR_JOUEUR = j2.couleur
+        self.couleur_active = j2.couleur
         self.ui.conteneur.repaint()
         time.sleep(0.5)
         
@@ -245,7 +253,7 @@ class MonAppli(QtWidgets.QMainWindow):
         else:
             jouable2 = False
 
-        self.CLR_JOUEUR = j1.couleur
+        self.couleur_active = j1.couleur
         self.ui.conteneur.repaint()
             
         if jouable1 == False and jouable2 == False:
@@ -254,7 +262,6 @@ class MonAppli(QtWidgets.QMainWindow):
             return True #Continuer le jeu
                     
     def tour_humainVShumain(self, plateau, j1, j2, pos_humain):
-
         '''Fonction qui fait avancer le jeu d'un tour, affiche l'état actuel du
         jeu dans le terminal et qui renvoie True s'il faut arrêter le jeu et False
         sinon.
@@ -270,38 +277,42 @@ class MonAppli(QtWidgets.QMainWindow):
         booléen : True s'il faut continuer le jeu, False sinon'''
     
         jouable1, jouable2 = True, True
+
+        if self.couleur_active == j1.couleur:
     
-        #Si le joueur peut jouer, il joue
-        if plateau.jouable(j1.couleur):
-            flag1 = True
-            while flag1:
-                try:
-                    j1.jouer(pos_humain)
-                    flag1 = False
-                except ValueError:
-                    print("Veuillez jouer dans une case valide")
-        else:
-            jouable1 = False
-            
-        self.CLR_JOUEUR = j2.couleur
-        self.ui.conteneur.repaint()
-        time.sleep(0.5)
+            #Si le joueur peut jouer, il joue
+            if plateau.jouable(j1.couleur):
+                flag1 = True
+                while flag1:
+                    try:
+                        j1.jouer(pos_humain)
+                        flag1 = False
+                    except ValueError:
+                        print("Veuillez jouer dans une case valide")
+            else:
+                jouable1 = False
+                
+            self.couleur_active = j2.couleur
+            self.ui.conteneur.repaint()
+            time.sleep(0.5)
         
-        #Si le joueur peut jouer, il joue
-        if plateau.jouable(j2.couleur):
-            flag2 = True
-            while flag2:
-                try:
-                    j2.jouer()
-                    flag2 = False
-                except ValueError:
-                    print("Veuillez jouer dans une case valide")
-
         else:
-            jouable2 = False
 
-        self.CLR_JOUEUR = j1.couleur
-        self.ui.conteneur.repaint()
+            #Si le joueur peut jouer, il joue
+            if plateau.jouable(j2.couleur):
+                flag2 = True
+                while flag2:
+                    try:
+                        j2.jouer(pos_humain)
+                        flag2 = False
+                    except ValueError:
+                        print("Veuillez jouer dans une case valide")
+
+            else:
+                jouable2 = False
+
+            self.couleur_active = j1.couleur
+            self.ui.conteneur.repaint()
             
         if jouable1 == False and jouable2 == False:
             return False #Arrêter le jeu
