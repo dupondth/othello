@@ -29,8 +29,8 @@
      <rect>
       <x>420</x>
       <y>30</y>
-      <width>131</width>
-      <height>201</height>
+      <width>135</width>
+      <height>321</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -54,9 +54,97 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="bouton_depart">
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>68</width>
+         <height>58</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>Départ</string>
+        <string>Niveau IA 1 :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="niveau_ia1">
+       <item>
+        <property name="text">
+         <string>Facile</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Normal</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Difficile</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Très difficile</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Niveau IA 2 :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="niveau_ia2">
+       <item>
+        <property name="text">
+         <string>Facile</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Normal</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Difficile</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Très difficile</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>68</width>
+         <height>58</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="bouton_simuler">
+       <property name="text">
+        <string>Début simulation</string>
        </property>
       </widget>
      </item>

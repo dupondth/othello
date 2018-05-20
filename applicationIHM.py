@@ -19,9 +19,12 @@ class MonAppli(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
 
         # Liens entre boutons et fonctions
-        self.ui.bouton_depart.clicked.connect(self.partie) 
+        self.ui.bouton_simuler.clicked.connect(self.partie) 
         self.ui.bouton_reset.clicked.connect(self.generer) 
         self.ui.mode_jeu.currentIndexChanged.connect(self.change_mode)
+
+        # IA de base
+        self.ia = p.IAalea
         
         # Image de fond dans le widget principal
         palette = QtGui.QPalette()
@@ -82,15 +85,38 @@ class MonAppli(QtWidgets.QMainWindow):
         self.ui.bouton_reset.setStyleSheet("background-color: None")
         self.plateau_jeu = p.plateau()
         mode = self.ui.mode_jeu.currentIndex()
-        
+
+        # Choix du niveau des ia qui s'affronteront
+        niveau_ia1 = self.ui.niveau_ia1.currentIndex()
+        niveau_ia2 = self.ui.niveau_ia2.currentIndex()
+
+        if niveau_ia1 == 0:
+            self.ia = p.IAalea
+        elif niveau_ia1 == 1:
+            self.ia = p.IAmax
+        elif niveau_ia1 == 2:
+            self.ia = p.IAminmax
+        else:
+            self.ia = p.IAminmax2
+
+        if niveau_ia2 == 0:
+            self.ia = p.IAalea
+        elif niveau_ia2 == 1:
+            self.ia = p.IAmax
+        elif niveau_ia1 == 2:
+            self.ia = p.IAminmax
+        else:
+            self.ia = p.IAminmax2
+
         if mode == 0:
             self.ui.conteneur.mousePressEvent = lambda x : None
-            self.joueurN = p.IAalea('N', self.plateau_jeu)
-            self.joueurB = p.IAalea('B', self.plateau_jeu)
+            self.joueurN = self.ia('N', self.plateau_jeu)
+            self.joueurB = self.ia('B', self.plateau_jeu)
+
         elif mode == 1:
             self.ui.conteneur.mousePressEvent = self.clic
             self.joueurN = p.humain_graphique('N', self.plateau_jeu)
-            self.joueurB = p.IAalea('B', self.plateau_jeu)
+            self.joueurB = self.ia('B', self.plateau_jeu)
         else:
             self.ui.conteneur.mousePressEvent = self.clic_switch
             self.joueurN = p.humain_graphique('N', self.plateau_jeu)
@@ -104,10 +130,18 @@ class MonAppli(QtWidgets.QMainWindow):
         # Pour indiquer qu'il faut appuyer sur le bouton
         # après avoir changé le mode de jeu
         self.ui.bouton_reset.setStyleSheet("background-color : green")
-        if self.ui.mode_jeu.currentIndex() != 0:
-            self.ui.bouton_depart.setEnabled(False)
+        if self.ui.mode_jeu.currentIndex() == 0:
+            self.ui.bouton_simuler.setEnabled(True)
+            self.ui.niveau_ia1.setEnabled(True)
+            self.ui.niveau_ia2.setEnabled(True)
+        elif self.ui.mode_jeu.currentIndex() == 1:
+            self.ui.bouton_simuler.setEnabled(False)
+            self.ui.niveau_ia1.setEnabled(False)
+            self.ui.niveau_ia2.setEnabled(True)
         else:
-            self.ui.bouton_depart.setEnabled(True)
+            self.ui.bouton_simuler.setEnabled(False)
+            self.ui.niveau_ia1.setEnabled(False)
+            self.ui.niveau_ia2.setEnabled(False)
 
     def drawPlateau(self, qpainter):
         # pour tracer dans le widget
