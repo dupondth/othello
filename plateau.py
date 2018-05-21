@@ -59,8 +59,8 @@ class plateau(dict): #le plateau est un dictionnaire
         self[(3,4)] = pion('N')
         self[(4,3)] = pion('N')
 
-    def evaluation(self, couleur_joueur):
-        '''Fonction d'évaluation du jeu pour une couleur de joueur.
+    def diff_score(self, couleur_joueur):
+        '''Fonction qui calcule la différence de score pour un joueur donné.
         Renvoie le nombre de pions du joueur couleur_joueur auquel on soustrait
         nombre de pions de l'adversaire.
 
@@ -388,7 +388,7 @@ class IAminmax(joueur):
                             self.couleur_adv())
                             
                             if table_copy2 is not None:
-                                poids_feuille = table_copy2.evaluation(self.couleur)
+                                poids_feuille = table_copy2.diff_score(self.couleur)
                                 if poids_feuille < poids_noeud:
                                     poids_noeud = poids_feuille
                             
@@ -400,7 +400,6 @@ class IAminmax2(joueur):
     choisit le coup à jouer tel qu'il minimise la perte maximum (ou maximise le
     gain minimum) en simulant deux tours complets (1 coup du joueur, 1 de 
     l'adversaire, 1 du joueur puis 1 de l'adversaire)'''
-    
     
     def couleur_adv(self):
         if self.couleur == 'B':
@@ -442,7 +441,7 @@ class IAminmax2(joueur):
                                                     table_copy4 = self.simuler((o,p), table_copy3, self.couleur_adv())
                                                     
                                                     if table_copy4 is not None:
-                                                        poids_feuille = table_copy4.evaluation(self.couleur)
+                                                        poids_feuille = table_copy4.diff_score(self.couleur)
                                                         if poids_feuille < poids_noeud3:
                                                             poids_noeud3 = poids_feuille
                                                             
