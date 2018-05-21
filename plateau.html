@@ -1,0 +1,531 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module plateau</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>plateau</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/thomas/othello/plateau.py">/home/thomas/othello/plateau.py</a></font></td></tr></table>
+    <p><tt>#coding:utf8</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="applicationIHM.html">applicationIHM</a><br>
+</td><td width="25%" valign=top><a href="copy.html">copy</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top><a href="time.html">time</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#dict">builtins.dict</a>(<a href="builtins.html#object">builtins.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="plateau.html#plateau">plateau</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="plateau.html#joueur">joueur</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="plateau.html#IAalea">IAalea</a>
+</font></dt><dt><font face="helvetica, arial"><a href="plateau.html#IAmax">IAmax</a>
+</font></dt><dt><font face="helvetica, arial"><a href="plateau.html#IAminmax">IAminmax</a>
+</font></dt><dt><font face="helvetica, arial"><a href="plateau.html#IAminmax2">IAminmax2</a>
+</font></dt><dt><font face="helvetica, arial"><a href="plateau.html#humain">humain</a>
+</font></dt><dt><font face="helvetica, arial"><a href="plateau.html#humain_graphique">humain_graphique</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="plateau.html#pion">pion</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="IAalea">class <strong>IAalea</strong></a>(<a href="plateau.html#joueur">joueur</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>IA&nbsp;qui&nbsp;joue&nbsp;au&nbsp;hasard&nbsp;parmi&nbsp;les&nbsp;cases&nbsp;jouables<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="plateau.html#IAalea">IAalea</a></dd>
+<dd><a href="plateau.html#joueur">joueur</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="IAalea-jouer"><strong>jouer</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="plateau.html#joueur">joueur</a>:<br>
+<dl><dt><a name="IAalea-__init__"><strong>__init__</strong></a>(self, clr, plateau)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="IAalea-retourner"><strong>retourner</strong></a>(self, case, plateau, couleur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;retourne&nbsp;les&nbsp;pions&nbsp;à&nbsp;retourner&nbsp;après&nbsp;avoir&nbsp;joué<br>
+dans&nbsp;une&nbsp;case.<br>
+&nbsp;<br>
+Entrée<br>
+------<br>
+case&nbsp;(couple)</tt></dd></dl>
+
+<dl><dt><a name="IAalea-simuler"><strong>simuler</strong></a>(self, coords, plateau, couleur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;simule&nbsp;un&nbsp;coup&nbsp;coords=(i,j)&nbsp;et&nbsp;qui&nbsp;renvoie&nbsp;la&nbsp;table<br>
+après&nbsp;simulation&nbsp;sur&nbsp;cette&nbsp;position.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="plateau.html#joueur">joueur</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>couleur</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="IAmax">class <strong>IAmax</strong></a>(<a href="plateau.html#joueur">joueur</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>IA&nbsp;qui&nbsp;joue&nbsp;le&nbsp;meilleur&nbsp;coup&nbsp;pour&nbsp;un&nbsp;tour<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="plateau.html#IAmax">IAmax</a></dd>
+<dd><a href="plateau.html#joueur">joueur</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="IAmax-jouer"><strong>jouer</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="plateau.html#joueur">joueur</a>:<br>
+<dl><dt><a name="IAmax-__init__"><strong>__init__</strong></a>(self, clr, plateau)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="IAmax-retourner"><strong>retourner</strong></a>(self, case, plateau, couleur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;retourne&nbsp;les&nbsp;pions&nbsp;à&nbsp;retourner&nbsp;après&nbsp;avoir&nbsp;joué<br>
+dans&nbsp;une&nbsp;case.<br>
+&nbsp;<br>
+Entrée<br>
+------<br>
+case&nbsp;(couple)</tt></dd></dl>
+
+<dl><dt><a name="IAmax-simuler"><strong>simuler</strong></a>(self, coords, plateau, couleur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;simule&nbsp;un&nbsp;coup&nbsp;coords=(i,j)&nbsp;et&nbsp;qui&nbsp;renvoie&nbsp;la&nbsp;table<br>
+après&nbsp;simulation&nbsp;sur&nbsp;cette&nbsp;position.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="plateau.html#joueur">joueur</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>couleur</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="IAminmax">class <strong>IAminmax</strong></a>(<a href="plateau.html#joueur">joueur</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>IA&nbsp;qui&nbsp;applique&nbsp;l'algorithme&nbsp;minmax:&nbsp;elle&nbsp;choisit&nbsp;le&nbsp;coup&nbsp;à&nbsp;jouer&nbsp;tel&nbsp;<br>
+qu'il&nbsp;minimise&nbsp;la&nbsp;perte&nbsp;maximum&nbsp;(ou&nbsp;maximise&nbsp;le&nbsp;gain&nbsp;minimum)&nbsp;en&nbsp;simulant&nbsp;<br>
+un&nbsp;tour&nbsp;complet&nbsp;(1&nbsp;coup&nbsp;du&nbsp;<a href="#joueur">joueur</a>&nbsp;et&nbsp;1&nbsp;coup&nbsp;de&nbsp;l'adversaire)<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="plateau.html#IAminmax">IAminmax</a></dd>
+<dd><a href="plateau.html#joueur">joueur</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="IAminmax-couleur_adv"><strong>couleur_adv</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="IAminmax-jouer"><strong>jouer</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="plateau.html#joueur">joueur</a>:<br>
+<dl><dt><a name="IAminmax-__init__"><strong>__init__</strong></a>(self, clr, plateau)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="IAminmax-retourner"><strong>retourner</strong></a>(self, case, plateau, couleur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;retourne&nbsp;les&nbsp;pions&nbsp;à&nbsp;retourner&nbsp;après&nbsp;avoir&nbsp;joué<br>
+dans&nbsp;une&nbsp;case.<br>
+&nbsp;<br>
+Entrée<br>
+------<br>
+case&nbsp;(couple)</tt></dd></dl>
+
+<dl><dt><a name="IAminmax-simuler"><strong>simuler</strong></a>(self, coords, plateau, couleur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;simule&nbsp;un&nbsp;coup&nbsp;coords=(i,j)&nbsp;et&nbsp;qui&nbsp;renvoie&nbsp;la&nbsp;table<br>
+après&nbsp;simulation&nbsp;sur&nbsp;cette&nbsp;position.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="plateau.html#joueur">joueur</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>couleur</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="IAminmax2">class <strong>IAminmax2</strong></a>(<a href="plateau.html#joueur">joueur</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>IA&nbsp;qui&nbsp;applique&nbsp;l'algorithme&nbsp;minmax&nbsp;sur&nbsp;deux&nbsp;tours&nbsp;de&nbsp;profondeur:&nbsp;elle&nbsp;<br>
+choisit&nbsp;le&nbsp;coup&nbsp;à&nbsp;jouer&nbsp;tel&nbsp;qu'il&nbsp;minimise&nbsp;la&nbsp;perte&nbsp;maximum&nbsp;(ou&nbsp;maximise&nbsp;le<br>
+gain&nbsp;minimum)&nbsp;en&nbsp;simulant&nbsp;deux&nbsp;tours&nbsp;complets&nbsp;(1&nbsp;coup&nbsp;du&nbsp;<a href="#joueur">joueur</a>,&nbsp;1&nbsp;de&nbsp;<br>
+l'adversaire,&nbsp;1&nbsp;du&nbsp;<a href="#joueur">joueur</a>&nbsp;puis&nbsp;1&nbsp;de&nbsp;l'adversaire)<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="plateau.html#IAminmax2">IAminmax2</a></dd>
+<dd><a href="plateau.html#joueur">joueur</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="IAminmax2-couleur_adv"><strong>couleur_adv</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="IAminmax2-jouer"><strong>jouer</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="plateau.html#joueur">joueur</a>:<br>
+<dl><dt><a name="IAminmax2-__init__"><strong>__init__</strong></a>(self, clr, plateau)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="IAminmax2-retourner"><strong>retourner</strong></a>(self, case, plateau, couleur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;retourne&nbsp;les&nbsp;pions&nbsp;à&nbsp;retourner&nbsp;après&nbsp;avoir&nbsp;joué<br>
+dans&nbsp;une&nbsp;case.<br>
+&nbsp;<br>
+Entrée<br>
+------<br>
+case&nbsp;(couple)</tt></dd></dl>
+
+<dl><dt><a name="IAminmax2-simuler"><strong>simuler</strong></a>(self, coords, plateau, couleur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;simule&nbsp;un&nbsp;coup&nbsp;coords=(i,j)&nbsp;et&nbsp;qui&nbsp;renvoie&nbsp;la&nbsp;table<br>
+après&nbsp;simulation&nbsp;sur&nbsp;cette&nbsp;position.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="plateau.html#joueur">joueur</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>couleur</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="humain">class <strong>humain</strong></a>(<a href="plateau.html#joueur">joueur</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Joueur&nbsp;<a href="#humain">humain</a>&nbsp;auquel&nbsp;on&nbsp;demande&nbsp;où&nbsp;il&nbsp;veut&nbsp;jouer<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="plateau.html#humain">humain</a></dd>
+<dd><a href="plateau.html#joueur">joueur</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="humain-jouer"><strong>jouer</strong></a>(self)</dt><dd><tt>Fonction&nbsp;qui&nbsp;permet&nbsp;à&nbsp;chaque&nbsp;<a href="#joueur">joueur</a>&nbsp;de&nbsp;choisir&nbsp;où&nbsp;jouer</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="plateau.html#joueur">joueur</a>:<br>
+<dl><dt><a name="humain-__init__"><strong>__init__</strong></a>(self, clr, plateau)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="humain-retourner"><strong>retourner</strong></a>(self, case, plateau, couleur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;retourne&nbsp;les&nbsp;pions&nbsp;à&nbsp;retourner&nbsp;après&nbsp;avoir&nbsp;joué<br>
+dans&nbsp;une&nbsp;case.<br>
+&nbsp;<br>
+Entrée<br>
+------<br>
+case&nbsp;(couple)</tt></dd></dl>
+
+<dl><dt><a name="humain-simuler"><strong>simuler</strong></a>(self, coords, plateau, couleur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;simule&nbsp;un&nbsp;coup&nbsp;coords=(i,j)&nbsp;et&nbsp;qui&nbsp;renvoie&nbsp;la&nbsp;table<br>
+après&nbsp;simulation&nbsp;sur&nbsp;cette&nbsp;position.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="plateau.html#joueur">joueur</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>couleur</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="humain_graphique">class <strong>humain_graphique</strong></a>(<a href="plateau.html#joueur">joueur</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="plateau.html#humain_graphique">humain_graphique</a></dd>
+<dd><a href="plateau.html#joueur">joueur</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="humain_graphique-jouer"><strong>jouer</strong></a>(self, pos)</dt></dl>
+
+<hr>
+Methods inherited from <a href="plateau.html#joueur">joueur</a>:<br>
+<dl><dt><a name="humain_graphique-__init__"><strong>__init__</strong></a>(self, clr, plateau)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="humain_graphique-retourner"><strong>retourner</strong></a>(self, case, plateau, couleur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;retourne&nbsp;les&nbsp;pions&nbsp;à&nbsp;retourner&nbsp;après&nbsp;avoir&nbsp;joué<br>
+dans&nbsp;une&nbsp;case.<br>
+&nbsp;<br>
+Entrée<br>
+------<br>
+case&nbsp;(couple)</tt></dd></dl>
+
+<dl><dt><a name="humain_graphique-simuler"><strong>simuler</strong></a>(self, coords, plateau, couleur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;simule&nbsp;un&nbsp;coup&nbsp;coords=(i,j)&nbsp;et&nbsp;qui&nbsp;renvoie&nbsp;la&nbsp;table<br>
+après&nbsp;simulation&nbsp;sur&nbsp;cette&nbsp;position.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="plateau.html#joueur">joueur</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>couleur</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="joueur">class <strong>joueur</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="joueur-__init__"><strong>__init__</strong></a>(self, clr, plateau)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="joueur-retourner"><strong>retourner</strong></a>(self, case, plateau, couleur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;retourne&nbsp;les&nbsp;pions&nbsp;à&nbsp;retourner&nbsp;après&nbsp;avoir&nbsp;joué<br>
+dans&nbsp;une&nbsp;case.<br>
+&nbsp;<br>
+Entrée<br>
+------<br>
+case&nbsp;(couple)</tt></dd></dl>
+
+<dl><dt><a name="joueur-simuler"><strong>simuler</strong></a>(self, coords, plateau, couleur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;simule&nbsp;un&nbsp;coup&nbsp;coords=(i,j)&nbsp;et&nbsp;qui&nbsp;renvoie&nbsp;la&nbsp;table<br>
+après&nbsp;simulation&nbsp;sur&nbsp;cette&nbsp;position.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>couleur</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="pion">class <strong>pion</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="pion-__init__"><strong>__init__</strong></a>(self, clr)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="pion-tourner"><strong>tourner</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>couleur</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="plateau">class <strong>plateau</strong></a>(<a href="builtins.html#dict">builtins.dict</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="builtins.html#dict">dict</a>()&nbsp;-&gt;&nbsp;new&nbsp;empty&nbsp;dictionary<br>
+<a href="builtins.html#dict">dict</a>(mapping)&nbsp;-&gt;&nbsp;new&nbsp;dictionary&nbsp;initialized&nbsp;from&nbsp;a&nbsp;mapping&nbsp;<a href="builtins.html#object">object</a>'s<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(key,&nbsp;value)&nbsp;pairs<br>
+<a href="builtins.html#dict">dict</a>(iterable)&nbsp;-&gt;&nbsp;new&nbsp;dictionary&nbsp;initialized&nbsp;as&nbsp;if&nbsp;via:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;d&nbsp;=&nbsp;{}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;k,&nbsp;v&nbsp;in&nbsp;iterable:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d[k]&nbsp;=&nbsp;v<br>
+<a href="builtins.html#dict">dict</a>(**kwargs)&nbsp;-&gt;&nbsp;new&nbsp;dictionary&nbsp;initialized&nbsp;with&nbsp;the&nbsp;name=value&nbsp;pairs<br>
+&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;the&nbsp;keyword&nbsp;argument&nbsp;list.&nbsp;&nbsp;For&nbsp;example:&nbsp;&nbsp;<a href="builtins.html#dict">dict</a>(one=1,&nbsp;two=2)<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="plateau.html#plateau">plateau</a></dd>
+<dd><a href="builtins.html#dict">builtins.dict</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="plateau-__init__"><strong>__init__</strong></a>(self)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="plateau-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="plateau-affichage"><strong>affichage</strong></a>(self, couleur_joueur)</dt></dl>
+
+<dl><dt><a name="plateau-coupValide"><strong>coupValide</strong></a>(self, case_depart, couleur_joueur)</dt><dd><tt>Fonction&nbsp;qui&nbsp;renvoie&nbsp;si&nbsp;une&nbsp;case&nbsp;est&nbsp;valide&nbsp;ou&nbsp;non<br>
+&nbsp;<br>
+Entrées<br>
+-------<br>
+case&nbsp;à&nbsp;vérifier&nbsp;(couple)<br>
+couleur&nbsp;du&nbsp;<a href="#joueur">joueur</a>&nbsp;('N'&nbsp;ou&nbsp;'B')<br>
+&nbsp;<br>
+Sortie<br>
+------<br>
+couple&nbsp;fait&nbsp;d'un&nbsp;booléen&nbsp;True&nbsp;si&nbsp;le&nbsp;coup&nbsp;est&nbsp;valide&nbsp;et&nbsp;la&nbsp;liste&nbsp;des<br>
+pions&nbsp;à&nbsp;tourner&nbsp;si&nbsp;on&nbsp;joue&nbsp;sur&nbsp;cette&nbsp;case</tt></dd></dl>
+
+<dl><dt><a name="plateau-evaluation"><strong>evaluation</strong></a>(self, couleur_joueur)</dt><dd><tt>Fonction&nbsp;d'évaluation&nbsp;du&nbsp;jeu&nbsp;pour&nbsp;une&nbsp;couleur&nbsp;de&nbsp;<a href="#joueur">joueur</a>.<br>
+Renvoie&nbsp;le&nbsp;nombre&nbsp;de&nbsp;pions&nbsp;du&nbsp;<a href="#joueur">joueur</a>&nbsp;couleur_joueur&nbsp;auquel&nbsp;on&nbsp;soustrait<br>
+nombre&nbsp;de&nbsp;pions&nbsp;de&nbsp;l'adversaire.<br>
+&nbsp;<br>
+Entrées<br>
+-------<br>
+couleur&nbsp;('N'&nbsp;ou&nbsp;'B')&nbsp;:&nbsp;couleur&nbsp;du&nbsp;<a href="#joueur">joueur</a><br>
+&nbsp;<br>
+Sortie<br>
+------<br>
+valeur&nbsp;(int)</tt></dd></dl>
+
+<dl><dt><a name="plateau-jouable"><strong>jouable</strong></a>(self, clr)</dt><dd><tt>Fonction&nbsp;qui&nbsp;renvoie&nbsp;True&nbsp;si&nbsp;un&nbsp;<a href="#joueur">joueur</a>&nbsp;de&nbsp;couleur&nbsp;clr&nbsp;peut<br>
+jouer&nbsp;et&nbsp;False&nbsp;sinon.<br>
+&nbsp;<br>
+rq&nbsp;:&nbsp;Cette&nbsp;fonction&nbsp;est&nbsp;celle&nbsp;permettant&nbsp;de&nbsp;ne&nbsp;pas&nbsp;jouer&nbsp;en-dehors<br>
+de&nbsp;<a href="#plateau">plateau</a></tt></dd></dl>
+
+<dl><dt><a name="plateau-listeValide"><strong>listeValide</strong></a>(self, clr)</dt><dd><tt>Fonction&nbsp;qui&nbsp;renvoie&nbsp;une&nbsp;liste&nbsp;des&nbsp;case&nbsp;jouables&nbsp;pour&nbsp;un&nbsp;<a href="#joueur">joueur</a><br>
+&nbsp;<br>
+Entrée<br>
+------<br>
+clr&nbsp;(str)&nbsp;:&nbsp;couleur&nbsp;du&nbsp;<a href="#joueur">joueur</a>&nbsp;:&nbsp;'N'&nbsp;ou&nbsp;'B'<br>
+&nbsp;<br>
+Sortie<br>
+------<br>
+liste&nbsp;de&nbsp;couples&nbsp;qui&nbsp;correspondent&nbsp;au&nbsp;coordonnées&nbsp;jouables</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#dict">builtins.dict</a>:<br>
+<dl><dt><a name="plateau-__contains__"><strong>__contains__</strong></a>(self, key, /)</dt><dd><tt>True&nbsp;if&nbsp;D&nbsp;has&nbsp;a&nbsp;key&nbsp;k,&nbsp;else&nbsp;False.</tt></dd></dl>
+
+<dl><dt><a name="plateau-__delitem__"><strong>__delitem__</strong></a>(self, key, /)</dt><dd><tt>Delete&nbsp;self[key].</tt></dd></dl>
+
+<dl><dt><a name="plateau-__eq__"><strong>__eq__</strong></a>(self, value, /)</dt><dd><tt>Return&nbsp;self==value.</tt></dd></dl>
+
+<dl><dt><a name="plateau-__ge__"><strong>__ge__</strong></a>(self, value, /)</dt><dd><tt>Return&nbsp;self&gt;=value.</tt></dd></dl>
+
+<dl><dt><a name="plateau-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="plateau-__getitem__"><strong>__getitem__</strong></a>(...)</dt><dd><tt>x.<a href="#plateau-__getitem__">__getitem__</a>(y)&nbsp;&lt;==&gt;&nbsp;x[y]</tt></dd></dl>
+
+<dl><dt><a name="plateau-__gt__"><strong>__gt__</strong></a>(self, value, /)</dt><dd><tt>Return&nbsp;self&gt;value.</tt></dd></dl>
+
+<dl><dt><a name="plateau-__iter__"><strong>__iter__</strong></a>(self, /)</dt><dd><tt>Implement&nbsp;iter(self).</tt></dd></dl>
+
+<dl><dt><a name="plateau-__le__"><strong>__le__</strong></a>(self, value, /)</dt><dd><tt>Return&nbsp;self&lt;=value.</tt></dd></dl>
+
+<dl><dt><a name="plateau-__len__"><strong>__len__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;len(self).</tt></dd></dl>
+
+<dl><dt><a name="plateau-__lt__"><strong>__lt__</strong></a>(self, value, /)</dt><dd><tt>Return&nbsp;self&lt;value.</tt></dd></dl>
+
+<dl><dt><a name="plateau-__ne__"><strong>__ne__</strong></a>(self, value, /)</dt><dd><tt>Return&nbsp;self!=value.</tt></dd></dl>
+
+<dl><dt><a name="plateau-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="plateau-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="plateau-__setitem__"><strong>__setitem__</strong></a>(self, key, value, /)</dt><dd><tt>Set&nbsp;self[key]&nbsp;to&nbsp;value.</tt></dd></dl>
+
+<dl><dt><a name="plateau-__sizeof__"><strong>__sizeof__</strong></a>(...)</dt><dd><tt>D.<a href="#plateau-__sizeof__">__sizeof__</a>()&nbsp;-&gt;&nbsp;size&nbsp;of&nbsp;D&nbsp;in&nbsp;memory,&nbsp;in&nbsp;bytes</tt></dd></dl>
+
+<dl><dt><a name="plateau-clear"><strong>clear</strong></a>(...)</dt><dd><tt>D.<a href="#plateau-clear">clear</a>()&nbsp;-&gt;&nbsp;None.&nbsp;&nbsp;Remove&nbsp;all&nbsp;items&nbsp;from&nbsp;D.</tt></dd></dl>
+
+<dl><dt><a name="plateau-copy"><strong>copy</strong></a>(...)</dt><dd><tt>D.<a href="#plateau-copy">copy</a>()&nbsp;-&gt;&nbsp;a&nbsp;shallow&nbsp;copy&nbsp;of&nbsp;D</tt></dd></dl>
+
+<dl><dt><a name="plateau-fromkeys"><strong>fromkeys</strong></a>(iterable, value=None, /)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Returns&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#dict">dict</a>&nbsp;with&nbsp;keys&nbsp;from&nbsp;iterable&nbsp;and&nbsp;values&nbsp;equal&nbsp;to&nbsp;value.</tt></dd></dl>
+
+<dl><dt><a name="plateau-get"><strong>get</strong></a>(...)</dt><dd><tt>D.<a href="#plateau-get">get</a>(k[,d])&nbsp;-&gt;&nbsp;D[k]&nbsp;if&nbsp;k&nbsp;in&nbsp;D,&nbsp;else&nbsp;d.&nbsp;&nbsp;d&nbsp;defaults&nbsp;to&nbsp;None.</tt></dd></dl>
+
+<dl><dt><a name="plateau-items"><strong>items</strong></a>(...)</dt><dd><tt>D.<a href="#plateau-items">items</a>()&nbsp;-&gt;&nbsp;a&nbsp;set-like&nbsp;<a href="builtins.html#object">object</a>&nbsp;providing&nbsp;a&nbsp;view&nbsp;on&nbsp;D's&nbsp;items</tt></dd></dl>
+
+<dl><dt><a name="plateau-keys"><strong>keys</strong></a>(...)</dt><dd><tt>D.<a href="#plateau-keys">keys</a>()&nbsp;-&gt;&nbsp;a&nbsp;set-like&nbsp;<a href="builtins.html#object">object</a>&nbsp;providing&nbsp;a&nbsp;view&nbsp;on&nbsp;D's&nbsp;keys</tt></dd></dl>
+
+<dl><dt><a name="plateau-pop"><strong>pop</strong></a>(...)</dt><dd><tt>D.<a href="#plateau-pop">pop</a>(k[,d])&nbsp;-&gt;&nbsp;v,&nbsp;remove&nbsp;specified&nbsp;key&nbsp;and&nbsp;return&nbsp;the&nbsp;corresponding&nbsp;value.<br>
+If&nbsp;key&nbsp;is&nbsp;not&nbsp;found,&nbsp;d&nbsp;is&nbsp;returned&nbsp;if&nbsp;given,&nbsp;otherwise&nbsp;KeyError&nbsp;is&nbsp;raised</tt></dd></dl>
+
+<dl><dt><a name="plateau-popitem"><strong>popitem</strong></a>(...)</dt><dd><tt>D.<a href="#plateau-popitem">popitem</a>()&nbsp;-&gt;&nbsp;(k,&nbsp;v),&nbsp;remove&nbsp;and&nbsp;return&nbsp;some&nbsp;(key,&nbsp;value)&nbsp;pair&nbsp;as&nbsp;a<br>
+2-tuple;&nbsp;but&nbsp;raise&nbsp;KeyError&nbsp;if&nbsp;D&nbsp;is&nbsp;empty.</tt></dd></dl>
+
+<dl><dt><a name="plateau-setdefault"><strong>setdefault</strong></a>(...)</dt><dd><tt>D.<a href="#plateau-setdefault">setdefault</a>(k[,d])&nbsp;-&gt;&nbsp;D.<a href="#plateau-get">get</a>(k,d),&nbsp;also&nbsp;set&nbsp;D[k]=d&nbsp;if&nbsp;k&nbsp;not&nbsp;in&nbsp;D</tt></dd></dl>
+
+<dl><dt><a name="plateau-update"><strong>update</strong></a>(...)</dt><dd><tt>D.<a href="#plateau-update">update</a>([E,&nbsp;]**F)&nbsp;-&gt;&nbsp;None.&nbsp;&nbsp;Update&nbsp;D&nbsp;from&nbsp;<a href="builtins.html#dict">dict</a>/iterable&nbsp;E&nbsp;and&nbsp;F.<br>
+If&nbsp;E&nbsp;is&nbsp;present&nbsp;and&nbsp;has&nbsp;a&nbsp;.<a href="#plateau-keys">keys</a>()&nbsp;method,&nbsp;then&nbsp;does:&nbsp;&nbsp;for&nbsp;k&nbsp;in&nbsp;E:&nbsp;D[k]&nbsp;=&nbsp;E[k]<br>
+If&nbsp;E&nbsp;is&nbsp;present&nbsp;and&nbsp;lacks&nbsp;a&nbsp;.<a href="#plateau-keys">keys</a>()&nbsp;method,&nbsp;then&nbsp;does:&nbsp;&nbsp;for&nbsp;k,&nbsp;v&nbsp;in&nbsp;E:&nbsp;D[k]&nbsp;=&nbsp;v<br>
+In&nbsp;either&nbsp;case,&nbsp;this&nbsp;is&nbsp;followed&nbsp;by:&nbsp;for&nbsp;k&nbsp;in&nbsp;F:&nbsp;&nbsp;D[k]&nbsp;=&nbsp;F[k]</tt></dd></dl>
+
+<dl><dt><a name="plateau-values"><strong>values</strong></a>(...)</dt><dd><tt>D.<a href="#plateau-values">values</a>()&nbsp;-&gt;&nbsp;an&nbsp;<a href="builtins.html#object">object</a>&nbsp;providing&nbsp;a&nbsp;view&nbsp;on&nbsp;D's&nbsp;values</tt></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="builtins.html#dict">builtins.dict</a>:<br>
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-increment"><strong>increment</strong></a>(direction, position)</dt></dl>
+ <dl><dt><a name="-inputtotuple"><strong>inputtotuple</strong></a>(chaine)</dt><dd><tt>Fonction&nbsp;qui&nbsp;renvoie&nbsp;un&nbsp;couple&nbsp;de&nbsp;position&nbsp;style&nbsp;matrice&nbsp;avec<br>
+comme&nbsp;entrée&nbsp;un&nbsp;chaine&nbsp;style&nbsp;<a href="#plateau">plateau</a>.<br>
+ex:&nbsp;d2&nbsp;-&gt;&nbsp;(1,3)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a1&nbsp;-&gt;&nbsp;(0,0)<br>
+&nbsp;<br>
+Entrée<br>
+------<br>
+chaine&nbsp;(str)&nbsp;<br>
+&nbsp;<br>
+Sortie<br>
+------<br>
+couple&nbsp;(tuple)</tt></dd></dl>
+</td></tr></table>
+</body></html>
