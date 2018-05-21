@@ -71,32 +71,37 @@ class testPlateau(unittest.TestCase):
             plat[positions[k]] = p.pion(couleur_pos[k])
 
         #On fait la représentation à la main
-        representation = 'N.......\n' + \
-                         '........\n' + \
-                         '...BB...\n' + \
-                         '...BNN..\n' + \
-                         '...NB...\n' + \
-                         '........\n' + \
-                         '........\n' + \
-                         '........\n'
+        representation = ' ABCDEFGH\n' + \
+                         '1N.......\n' + \
+                         '2........\n' + \
+                         '3...BB...\n' + \
+                         '4...BNN..\n' + \
+                         '5...NB...\n' + \
+                         '6........\n' + \
+                         '7........\n' + \
+                         '8........\n'
 
-        representationN = 'N.......\n' + \
-                          '..###...\n' + \
-                          '...BB...\n' + \
-                          '..#BNN..\n' + \
-                          '...NB#..\n' + \
-                          '...##...\n' + \
-                          '........\n' + \
-                          '........\n'
+        representationN = '\nTour du joueur Noir'+'\n' + \
+                          ' ABCDEFGH\n' + \
+                          '1N.......\n' + \
+                          '2..###...\n' + \
+                          '3...BB...\n' + \
+                          '4..#BNN..\n' + \
+                          '5...NB#..\n' + \
+                          '6...##...\n' + \
+                          '7........\n' + \
+                          '8........\n'
 
-        representationB = 'N.......\n' + \
-                          '........\n' + \
-                          '...BB.#.\n' + \
-                          '...BNN#.\n' + \
-                          '..#NB##.\n' + \
-                          '...#....\n' + \
-                          '........\n' + \
-                          '........\n'
+        representationB = '\nTour du joueur Blanc'+'\n' + \
+                          ' ABCDEFGH\n' + \
+                          '1N.......\n' + \
+                          '2........\n' + \
+                          '3...BB.#.\n' + \
+                          '4...BNN#.\n' + \
+                          '5..#NB##.\n' + \
+                          '6...#....\n' + \
+                          '7........\n' + \
+                          '8........\n'
 
 
 
@@ -162,15 +167,15 @@ class testPlateau(unittest.TestCase):
             for k in range(len(positions)):
                 plat[positions[k]]=p.pion(couleurs[k])
     
-            assertEqual(plat.jouable('B'), True)
-            assertEqual(plat.jouable('N'), True)
+            self.assertEqual(plat.jouable('B'), True)
+            self.assertEqual(plat.jouable('N'), True)
             
             plat2 = p.plateau()
             for pos in plat2:
                 plat2[pos].couleur = 'N'
 
-            assertEqual(plat.jouable('B'), False)
-            assertEqual(plat.jouable('N'), False)
+            self.assertEqual(plat.jouable('B'), False)
+            self.assertEqual(plat.jouable('N'), False)
 
 class testFonctions(unittest.TestCase):
     def testIncrement(self):
@@ -188,8 +193,8 @@ class testFonctions(unittest.TestCase):
         self.assertEqual(p.increment(7, pos), (1,3))
 
     def testInput(self):
-        self.assertEqual(inputtotuple('d2'),(1,3))
-        self.assertEqual(inputtotuple('a1'),(0,0))
+        self.assertEqual(p.inputtotuple('d2'),(1,3))
+        self.assertEqual(p.inputtotuple('a1'),(0,0))
             
 class testJoueur(unittest.TestCase):
     def testInit(self):
@@ -205,36 +210,39 @@ class testJoueur(unittest.TestCase):
         self.assertEqual(jN.couleur, 'B')
 
         with self.assertRaises(ValueError):
-            j1 = p.joueur('Q', plat)
+            jN = p.joueur('Q', plat)
 
         with self.assertRaises(TypeError):
-            j2 = p.joueur(2, plat)
+            jN = p.joueur(2, plat)
 
         #Vérification des limites
         self.assertEqual(jN.limite, plat.perimetre)
         self.assertEqual(jB.limite, plat.perimetre)
 
         #Vérification de l'initialisation du score
-        self.assertEqual(jN.score, 0)
-        self.assertEqual(jB.score, 0)
-
-        jN.score = 80
-        self.assertEqual(jN.score, 80)
-
-        with self.assertRaises(ValueError):
-            jB.score = -1
-
-    def testJouer(self):
-        plat = p.plateau()
-        jN = p.joueur('N', plat)
-        jB = p.joueur('B', plat)
-
-        with self.assertRaises(ValueError):
+        self.assertEqual(plat.diff_score(jN.couleur), 0)
+        self.assertEqual(plat.diff_score(jB.couleur), 0)
+        
+        #Vérification qu'un simple objet joueur ne peut pas jouer
+        with self.assertRaises(AttributeError):
             jN.jouer((1,1))
 
-        jB.jouer((4,2))
-        self.assertEqual(plat[(4,2)].couleur,'B') #la case jouée
-        self.assertEqual(plat[(4,3)].couleur,'B') #la case retournée
+    def testRetourner(self):
+        plat = p.plateau()
+        jN = p.joueur('N', plat)
+        
+        jN.retourner((3,2), plat, jN.couleur)
+        self.assertEqual(plat[(3,2)].couleur,'N') #la case jouée
+        self.assertEqual(plat[(3,3)].couleur,'N') #la case retournée
+        
+    def tetsSimuler(self):
+        plat = p.plateau()
+        jN = p.joueur('N', plat)
+        table_copie = jN.simuler((3,2), plat, jN.couleur)
+        
+        #On vérifie que les modifications faites dans le plateau copié
+        #n'affecte pas le vrai plateau
+        self.assertNotEqual(plat, table_copie)
 
 if __name__ == '__main__' :
     unittest.main()
