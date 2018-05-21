@@ -235,7 +235,7 @@ class testJoueur(unittest.TestCase):
         self.assertEqual(plat[(3,2)].couleur,'N') #la case jouée
         self.assertEqual(plat[(3,3)].couleur,'N') #la case retournée
         
-    def tetsSimuler(self):
+    def testSimuler(self):
         plat = p.plateau()
         jN = p.joueur('N', plat)
         table_copie = jN.simuler((3,2), plat, jN.couleur)
