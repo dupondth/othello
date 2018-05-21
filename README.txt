@@ -25,4 +25,4 @@ Interface graphique
 
 * Mode Joueur vs IA : Le joueur humain joue toujours les pions noirs. Ce mode commence après un clic de la part du joueur humain sur une des cases jouables.
 
-* Mode Joueur vs Jouer : Chaque joueur appuie sur une des cases jouables, chacun son tour.
+* Mode Joueur vs Joueur : Chaque joueur appuie sur une des cases jouables, chacun son tour.
