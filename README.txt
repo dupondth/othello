@@ -1,19 +1,28 @@
+    ___  _   _        _ _     
+   / _ \| |_| |_  ___| | |___ 
+  | (_) |  _| ' \/ -_) | / _ \
+   \___/ \__|_||_\___|_|_\___/
+
 Projet Othello : comment lancer le jeu
 
-jouer.py contient les fonctions nécessaires au déroulement du jeu alors que
-plateau.py contient les objets et méthodes nécessaires au fonctionnement du jeu.
+* applicationIHM.py lance l'interface graphique générée sous QtDesigner où l'on peut choisir le mode de jeu et la difficulté de l'IA s'il y a lieu.
+* interface.py est le fichier issu de QtDesigner.
+* jouer.py contient les fonctions nécessaires au déroulement du jeu en mode console.
+* plateau.py contient les objets et méthodes nécessaires au fonctionnement du jeu.
 
-Le jeu se lance en éxecutant le fichier jouer.py qui fait appel au fichier
-plateau.py.
 
-Pour jouer humain contre IA : 
-    Dans jouer.py : décommenter les lignes 131 à 141. Dans la ligne 133, p.IAmax
-    peut être remplacé par p.IAalea pour jouer contre une IA qui joue au hasard.
-    Le jeu peut être stoppé à tout moment par l'humain lors de son choix de case
-    en entrant la lettre q.
+Interface graphique
 
-Pour jouer N parties IA contre IA:
-    Dans jouer.py : décommenter les lignes 147 et 148 puis changer la valeur de
-    N ligne 147 pour jouer N parties. Le choix des IA qui s'affrontent se fait
-    dans la fonction stats_jeux dans le même fichier : lignes 112 et 113. p.IAlea
-    peut être remplacé par p.IAmax et inversement.
+* Plateau :
+    * Pions : Les pions sont représentés par des disques de couleur adéquate.
+    * Cases jouables : Ces cases sont mises en valeur par la présence d'un disque vert clair.
+
+* Boutons :
+    * Début simulation : Disponible seulement en mode IA vs IA, lance une partie entre les deux IA.
+    * Recommencer : Remets à zéro le plateau. Il est nécessaire d'appuyer sur ce bouton après avoir changé de mode de jeu.
+
+* Mode IA vs IA : Ce mode commence par le choix du niveau de chaque IA (Facile : IA aléatoire, Normal : IA maximise ses gains sur un tour, Difficile : IA min max sur un tour, Très difficile : IA min max sur deux tours). Puis la partie se lance avec le bouton "Début simulation".
+
+* Mode Joueur vs IA : Le joueur humain joue toujours les pions noirs. Ce mode commence après un clic de la part du joueur humain sur une des cases jouables.
+
+* Mode Joueur vs Jouer : Chaque joueur appuie sur une des cases jouables, chacun son tour.
