@@ -2,7 +2,6 @@
 #coding:utf8
 
 import plateau as p
-import time
 
 def tour(num_tour, plateau, j1, j2):
     '''Fonction qui fait avancer le jeu d'un tour, affiche l'état actuel du
@@ -24,7 +23,7 @@ def tour(num_tour, plateau, j1, j2):
     print("\n-- Tour " + str(num_tour) + " --")
     #\n au début pour avoir une ligne vide entre les tours
 
-    #print(plateau.affichage(j1.couleur)) #affichage du plateau
+    print(plateau.affichage(j1.couleur),'\n Noir-Blanc:',gagnant(plateau)['N'],'-',gagnant(plateau)['B'])
 
     jouable1, jouable2 = True, True
 
@@ -42,7 +41,44 @@ def tour(num_tour, plateau, j1, j2):
     else:
         jouable1 = False
     
-    #print(plateau.affichage(j2.couleur))
+    print(plateau.affichage(j2.couleur),'\n Noir-Blanc:',gagnant(plateau)['N'],'-',gagnant(plateau)['B'])
+    
+    #Si le joueur peut jouer, il joue
+    if plateau.jouable(j2.couleur):
+        flag2 = True
+        while flag2:
+            try:
+                j2.jouer()
+                flag2 = False
+            except ValueError:
+                print("Veuillez jouer dans une case valide")
+    else:
+        jouable2 = False
+
+    if jouable1 == False and jouable2 == False:
+        return False #Arrêter le jeu
+    else :
+        return True #Continuer le jeu
+    
+
+def tour_simu(num_tour, plateau, j1, j2):
+    '''Fonction tour pour le mode simulation, sans affichage graphique.'''
+
+    print("\n-- Tour " + str(num_tour) + " --")
+    jouable1, jouable2 = True, True
+
+    #Si le joueur peut jouer, il joue
+    if plateau.jouable(j1.couleur):
+        flag1 = True
+        #Boucle while pour boucler tant que le coup n'est pas valide
+        while flag1:
+            try:
+                j1.jouer()
+                flag1 = False
+            except ValueError:
+                print("Veuillez jouer dans une case valide")
+    else:
+        jouable1 = False
     
     #Si le joueur peut jouer, il joue
     if plateau.jouable(j2.couleur):
@@ -83,7 +119,7 @@ def gagnant(plateau):
     return {'N':score_n, 'B':score_b}
         
 
-def jeu(plateau, joueur1, joueur2):
+def jeu(plateau, joueur1, joueur2, mode):
     '''Fonction qui exécute le jeu jusqu'à ce que les deux joueurs ne puissent
     plus jouer.
 
@@ -94,24 +130,32 @@ def jeu(plateau, joueur1, joueur2):
     joueur2 (objet joueur) : Second joueur 
     '''
     
-    no_tour = 0 #numéro du tour courant
-    flag = True
-    while flag:
-        no_tour += 1
-        flag = tour(no_tour, plateau, joueur1, joueur2)
+    if mode == 'simu':
+        no_tour = 0 #numéro du tour courant
+        flag = True
+        while flag:
+            no_tour += 1
+            flag = tour_simu(no_tour, plateau, joueur1, joueur2)
+    else:
+        no_tour = 0 #numéro du tour courant
+        flag = True
+        while flag:
+            no_tour += 1
+            flag = tour(no_tour, plateau, joueur1, joueur2)
 
-def stats_jeux(num_jeux):
+def stats_jeux(num_jeux, J1, J2):
     '''Fonction qui joue N=num_jeux de jeux et qui renvoie le nombre de parties
     gagnées par chaque joueur'''
     
     dict_scores = {'joueurNoir':0, 'joueurBlanc':0, 'Egalite': 0}
-
+    
     for _ in range(num_jeux):
 
         plat = p.plateau()
-        joueurN = p.IAminmax2('N', plat)
-        joueurB = p.IAminmax('B', plat)
-        jeu(plat, joueurN, joueurB)
+        types_joueurs = {'1':p.IAalea, '2':p.IAmax,'3':p.IAminmax, '4':p.IAminmax2}
+        joueurN = types_joueurs[J1]('N', plat)
+        joueurB = types_joueurs[J2]('B', plat)
+        jeu(plat, joueurN, joueurB, 'simu')
         scores = gagnant(plat)
 
         if scores['N'] > scores['B']:
@@ -124,25 +168,28 @@ def stats_jeux(num_jeux):
 
 
 if __name__ == '__main__':
-#################################################
-### Pour jouer humain contre IA               ###
-### décommenter les lignes 131 à 141 incluses ###
-#################################################
-    """plateau_jeu = p.plateau()
-    joueurN = p.IAminmax2('N', plateau_jeu)
-    joueurB = p.IAminmax2('B', plateau_jeu)
-
-    jeu(plateau_jeu, joueurN, joueurB)
-
-    print(plateau_jeu)
-    print("\n-- Partie terminée --")
-    scores = gagnant(plateau_jeu)
-    print('Score joueur noir : ' + str(scores['N']))
-    print('Score joueur blanc : ' + str(scores['B']))"""
-
-################################################
-### Pour jouer N parties IAmax contre IAalea ###
-### Modifier N ci-dessous                    ###
-################################################
-    N = 5
-    print(stats_jeux(N))
+    
+    mode = input("Choisissez un mode de jeu (1:partie simple, 2:simuler)  : ")
+    
+    #mode partie simple
+    if mode == '1':
+        types_joueurs = {'1':p.humain, '2':p.IAalea, '3':p.IAmax,'4':p.IAminmax, '5':p.IAminmax2}
+        JN = input("Choisissez le joueur noir (1:humain, 2:IAalea, 3:IAmax, 4:IAminmax; 5:IAminmax2)  : ")
+        JB = input("Choisissez le joueur blanc (1:humain, 2:IAalea, 3:IAmax, 4:IAminmax; 5:IAminmax2)  : ")
+        plateau_jeu = p.plateau()
+        joueurN = types_joueurs[JN]('N', plateau_jeu)
+        joueurB = types_joueurs[JB]('B', plateau_jeu)
+    
+        jeu(plateau_jeu, joueurN, joueurB, 'partie simple')
+    
+        print("\n-- Partie terminée --")
+        scores = gagnant(plateau_jeu)
+        print('Score joueur noir : ' + str(scores['N']))
+        print('Score joueur blanc : ' + str(scores['B']))
+    
+    #mode simulation
+    else:
+        N = int(input("Nombre de parties à simuler  : "))
+        JN = input("Choisissez le joueur noir (1:IAalea, 2:IAmax, 3:IAminmax; 4:IAminmax2)  : ")
+        JB = input("Choisissez le joueur blanc (1:IAalea, 2:IAmax, 3:IAminmax; 4:IAminmax2)  : ")
+        print(stats_jeux(N, JN, JB))
